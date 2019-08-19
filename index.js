@@ -1,5 +1,4 @@
 require('dotenv').config();
-const NiyonDB = require('./conn');
 const server = require('./server');
 
 const PORT = process.env.PORT || 5000;
@@ -16,18 +15,7 @@ function sum(...numbers) {
   throw Error('Contains invalid number');
 }
 
-// Check if DB works
-async function checkDB() {
-  try {
-    await NiyonDB.authenticate();
-    return 'Success';
-  } catch (error) {
-    return 'Failed';
-  }
-}
-
 module.exports = {
   sum,
-  checkDB,
   serverVar
 };
