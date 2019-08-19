@@ -1,5 +1,5 @@
 require('dotenv').config();
-// const NiyonDB = require('./conn');
+const NiyonDB = require('./conn');
 
 function sum(...numbers) {
   // eslint-disable-next-line no-restricted-globals
@@ -10,19 +10,16 @@ function sum(...numbers) {
 }
 
 // Check if DB works
-// async function checkDB() {
-//   try {
-//     await NiyonDB.authenticate();
-//     console.log('Connection has been established successfully.');
-//   } catch (error) {
-//     console.log('Unable to connect to the database:', error);
-//   } finally {
-//     await NiyonDB.close();
-//   }
-// }
-
-// checkDB();
+async function checkDB() {
+  try {
+    await NiyonDB.authenticate();
+    return 'Success';
+  } catch (error) {
+    return 'Failed';
+  }
+}
 
 module.exports = {
-  sum
+  sum,
+  checkDB
 };
