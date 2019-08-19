@@ -1,3 +1,6 @@
+require('dotenv').config();
+const NiyonDB = require('./conn');
+
 function sum(...numbers) {
   // eslint-disable-next-line no-restricted-globals
   if (numbers.every(n => typeof n === 'number' && !isNaN(n))) {
@@ -5,13 +8,18 @@ function sum(...numbers) {
   }
   throw Error('Contains invalid number');
 }
-const person = {
-  name: 'Matt',
-  age: 23,
-  sex: 'male'
-};
+
+// Check if DB works
+async function checkDB() {
+  try {
+    await NiyonDB.authenticate();
+    return 'Success';
+  } catch (error) {
+    return 'Failed';
+  }
+}
 
 module.exports = {
   sum,
-  person
+  checkDB
 };
