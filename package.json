@@ -4,6 +4,8 @@
   "description": "Backend for Niyon application",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "start:dev": "nodemon index.js",
     "test": "jest",
     "lint": "./node_modules/.bin/eslint . --fix",
     "test:watch": "jest --watch"
