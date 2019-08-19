@@ -1,4 +1,4 @@
-const NiyonDB = require('../conn');
+const NiyonDB = require('./conn');
 // const { checkDB } = require('../index');
 
 afterAll(() => {
