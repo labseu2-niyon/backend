@@ -35,6 +35,7 @@ jobs:
             - v1-dependencies-
 
       - run: yarn install
+      - run: yarn add cross-env
       - run: yarn add --dev nyc
       - run: yarn add --dev coveralls
       - run: environment: NODE_ENV: "test"
