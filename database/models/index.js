@@ -16,7 +16,7 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], {
     host: 'localhost',
-    dialect: 'postgresql'
+    dialect: 'postgres'
 });
  } 
 else {
@@ -26,7 +26,7 @@ else {
     config.password,
     {
       host: 'localhost',
-      dialect: 'postgresql'
+      dialect: 'postgres'
   }
   );
 }
