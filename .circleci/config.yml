@@ -8,7 +8,7 @@ jobs:
     working_directory: ~/repo
     docker:
       # specify the version you desire here
-      - image: circleci/node:9.7.1-stretch
+      - image: circleci/node:10.16.0
         environment:
            PGHOST: localhost
            PGUSER: postgres
