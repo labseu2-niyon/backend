@@ -10,10 +10,10 @@ const config = require(`${__dirname  }/../config/config.js`)[env];
 const db = {};
 
 let sequelize;
-if(process.env.NODE_ENV === 'test'){
-  sequelize = new Sequelize('population-m-s-test', 'postgres', 'postgres', 'postgres');
-}
-else if (config.use_env_variable) {
+// if(process.env.NODE_ENV === 'test'){
+//   sequelize = new Sequelize('population-m-s-test', 'postgres', 'postgres', 'postgres');
+// }
+if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
  } 
 else {
