@@ -10,6 +10,9 @@ const dbUrl = process.env.DATABASE_URL
   ? `${process.env.DATABASE_URL}?ssl=true`
   : development;
 
-const db = new Sequelize(dbUrl);
+const db = new Sequelize(dbUrl, {
+  host: 'localhost',
+  dialect: 'postgres'
+});
 
 module.exports = db;
