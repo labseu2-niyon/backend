@@ -12,8 +12,8 @@
     "generator": "npx sequelize model:generate --name Locations --attributes username:string",
     "migration": "sequelize db:migrate",
     "dropMigration": "sequelize db:migrate:undo:all",
-    "pretest": "cross-env NODE_ENV=test yarn dropMigration && yarn migration",
-    "coveralls": "yarn test --coverageReporters=text-lcov | coveralls"
+    "pretest": "cross-env NODE_ENV=test npm dropMigration && npm migration",
+    "coveralls": "npm test --coverageReporters=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
