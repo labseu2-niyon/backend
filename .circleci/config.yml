@@ -13,12 +13,14 @@ jobs:
            PGHOST: localhost
            PGUSER: postgres
            NODE_ENV: test
+           dialect: postgres
            DATABASE_URL: "postgres://postgres:postgres@localhost:5432/population-m-s-test"
       
       - image: circleci/postgres:11
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: population-m-s-test
+          dialect: postgres
           POSTGRES_PASSWORD: postgres
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -38,7 +40,7 @@ jobs:
             - v1-dependencies-
 
       - run: 
-          yarn install
+          npm install
 
       - run:
           name: Waiting for PostgreSQL to start
@@ -64,5 +66,5 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: yarn test
-      # - run: yarn coverage
+      - run: npm test
+      # - run: npm coverage
