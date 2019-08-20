@@ -27,39 +27,39 @@ jobs:
 
     
 
-    # steps:
-    #   - checkout
+    steps:
+      - checkout
 
     #   # Download and cache dependencies
-    #   - restore_cache:
-    #       keys:
-    #         - v1-dependencies-{{ checksum "package.json" }}
-    #         # fallback to using the latest cache if no exact match is found
-    #         - v1-dependencies-
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-    #   - run: 
-    #       yarn install
+      - run: 
+          yarn install
 
-    #   - run:
-    #       name: Waiting for PostgreSQL to start
-    #       command: |
-    #         for i in `seq 1 10`;
-    #         do
-    #           nc -z localhost 5432 && echo Success && exit 0
-    #           echo -n .
-    #           sleep 2
-    #         done
-    #         echo Failed waiting for Postgres && exit 1
+      - run:
+          name: Waiting for PostgreSQL to start
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 2
+            done
+            echo Failed waiting for Postgres && exit 1
       
-    #   - run:
-    #       name: INSTALL PG CLIENT
-    #       command: sudo apt install -y postgresql-client || true
+      - run:
+          name: INSTALL PG CLIENT
+          command: sudo apt install -y postgresql-client || true
 
-    #   - save_cache:
-    #       paths:
-    #         - node_modules
-    #       key: v1-dependencies-{{ checksum "package.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
-    #   # run tests!
-    #   - run: yarn test
-    #   - run: yarn run coverage
+      # run tests!
+      - run: yarn test
+      - run: yarn run coverage
