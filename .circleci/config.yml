@@ -59,6 +59,13 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt install -y postgresql-client || true
       # - run: createdb population-m-s-test
+      - run: 
+          name: Set up DB
+          command: |
+            psql -h localhost -p 5432 -c 'drop database if exists population-m-s-test;' -U postgres
+            psql -h localhost -p 5432 -c 'create database population-m-s-test;' -U postgres
+            # psql -h localhost -p 5432 -c "CREATE USER benedictesimaje WITH PASSWORD 'postgres';" -U benedictesimaje
+            # npm run db:migrate
 
       - save_cache:
           paths:
