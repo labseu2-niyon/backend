@@ -7,16 +7,18 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:latest
+      - image: circleci/node:9.7.1-stretch
           environment:
-             PGHOST: 127.0.0.1
+             PGHOST: localhost
              PGUSER: postgres
-             DATABASE_URL: "postgres://postgres@localhost:5432/population-m-s-test"
+             NODE_ENV: test
+            #  DATABASE_URL: "postgres://postgres@localhost:5432/population-m-s-test"
       
       - image: circleci/postgres:9.6.2-alpine
           environment:
             POSTGRES_USER: postgres
             POSTGRES_DB: population-m-s-test
+            POSTGRES_PASSWORD: postgres
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -36,15 +38,21 @@ jobs:
 
       - run: 
           yarn install
-      # - run: 
-      #     yarn add cross-env
-      # - run: 
-      #     environment: 
-      #       NODE_ENV: "test"
+
+      - run:
+          name: Waiting for PostgreSQL to start
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 2
+            done
+            echo Failed waiting for Postgres && exit 1
+      
       - run:
           name: INSTALL PG CLIENT
           command: sudo apt install -y postgresql-client || true
-
 
       - save_cache:
           paths:
