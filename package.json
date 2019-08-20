@@ -4,7 +4,7 @@
   "description": "Backend for Niyon application",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest --coverage",
     "start": "node index.js",
     "start:dev": "nodemon index.js",
     "lint": "./node_modules/.bin/eslint . --fix",
@@ -13,7 +13,7 @@
     "migration": "sequelize db:migrate",
     "dropMigration": "sequelize db:migrate:undo:all",
 
-    "coverage": " nyc cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc yarn test && cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
