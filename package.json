@@ -13,7 +13,7 @@
     "migration": "sequelize db:migrate",
     "dropMigration": "sequelize db:migrate:undo:all",
 
-    "coverage": "nyc yarn test && cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "cross-env NODE_ENV=test jest --coverage --coverageReporters=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
