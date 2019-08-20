@@ -65,7 +65,7 @@ jobs:
             psql -h localhost -p 5432 -c 'drop database if exists population_m_s_test;' -U postgres
             psql -h localhost -p 5432 -c 'create database population_m_s_test;' -U postgres
             psql -h localhost -p 5432 -c "CREATE USER postgresql WITH PASSWORD 'postgres';" -U postgres
-            npm run db:migrate
+            npm run pretest:dev
 
       - save_cache:
           paths:
