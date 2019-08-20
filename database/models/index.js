@@ -22,7 +22,10 @@ else {
     config.username,
     config.password,
     config.dialect,
-    config
+    {
+      host: 'localhost',
+      dialect: 'postgres'
+  }
   );
 }
 
