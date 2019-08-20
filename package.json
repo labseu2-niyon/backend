@@ -4,13 +4,13 @@
   "description": "Backend for Niyon application",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "cross-env NODE_ENV=test jest",
     "lint": "./node_modules/.bin/eslint . --fix",
     "test:watch": "jest --watch",
     "generator": "npx sequelize-cli model:generate --name Locations --attributes username:string",
     "migration": "npx sequelize-cli db:migrate",
     "dropMigration": "npx sequelize-cli db:migrate:undo:all",
-    "pretest": "npm run dropMigration && npm run migration",
+    "pretest": "cross-env NODE_ENV=test npm run dropMigration && npm run migration",
     "coverage": " nyc npm run pretest && cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
@@ -32,6 +32,7 @@
   "homepage": "https://github.com/labseu2-niyon/backend#readme",
   "devDependencies": {
     "coveralls": "^3.0.6",
+    "cross-env": "^5.2.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.0.0",

@@ -36,8 +36,8 @@ jobs:
 
       - run: 
           yarn install
-      - run: 
-          yarn add cross-env
+      # - run: 
+      #     yarn add cross-env
       # - run: 
       #     environment: 
       #       NODE_ENV: "test"
