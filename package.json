@@ -12,6 +12,7 @@
     "generator": "npx sequelize model:generate --name Locations --attributes username:string",
     "migration": "npx sequelize db:migrate",
     "dropMigration": "npx sequelize db:migrate:undo:all",
+    "pretest": "cross-env NODE_ENV=test yarn dropMigration && yarn migration",
     "coverage": " nyc cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
