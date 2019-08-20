@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         validate: {
           iisAlphanumeric: {
+            args: true,
             msg: 'Please enter your firstname'
           }
         }
@@ -16,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         validate: {
           isAlphanumeric: {
+            args: true,
             msg: 'Please enter your lastname'
           }
         }
@@ -25,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isAlphanumeric: {
+            args: true,
             msg: 'Please enter your username'
           }
         }
@@ -34,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isEmail: {
+            args: true,
             msg: 'Please enter a valid email'
           }
         }
@@ -51,6 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         validate: {
           isUrl: {
+            args: true,
             msg: 'Please enter a valid image url'
           }
         }
@@ -60,6 +65,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         validate: {
           isInt: {
+            args: true,
             msg: 'Please enter your location'
           }
         }
