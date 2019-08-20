@@ -6,7 +6,10 @@ module.exports = {
     dialect: 'postgres'
   },
   test: {
-    url: secret.DATABASE_URL_TEST,
+    username: secret.POSTGRES_USER,
+    password: secret.POSTGRES_PASSWORD,
+    database: secret.POSTGRES_DB,
+    host: secret.PGHOST,
     dialect: secret.DIALECT || 'postgres'
   },
   staging: {

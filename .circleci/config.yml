@@ -13,14 +13,14 @@ jobs:
            PGHOST: localhost
            PGUSER: postgres
            NODE_ENV: test
-           dialect: postgres
+           DIALECT: postgres
            DATABASE_URL: "postgres://postgres:postgres@localhost:5432/population-m-s-test"
       
       - image: circleci/postgres:11
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: population-m-s-test
-          dialect: postgres
+          DIALECT: postgres
           POSTGRES_PASSWORD: postgres
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
