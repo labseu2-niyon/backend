@@ -14,12 +14,12 @@ jobs:
            PGUSER: postgres
            NODE_ENV: test
            DIALECT: postgres
-           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/population-m-s-test"
+           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/population_m_s_test"
       
       - image: circleci/postgres:11
         environment:
           POSTGRES_USER: postgres
-          POSTGRES_DB: population-m-s-test
+          POSTGRES_DB: population_m_s_test
           DIALECT: postgres
           POSTGRES_PASSWORD: postgres
       # Specify service dependencies here if necessary
@@ -62,10 +62,10 @@ jobs:
       - run: 
           name: Set up DB
           command: |
-            psql -h localhost -p 5432 -c 'drop database if exists population-m-s-test;' -U postgres
-            psql -h localhost -p 5432 -c 'create database population-m-s-test;' -U postgres
-            # psql -h localhost -p 5432 -c "CREATE USER benedictesimaje WITH PASSWORD 'postgres';" -U benedictesimaje
-            # npm run db:migrate
+            psql -h localhost -p 5432 -c 'drop database if exists population_m_s_test;' -U postgres
+            psql -h localhost -p 5432 -c 'create database population_m_s_test;' -U postgres
+            psql -h localhost -p 5432 -c "CREATE USER postgres WITH PASSWORD 'postgres';" -U postgres
+            npm run db:migrate
 
       - save_cache:
           paths:
