@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest",
+    "start": "node index.js",
+    "start:dev": "nodemon index.js",
     "lint": "./node_modules/.bin/eslint . --fix",
     "test:watch": "jest --watch",
     "generator": "npx sequelize-cli model:generate --name Locations --attributes username:string",
@@ -62,6 +64,11 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.15.1",
     "sequelize-cli": "^5.5.0",
-    "validatorjs": "^3.15.1"
+    "validatorjs": "^3.15.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.20.0",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
   }
 }
