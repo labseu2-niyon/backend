@@ -13,7 +13,7 @@ jobs:
            PGHOST: localhost
            PGUSER: postgres
            NODE_ENV: test
-           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/population-m-s-test"
+          #  DATABASE_URL: "postgres://postgres:postgres@localhost:5432/population-m-s-test"
       
       - image: circleci/postgres:9.6-alpine
         environment:

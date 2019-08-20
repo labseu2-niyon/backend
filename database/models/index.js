@@ -21,7 +21,6 @@ else {
     config.database,
     config.username,
     config.password,
-    config.dialect,
     {
       host: 'localhost',
       dialect: 'postgres'
