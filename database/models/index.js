@@ -21,7 +21,7 @@ else {
     config.database,
     config.username,
     config.password,
-    config.dialet,
+    config.dialect,
     config
   );
 }
