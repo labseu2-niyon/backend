@@ -56,7 +56,7 @@ jobs:
       #     command: sudo apt install -y postgresql-client || true
       - run: sudo apt-get update
       - run: sudo apt install -y postgresql-client || true
-      - run: createdb population-m-s-test
+      # - run: createdb population-m-s-test
 
       - save_cache:
           paths:
