@@ -71,10 +71,10 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       auth_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true,
         validate: {
-          isInt: {
+          isAlphanumeric: {
             args: true,
             msg: 'Please enter the user id from social auth'
           }
