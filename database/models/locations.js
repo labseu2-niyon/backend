@@ -28,6 +28,8 @@ module.exports = (sequelize, DataTypes) => {
   Locations.associate = models => {
     // associations can be defined here
     Locations.hasMany(models.Users);
+    Locations.hasMany(models.Mentors);
+    Locations.hasMany(models.Mentees);
   };
   return Locations;
 };

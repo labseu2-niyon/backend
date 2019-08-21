@@ -13,14 +13,12 @@ jobs:
            PGHOST: localhost
            PGUSER: postgres
            NODE_ENV: test
-           DIALECT: postgres
-           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/population_m_s_test"
+           DATABASE_URL: "postgres://postgres:postgres@localhost:5432/population-m-s-test"
       
       - image: circleci/postgres:11
         environment:
           POSTGRES_USER: postgres
-          POSTGRES_DB: population_m_s_test
-          DIALECT: postgres
+          POSTGRES_DB: population-m-s-test
           POSTGRES_PASSWORD: postgres
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -40,7 +38,7 @@ jobs:
             - v1-dependencies-
 
       - run: 
-          npm install
+          yarn install
 
       - run:
           name: Waiting for PostgreSQL to start
@@ -59,13 +57,6 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt install -y postgresql-client || true
       # - run: createdb population-m-s-test
-      - run: 
-          name: Set up DB
-          command: |
-            psql -h localhost -p 5432 -c 'drop database if exists population_m_s_test;' -U postgres
-            psql -h localhost -p 5432 -c 'create database population_m_s_test;' -U postgres
-            psql -h localhost -p 5432 -c "CREATE USER postgresql WITH PASSWORD 'postgres';" -U postgres
-            npx sequelize db:migrate --url "postgres://postgres:postgres@localhost:5432/population_m_s_test"
 
       - save_cache:
           paths:
@@ -73,5 +64,5 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: npm test
-      # - run: npm coverage
+      - run: yarn test:circleci
+      # - run: yarn run coverage
