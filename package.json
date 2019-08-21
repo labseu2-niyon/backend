@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --coverage",
-    "test:circleci": "cross-env NODE_ENV=test jest --coverage",
+    "testcircleci": "cross-env NODE_ENV=test jest --coverage",
     "start": "node index.js",
     "start:dev": "nodemon index.js",
     "lint": "./node_modules/.bin/eslint . --fix",
