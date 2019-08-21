@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --coverage",
+    "testcircleci": "cross-env NODE_ENV=test jest --coverage",
     "start": "node index.js",
     "start:dev": "nodemon index.js",
     "lint": "./node_modules/.bin/eslint . --fix",
     "test:watch": "jest --watch",
-    "generator": "npx sequelize model:generate --name Locations --attributes username:string",
+    "generator": "npx sequelize model:generate --name Mentees --attributes username:string",
     "migration": "sequelize db:migrate",
     "dropMigration": "sequelize db:migrate:undo:all",
-    "pretest:dev": "cross-env NODE_ENV=test npm run dropMigration && npm run migration",
+    "pretest": "cross-env NODE_ENV=test npm run dropMigration && npm run migration",
     "coveralls": "npm test --coverageReporters=text-lcov | coveralls"
   },
   "repository": {
