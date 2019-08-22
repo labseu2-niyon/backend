@@ -1,6 +1,8 @@
-const router = require('express').Router();
+const express = require('express');
 
-router.get('/', (_, res) => {
+const router = express.Router();
+
+router.get('/', (req, res) => {
   res.status(200).json({
     name: 'Captain Mentor',
     company: 'Amentors',

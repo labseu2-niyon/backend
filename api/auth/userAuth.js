@@ -1,5 +1,7 @@
-const router = require('express').Router();
+const express = require('express');
 const passport = require('passport');
+
+const router = express.Router();
 
 router.get(
   '/login/?provider=facebook',
