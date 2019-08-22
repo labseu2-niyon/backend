@@ -8,7 +8,8 @@ passport.use(
     {
       clientID: keys.FACEBOOK_APP_ID,
       clientSecret: keys.FACEBOOK_APP_SECRET,
-      callbackURL: '/login/?provider=facebook/redirect'
+      callbackURL: '/login/?provider=facebook/redirect',
+      profileFields: ['id', 'first-name', 'last-name', 'email-address']
     },
     (accessToken, refreshToken, profile, cb) => {
       User.findOrCreate({ facebookId: profile.id }, (err, user) => {
