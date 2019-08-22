@@ -1,5 +1,7 @@
-const router = require('express').Router();
+const express = require('express');
 const models = require('../../database/models');
+
+const router = express.Router();
 
 router.get('/:username', async (req, res) => {
   try {

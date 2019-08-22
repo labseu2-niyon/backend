@@ -1,6 +1,8 @@
-const router = require('express').Router();
+const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+
+const router = express.Router();
 
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', { session: false }, (err, user, info) => {
@@ -34,3 +36,5 @@ router.get(
     res.redirect('/');
   }
 );
+
+module.exports = router;
