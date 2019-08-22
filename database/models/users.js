@@ -69,6 +69,16 @@ module.exports = (sequelize, DataTypes) => {
             msg: 'Please enter your location'
           }
         }
+      },
+      auth_id: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          isAlphanumeric: {
+            args: true,
+            msg: 'Please enter the user id from social auth'
+          }
+        }
       }
     },
     {}
