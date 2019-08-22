@@ -10,8 +10,7 @@ module.exports = {
       },
       mentoring_type_id: {
         type: Sequelize.STRING,
-        allowNull: false,
-        primaryKey: true
+        allowNull: false
         // references: {
         //   model: 'Mentoring_types',
         //   key: 'id'
@@ -20,8 +19,7 @@ module.exports = {
       },
       mentee_id: {
         type: Sequelize.STRING,
-        allowNull: false,
-        primaryKey: true
+        allowNull: false
         // references: {
         //   model: 'Mentees',
         //   key: 'id'
