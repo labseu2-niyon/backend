@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       },
       industry_id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           isAlphanumeric: {
@@ -54,6 +54,11 @@ module.exports = (sequelize, DataTypes) => {
       as: 'industry',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
+    });
+    Mentees.belongToMany(models.Mentoring_types, {
+      through: 'Mentees_chioces',
+      foreignKey: 'mentoring_type_id',
+      as: 'Mentee_chioce'
     });
   };
   return Mentees;

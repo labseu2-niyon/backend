@@ -55,6 +55,11 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
+    Mentors.belongToMany(models.Mentoring_types, {
+      through: 'Mentors_chioces',
+      foreignKey: 'mentoring_type_id',
+      as: 'Mentor_chioce'
+    });
   };
   return Mentors;
 };
