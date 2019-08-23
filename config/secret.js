@@ -6,11 +6,9 @@ module.exports = {
   DATABASE_URL: process.env.DATABASE_URL,
   DIALECT: process.env.DIALECT,
   PG_HOST: process.env.PG_HOST,
-
   POSTGRES_DB: process.env.POSTGRES_DB,
   POSTGRES_USER: process.env.POSTGRES_USER,
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
-
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
   FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID,
