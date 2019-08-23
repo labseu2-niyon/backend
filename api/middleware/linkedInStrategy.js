@@ -11,7 +11,7 @@ export default passport.use(
       callbackURL: '/login/?provider=linkedIn/redirect'
     },
     (token, tokenSecret, profile, done) => {
-      User.findOrCreate({ linkedinId: profile.id }, (err, user) => {
+      User.findOrCreate({ auth_id: profile.id }, (err, user) => {
         return done(err, user);
       });
     }

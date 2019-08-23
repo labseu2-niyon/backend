@@ -36,5 +36,22 @@ module.exports = {
     } catch (error) {
       return response.error(res, 500, error.message);
     }
+  },
+
+  async createUser(req, res) {
+    let user = req.body;
+
+    let hash = bcrypt.hashSync(user.password, 10);
+    user.password = hash;
+
+    try {
+      const user = await models.Users.create(user);
+      if (user) {
+        return response.success(res, 201, `${user.username} account created successfully`);
+      }
+      return response.error(res, 404, 'Could not create Profile');
+    } catch (error) {
+      return response.error(res, 500, error.message);
+    }
   }
 };

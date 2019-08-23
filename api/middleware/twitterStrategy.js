@@ -11,7 +11,7 @@ passport.use(
       callbackURL: '/login/?provider=twitter/redirect'
     },
     (token, tokenSecret, profile, cb) => {
-      User.findOrCreate({ twitterId: profile.id }, (err, user) => {
+      User.findOrCreate({ auth_Id: profile.id }, (err, user) => {
         return cb(err, user);
       });
     }
