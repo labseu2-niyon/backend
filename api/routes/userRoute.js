@@ -5,7 +5,7 @@ const cloudinary = require('../middleware/cloudinaryImage');
 
 router.post('/:username/profile', controller.createUserProfile);
 
-router.post(
+router.patch(
   '/image/upload',
   [
     userValidators.validateUserExists,
