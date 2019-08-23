@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 module.exports = (sequelize, DataTypes) => {
-  const Mentors_choices = sequelize.define(
+  const Mentees_choices = sequelize.define(
     'Mentees_choices',
     {
       mentoring_type_id: {
@@ -26,20 +26,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Mentors_choices.associate = models => {
+  Mentees_choices.associate = models => {
     // associations can be defined here
-    Mentors_choices.belongsTo(models.Mentoring_types, {
+    Mentees_choices.belongsTo(models.Mentoring_types, {
       foreignKey: 'mentoring_type_id',
-      as: 'mentoring_type_id',
+      // as: 'mentee_type_id',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
-    Mentors_choices.belongsTo(models.Mentees, {
+    Mentees_choices.belongsTo(models.Mentees, {
       foreignKey: 'mentee_id',
-      as: 'mentee_id',
+      // as: 'mentee_id',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
   };
-  return Mentors_choices;
+  return Mentees_choices;
 };

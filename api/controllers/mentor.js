@@ -1,36 +1,28 @@
 const models = require('../../database/models');
+const response = require('../helpers/response');
 
 module.exports = {
   async getAllMentors(req, res) {
     try {
-      const mentors = await models.Mentors.findAll({
-        include: [
-          {
-            model: models.User,
-            as: 'user'
-          },
-          {
-            model: models.Locations,
-            as: 'location'
-          },
-          {
-            model: models.Industries,
-            as: 'industry'
-          }
-        ]
-      });
-      return res.status(200).json({ mentors });
+      const mentors = await models.Mentors.findAll();
+      if (mentors) {
+        return response.success(res, 200, mentors);
+      }
+      return response.error(res, 404, 'Could not find all Mentors');
     } catch (error) {
-      return res.status(500).send(error.message);
+      return response.error(res, 500, error.message);
     }
   },
 
   async createMentor(req, res) {
     try {
       const mentor = await models.Mentors.create(req.body);
-      return res.status(201).json({ mentor });
+      if (mentor) {
+        return response.success(res, 200, mentor);
+      }
+      return response.error(res, 404, 'Could not create Mentor');
     } catch (error) {
-      return res.status(500).send(error.message);
+      return response.success(res, 500, error.message);
     }
   }
 };
