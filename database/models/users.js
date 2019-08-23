@@ -93,7 +93,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Users.hasOne(models.Mentors);
     Users.hasOne(models.Mentees);
-    Users.hasOne(models.SocialMedias);
+    // Users.hasOne(models.SocialMedias);
   };
   return Users;
 };

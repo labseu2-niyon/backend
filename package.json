@@ -60,16 +60,25 @@
     ]
   },
   "dependencies": {
-    "dotenv": "^8.1.0",
-    "pg": "^7.12.1",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^5.15.1",
-    "sequelize-cli": "^5.5.0",
-    "validatorjs": "^3.15.1",
     "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "helmet": "^3.20.0",
+    "jsonwebtoken": "^8.5.1",
     "nodemon": "^1.19.1",
-    "supertest": "^4.0.2"
+    "passport": "^0.4.0",
+    "passport-facebook": "^3.0.0",
+    "passport-github": "^1.1.0",
+    "passport-jwt": "^4.0.0",
+    "passport-google-oauth": "^2.0.0",
+    "passport-twitter": "^1.0.4",
+    "passport-linkedin": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.16.0",
+    "sequelize-cli": "^5.5.0",
+    "supertest": "^4.0.2",
+    "validatorjs": "^3.15.1"
   }
 }
