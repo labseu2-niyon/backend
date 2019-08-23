@@ -39,6 +39,10 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: {
             args: true,
             msg: 'Please enter a valid email'
+          },
+          isUnique: {
+            args: true,
+            msg: 'Email already exists'
           }
         }
       },
@@ -51,6 +55,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true
       },
       profile_picture: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          isUrl: {
+            args: true,
+            msg: 'Please enter a valid image url'
+          }
+        }
+      },
+      public_id: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
@@ -77,6 +91,10 @@ module.exports = (sequelize, DataTypes) => {
           isAlphanumeric: {
             args: true,
             msg: 'Please enter the user id from social auth'
+          },
+          isUnique: {
+            args: true,
+            msg: 'User already exists'
           }
         }
       }

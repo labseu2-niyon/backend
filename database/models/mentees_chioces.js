@@ -30,13 +30,13 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Mentees_choices.belongsTo(models.Mentoring_types, {
       foreignKey: 'mentoring_type_id',
-      as: 'mentee_type_id',
+      // as: 'mentee_type_id',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
     Mentees_choices.belongsTo(models.Mentees, {
       foreignKey: 'mentee_id',
-      as: 'mentee_id',
+      // as: 'mentee_id',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });

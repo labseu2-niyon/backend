@@ -14,5 +14,8 @@ module.exports = {
   FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID,
   FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET,
   LINKEDIN_API_KEY: process.env.LINKEDIN_API_KEY,
-  LINKEDIN_SECRET_KEY: process.env.LINKEDIN_SECRET_KEY
+  LINKEDIN_SECRET_KEY: process.env.LINKEDIN_SECRET_KEY,
+  cloudinaryName: process.env.CLOUDINARY_NAME,
+  cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
+  cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET
 };

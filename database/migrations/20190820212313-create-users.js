@@ -10,7 +10,8 @@ module.exports = {
       },
       auth_id: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
+        unique: true
       },
       first_name: {
         type: Sequelize.STRING,
@@ -22,7 +23,8 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       password: {
         type: Sequelize.STRING,
@@ -33,6 +35,10 @@ module.exports = {
         allowNull: true
       },
       profile_picture: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      public_id: {
         type: Sequelize.STRING,
         allowNull: true
       },
