@@ -36,5 +36,23 @@ module.exports = {
     } catch (error) {
       return response.error(res, 500, error.message);
     }
+  },
+
+  async updateUserProfile(req, res) {
+    try {
+      const { userName } = req.params;
+      const updateUser = await models.Users.update(req.body, {
+        where: { username: userName }
+      });
+      if (updateUser) {
+        const updatedUser = await models.Users.findOne({
+          where: { username: userName }
+        });
+        return response.success(res, 200, updatedUser);
+      }
+      return response.error(res, 404, 'Could not update user');
+    } catch (error) {
+      return response.error(res, 500, error.message);
+    }
   }
 };
