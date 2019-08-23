@@ -9,22 +9,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       mentoring_type_id: {
-        type: Sequelize.STRING,
-        allowNull: false
-        // references: {
-        //   model: 'Mentoring_types',
-        //   key: 'id'
-        //   // as: 'type'
-        // }
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Mentoring_types',
+          key: 'id'
+          // as: 'type'
+        }
       },
       mentee_id: {
-        type: Sequelize.STRING,
-        allowNull: false
-        // references: {
-        //   model: 'Mentees',
-        //   key: 'id'
-        //   // as: 'location'
-        // }
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Mentees',
+          key: 'id'
+          // as: 'location'
+        }
       },
       createdAt: {
         allowNull: false,
