@@ -10,9 +10,9 @@
     "start:dev": "nodemon index.js",
     "lint": "./node_modules/.bin/eslint . --fix",
     "test:watch": "jest --watch",
-    "generator": "npx sequelize model:generate --name Mentees --attributes username:string",
-    "migration": "sequelize db:migrate",
-    "dropMigration": "sequelize db:migrate:undo:all",
+    "generator": "npx sequelize model:generate --name Mentees_chioces --attributes username:string",
+    "migration": "npx sequelize db:migrate",
+    "dropMigration": "npx sequelize db:migrate:undo:all",
     "pretest": "cross-env NODE_ENV=test npm run dropMigration && npm run migration",
     "coveralls": "npm test --coverageReporters=text-lcov | coveralls"
   },

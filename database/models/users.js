@@ -85,8 +85,8 @@ module.exports = (sequelize, DataTypes) => {
   );
   Users.associate = models => {
     // associations can be defined here
-    Users.belongTo(models.Locations, {
-      foriegnKey: 'location_id',
+    Users.belongsTo(models.Locations, {
+      foreignKey: 'location_id',
       as: 'location',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'

@@ -37,23 +37,28 @@ module.exports = (sequelize, DataTypes) => {
   );
   Mentors.associate = models => {
     // associations can be defined here
-    Mentors.belongTo(models.Users, {
-      foriegnKey: 'user_id',
+    Mentors.belongsTo(models.Users, {
+      foreignKey: 'user_id',
       as: 'user',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
-    Mentors.belongTo(models.Locations, {
-      foriegnKey: 'location_id',
+    Mentors.belongsTo(models.Locations, {
+      foreignKey: 'location_id',
       as: 'location',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
-    Mentors.belongTo(models.Industries, {
-      foriegnKey: 'industry_id',
+    Mentors.belongsTo(models.Industries, {
+      foreignKey: 'industry_id',
       as: 'industry',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
+    });
+    Mentors.belongsToMany(models.Mentoring_types, {
+      through: 'Mentors_choices',
+      foreignKey: 'mentoring_type_id',
+      as: 'Mentor_choice'
     });
   };
   return Mentors;
