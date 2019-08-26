@@ -15,7 +15,8 @@
     "dropMigration": "npx sequelize db:migrate:undo:all",
     "pretest": "cross-env NODE_ENV=test npm run dropMigration && npm run migration",
     "coverall": "npm test && cat ./coverage/lcov.info | coveralls",
-    "coveralls": "nyc npm run testcircleci --coverageReporters=text-lcov | coveralls"
+    "coveralls": "nyc npm run testcircleci --coverageReporters=text-lcov | coveralls",
+    "test-ci": "nyc npm run testcircleci --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
     "type": "git",
@@ -43,7 +44,6 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.0",
     "husky": "^3.0.4",
-    "jest": "^24.9.0",
     "lint-staged": "^9.2.3",
     "nyc": "^14.1.1",
     "prettier": "1.18.2"
@@ -61,13 +61,14 @@
     ]
   },
   "dependencies": {
+    "babel-jest": "^24.9.0",
     "bcrypt": "^3.0.6",
     "cloudinary": "^1.14.0",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "helmet": "^3.20.0",
-    "istanbul": "^0.4.5",
+    "jest": "^24.9.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",

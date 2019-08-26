@@ -79,4 +79,4 @@ jobs:
 
       # run tests!
       - run: npm run testcircleci
-      # - run: npm run coveralls
+      - run: npm run test-ci
