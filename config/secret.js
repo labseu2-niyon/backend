@@ -17,5 +17,6 @@ module.exports = {
   LINKEDIN_SECRET_KEY: process.env.LINKEDIN_SECRET_KEY,
   cloudinaryName: process.env.CLOUDINARY_NAME,
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
-  cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET
+  cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
+  jwtSecret: process.env.JWT_SECRET
 };

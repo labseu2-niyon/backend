@@ -46,6 +46,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      resetPasswordToken: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      resetPasswordExpires: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
       location_id: {
         type: Sequelize.INTEGER,
         references: {

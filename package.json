@@ -14,7 +14,8 @@
     "migration": "npx sequelize db:migrate",
     "dropMigration": "npx sequelize db:migrate:undo:all",
     "pretest": "cross-env NODE_ENV=test npm run dropMigration && npm run migration",
-    "coveralls": "npm test --coverageReporters=text-lcov | coveralls"
+    "coverall": "npm test && cat ./coverage/lcov.info | coveralls",
+    "coveralls": "nyc npm test --coverageReporters=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -60,12 +61,14 @@
     ]
   },
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "cloudinary": "^1.14.0",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "helmet": "^3.20.0",
     "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "multer-storage-cloudinary": "^2.2.1",
     "nodemon": "^1.19.1",

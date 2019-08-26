@@ -1,3 +1,6 @@
+/* eslint-disable no-underscore-dangle */
+const bcrypt = require('bcrypt');
+
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define(
     'Users',
@@ -74,6 +77,14 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
+      resetPasswordToken: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      resetPasswordExpires: {
+        type: DataTypes.DATE,
+        allowNull: true
+      },
       location_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -99,7 +110,12 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    {}
+    {
+      hooks: {
+        beforeCreate: user => Users.hashPassword(user),
+        beforeUpdate: user => Users.hashPassword(user)
+      }
+    }
   );
   Users.associate = models => {
     // associations can be defined here
@@ -112,6 +128,20 @@ module.exports = (sequelize, DataTypes) => {
     Users.hasOne(models.Mentors);
     Users.hasOne(models.Mentees);
     // Users.hasOne(models.SocialMedias);
+  };
+  Users.hashPassword = async user => {
+    // if (!user.dataValues.password) return user _previousDataValues;
+    const changedPassword = await user.changed(
+      'password',
+      user.dataValues.password
+    );
+    if (
+      changedPassword.previous.password !== changedPassword.dataValues.password
+    ) {
+      const hash = await bcrypt.hash(user.dataValues.password, 14);
+      await user.setDataValue('password', hash);
+    }
+    return user;
   };
   return Users;
 };

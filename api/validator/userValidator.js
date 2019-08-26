@@ -1,13 +1,11 @@
-const models = require('../../database/models');
 const response = require('../helpers/response');
+const userQuery = require('../helpers/users');
 
 module.exports = {
   async validateUserExists(req, res, next) {
     const { username } = req.params;
     try {
-      const user = await models.Users.findOne({
-        where: { username }
-      });
+      const user = await userQuery(username);
       if (!user) return response.error(res, 404, 'User not found');
       req.user = user;
       return next();
