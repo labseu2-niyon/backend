@@ -11,7 +11,7 @@ router.patch(
   [
     authUser.authUser,
     userValidators.validateUserExists,
-    cloudinary.uploadCloudImage('image'),
+    cloudinary.uploadImage('image'),
     cloudinary.deleteCloudImage
   ],
   controller.uploadUserImage
