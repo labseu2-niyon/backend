@@ -12,8 +12,10 @@
     "test:watch": "jest --watch",
     "generator": "npx sequelize model:generate --name Mentees_chioces --attributes username:string",
     "migration": "npx sequelize db:migrate",
+    "create:seeds": "npx sequelize-cli seed:generate --name demo-user",
     "dropMigration": "npx sequelize db:migrate:undo:all",
-    "pretest": "cross-env NODE_ENV=test npm run dropMigration && npm run migration",
+    "seed": "npx sequelize-cli db:seed:all",
+    "pretest": "cross-env NODE_ENV=test npm run dropMigration && npm run migration && npm run seed",
     "coverall": "npm test && cat ./coverage/lcov.info | coveralls",
     "coveralls": "nyc npm run testcircleci --coverageReporters=text-lcov | coveralls",
     "test-ci": "nyc npm run testcircleci --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
