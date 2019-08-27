@@ -4,7 +4,7 @@ const response = require('../helpers/response');
 module.exports = {
   async getUserByUsername(req, res) {
     try {
-      const { userName } = req.query;
+      const { userName } = req.params;
       const user = await models.Users.findOne({
         where: { username: userName }
       });
@@ -19,26 +19,26 @@ module.exports = {
 
   async getAllUsers(req, res) {
     try {
-      const users = await models.Users.findAll();
+      const users = await models.Users.findAll({ returning: true });
       return response.success(res, 201, users);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
   },
 
-  async createUserProfile(req, res) {
-    try {
-      const user = await models.Users.create(req.body);
-      if (user) {
-        return response.success(res, 201, user);
-      }
-      return response.error(res, 404, 'Could not create Profile');
-    } catch (error) {
-      return response.error(res, 500, error.message);
-    }
-  },
+  // async createUserProfile(req, res) {
+  //   try {
+  //     const user = await models.Users.create(req.body);
+  //     if (user) {
+  //       return response.success(res, 201, user);
+  //     }
+  //     return response.error(res, 404, 'Could not create Profile');
+  //   } catch (error) {
+  //     return response.error(res, 500, error.message);
+  //   }
+  // },
 
-  async updateUserProfile(req, res) {
+  async updateUserProfile(req, res, next) {
     try {
       const { userName } = req.params;
       const { firstName, lastName, eMail, bio, locationId } = req.body;
@@ -48,17 +48,13 @@ module.exports = {
         email: eMail,
         biography: bio,
         location_id: locationId,
-        where: { username: userName }
+        where: { username: userName },
+        returning: true
       });
-      if (updateUser) {
-        const updatedUser = await models.Users.findOne({
-          where: { username: userName }
-        });
-        return response.success(res, 200, updatedUser);
-      }
+      if (updateUser) return response.success(res, 200, updateUser);
       return response.error(res, 404, 'Could not update user');
     } catch (error) {
-      return response.error(res, 500, error.message);
+      return next({ message: 'Error updating profile' });
     }
   },
 

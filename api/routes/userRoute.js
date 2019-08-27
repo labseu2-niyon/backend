@@ -5,8 +5,12 @@ const cloudinary = require('../middleware/cloudinaryImage');
 const authUser = require('../helpers/jwt');
 
 router.get('/users', controller.getAllUsers);
-router.post('/:username/profile', controller.createUserProfile);
-router.put('/:username/profile', controller.updateUserProfile);
+router.get('/:username', controller.getUserByUsername);
+router.patch(
+  '/:username/profile',
+  [userValidators.validateUserExists],
+  controller.updateUserProfile
+);
 
 router.patch(
   '/:username/image/upload',
