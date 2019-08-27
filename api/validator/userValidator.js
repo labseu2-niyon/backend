@@ -17,6 +17,12 @@ module.exports = {
   },
   async validateUserEmail(req, res, next) {
     const { email } = req.body;
+    const validator = new Validator(req.body, {
+      email: 'required|email'
+    });
+    if (validator.fails) {
+      return response.error(res, 400, 'Input a valid email');
+    }
     try {
       const user = await models.Users.findOne({
         where: { email },
