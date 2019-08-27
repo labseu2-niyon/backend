@@ -17,4 +17,15 @@ router.patch(
   controller.uploadUserImage
 );
 
+router.post(
+  '/resetpassword',
+  [userValidators.validateUserEmail],
+  controller.sendPasswordMail
+);
+
+router.patch(
+  '/newpassword',
+  [userValidators.validatePassword],
+  controller.resetPassword
+);
 module.exports = router;

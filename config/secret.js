@@ -18,5 +18,8 @@ module.exports = {
   cloudinaryName: process.env.CLOUDINARY_NAME,
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
-  jwtSecret: process.env.JWT_SECRET
+  jwtSecret: process.env.JWT_SECRET,
+  frontEndUrl: process.env.FRONT_END_URL,
+  USER_MAIL: process.env.USER_MAIL,
+  PASSWORD_MAIL: process.env.PASSWORD_MAIL
 };

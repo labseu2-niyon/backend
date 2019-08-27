@@ -1,13 +1,15 @@
 const nodemailer = require('nodemailer');
+const secret = require('../../config/secret');
 
-async function passwordResetMail(token, email) {
+async function passwordResetMail(url, token, email) {
   const transporter = nodemailer.createTransport({
-    host: 'stmp.googlemail.com',
+    host: 'smtp.gmail.com',
     port: 465,
     secure: true,
+    // requireTLS: true
     auth: {
-      user: process.env.USER_MAIL,
-      pass: process.env.PASSWORD_MAIL
+      user: secret.USER_MAIL,
+      pass: secret.PASSWORD_MAIL
     }
   });
 
@@ -15,8 +17,9 @@ async function passwordResetMail(token, email) {
     from: 'niyonlabs@gmail.com',
     to: email,
     subject: 'Password Reset',
-    html:
-      '<div> <p> Hello kindly click these to reset your password on niyon app'
+    html: `<div> 
+    <p> Hello kindly click these to reset your password on niyon app
+      </p> <a href=${url}?token=${token}> here </a>`
   };
 
   try {
