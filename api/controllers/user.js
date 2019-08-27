@@ -60,5 +60,19 @@ module.exports = {
     } catch (error) {
       return response.error(res, 500, error.message);
     }
+  },
+
+  async uploadUserImage(req, res, next) {
+    const { params, file } = req;
+    try {
+      const user = await models.Users.update(
+        { profile_picture: file.url, public_id: file.public_id },
+        { where: { username: params.username }, returning: true }
+      );
+      if (user) return response.success(res, 200, user);
+      return response.error(res, 400, 'Image was not uploaded');
+    } catch (error) {
+      return next({ message: 'Error updating image' });
+    }
   }
 };
