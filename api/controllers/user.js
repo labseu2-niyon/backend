@@ -41,7 +41,13 @@ module.exports = {
   async updateUserProfile(req, res) {
     try {
       const { userName } = req.params;
-      const updateUser = await models.Users.update(req.body, {
+      const { firstName, lastName, eMail, bio, locationId } = req.body;
+      const updateUser = await models.Users.update({
+        first_name: firstName,
+        last_name: lastName,
+        email: eMail,
+        biography: bio,
+        location_id: locationId,
         where: { username: userName }
       });
       if (updateUser) {
