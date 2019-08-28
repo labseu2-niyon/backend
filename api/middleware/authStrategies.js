@@ -7,16 +7,16 @@ const TwitterStrategy = require('passport-twitter').Strategy;
 const models = require('../../database/models');
 const keys = require('../../config/secret');
 
-function callbackStrategy(profile, cb) {
-  models.Users.findOne({where: {email: profile.email}}, (err, user)=>{
-    console.log(user);
-    if(user) {
-      return cb(err, user)
-    }
-    User.findOrCreate({ auth_id: profile.id }, (err, user) => {
-      return cb(err, user);
-    });
-  })
+async function callbackStrategy(profile, cb) {
+  const userEmail = await models.Users.findOne({
+    where: { email: profile.email }
+  });
+
+  if (!userEmail) {
+    const user = models.Users.findOrCreate({ auth_id: profile.id });
+    return cb(null, user);
+  }
+  return cb(null, userEmail);
 }
 
 function facebookStrategy() {
@@ -28,8 +28,8 @@ function facebookStrategy() {
         callbackURL: '/login/?provider=facebook/redirect',
         profileFields: ['id', 'first-name', 'last-name', 'email-address']
       },
-       (accessToken, refreshToken, profile, cb) => {
-       return callbackStrategy(profile, cb)
+      (accessToken, refreshToken, profile, cb) => {
+        return callbackStrategy(profile, cb);
       }
     )
   );
@@ -44,9 +44,7 @@ function githubStrategy() {
         callbackURL: '/login/?provider=github/redirect'
       },
       (accessToken, refreshToken, profile, cb) => {
-        User.findOrCreate({ githubId: profile.id }, (err, user) => {
-          return cb(err, user);
-        });
+        return callbackStrategy(profile, cb);
       }
     )
   );
@@ -61,10 +59,7 @@ function googleStrategy() {
         callbackURL: 'auth/google/redirect'
       },
       (accessToken, refreshToken, profile, cb) => {
-        // Need a User model to find or create User
-        User.findOrCreate({ googleId: profile.id }, (err, user) => {
-          return cb(err, user);
-        });
+        return callbackStrategy(profile, cb);
       }
     )
   );
@@ -78,10 +73,8 @@ function linkedinStrategy() {
         consumerSecret: keys.LINKEDIN_SECRET_KEY,
         callbackURL: '/login/?provider=linkedIn/redirect'
       },
-      (token, tokenSecret, profile, done) => {
-        User.findOrCreate({ linkedinId: profile.id }, (err, user) => {
-          return done(err, user);
-        });
+      (accessToken, refreshToken, profile, cb) => {
+        return callbackStrategy(profile, cb);
       }
     )
   );
@@ -95,10 +88,8 @@ function twitterStrategy() {
         clientSecret: keys.TWITTER_CONSUMER_SECRET,
         callbackURL: '/login/?provider=twitter/redirect'
       },
-      (token, tokenSecret, profile, cb) => {
-        User.findOrCreate({ twitterId: profile.id }, (err, user) => {
-          return cb(err, user);
-        });
+      (accessToken, refreshToken, profile, cb) => {
+        return callbackStrategy(profile, cb);
       }
     )
   );
