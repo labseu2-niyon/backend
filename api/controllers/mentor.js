@@ -1,6 +1,5 @@
 const models = require('../../database/models');
 const response = require('../helpers/response');
-const Users = require('../../database/models/users');
 
 module.exports = {
   async getAllMentors(req, res) {
@@ -8,7 +7,8 @@ module.exports = {
       const mentors = await models.Mentors.findAll({
         include: [
           {
-            model: Users,
+            model: models.Users,
+            as: 'user',
             required: true
           }
         ]
