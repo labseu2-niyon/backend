@@ -26,18 +26,6 @@ module.exports = {
     }
   },
 
-  // async createUserProfile(req, res) {
-  //   try {
-  //     const user = await models.Users.create(req.body);
-  //     if (user) {
-  //       return response.success(res, 201, user);
-  //     }
-  //     return response.error(res, 404, 'Could not create Profile');
-  //   } catch (error) {
-  //     return response.error(res, 500, error.message);
-  //   }
-  // },
-
   async updateUserProfile(req, res, next) {
     try {
       const { userName } = req.params;
