@@ -59,30 +59,18 @@ module.exports = (sequelize, DataTypes) => {
       },
       profile_picture: {
         type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          isUrl: {
-            args: true,
-            msg: 'Please enter a valid image url'
-          }
-        }
+        allowNull: true
       },
       public_id: {
         type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          isUrl: {
-            args: true,
-            msg: 'Please enter a valid image url'
-          }
-        }
+        allowNull: true
       },
       resetPasswordToken: {
         type: DataTypes.STRING,
         allowNull: true
       },
       resetPasswordExpires: {
-        type: DataTypes.DATE,
+        type: DataTypes.BIGINT,
         allowNull: true
       },
       location_id: {
