@@ -11,7 +11,7 @@ router.patch(
   [
     authUser.authUser,
     userValidators.validateUserExists,
-    cloudinary.uploadCloudImage("image"),
+    cloudinary.uploadImage('image'),
     cloudinary.deleteCloudImage
   ],
   controller.uploadUserImage
@@ -46,5 +46,17 @@ router.get(
     res.redirect('/');
   });
 
+
+router.post(
+  '/resetpassword',
+  [userValidators.validateUserEmail],
+  controller.sendPasswordMail
+);
+
+router.patch(
+  '/newpassword',
+  [userValidators.validatePassword],
+  controller.resetPassword
+);
 
 module.exports = router;

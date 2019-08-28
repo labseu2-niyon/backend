@@ -1,6 +1,9 @@
+const crypto = require('crypto');
 const models = require('../../database/models');
 const response = require('../helpers/response');
 const bcrypt = require('bcrypt');
+const mail = require('../helpers/mail');
+const secret = require('../../config/secret');
 
 module.exports = {
   async getUserByUsername(req, res) {

@@ -66,6 +66,7 @@ jobs:
             psql -h localhost -p 5432 -c 'create database population_m_s_test;' -U postgres
             psql -h localhost -p 5432 -c "CREATE USER postgresql WITH PASSWORD 'postgres';" -U postgres
             npx sequelize db:migrate --url "postgres://postgres:postgres@localhost:5432/population_m_s_test"
+            npx sequelize db:seed:undo:all --url "postgres://postgres:postgres@localhost:5432/population_m_s_test"
             npx sequelize db:seed:all --url "postgres://postgres:postgres@localhost:5432/population_m_s_test"
       # - run:
       #     name: "Run Jest and Collect Coverage Reports"
@@ -79,5 +80,5 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: npm run testcircleci
+      # - run: npm run testcircleci
       - run: npm run test-ci
