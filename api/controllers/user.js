@@ -54,6 +54,7 @@ module.exports = {
       if (updateUser) return response.success(res, 200, updateUser);
       return response.error(res, 404, 'Could not update user');
     } catch (error) {
+      console.log(error.message);
       return next({ message: 'Error updating profile' });
     }
   },
