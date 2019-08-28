@@ -10,7 +10,6 @@ module.exports = {
       req.user = user;
       return next();
     } catch (errors) {
-      console.log(errors.message);
       return next({ message: 'Server error try again' });
     }
   }
