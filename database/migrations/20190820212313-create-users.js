@@ -51,7 +51,7 @@ module.exports = {
         allowNull: true
       },
       resetPasswordExpires: {
-        type: Sequelize.DATE,
+        type: Sequelize.BIGINT,
         allowNull: true
       },
       location_id: {

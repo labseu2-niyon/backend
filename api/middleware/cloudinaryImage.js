@@ -1,8 +1,7 @@
 const cloudinary = require('cloudinary');
-const cloudinaryStorage = require('multer-storage-cloudinary');
 const multer = require('multer');
 const response = require('../helpers/response');
-const cloudinaryConfig = require('../../config/cloudinary');
+const storage = require('../../config/cloudinary');
 
 module.exports = {
   async deleteCloudImage(req, res, next) {
@@ -18,22 +17,7 @@ module.exports = {
     }
     return next();
   },
-
-  uploadCloudImage(image) {
-    const err = new Error('image type must be png or jpg');
-    const storage = cloudinaryStorage({
-      cloudinary: cloudinaryConfig,
-      folder: 'niyon-app',
-      allowedFormats: ['jpg', 'png'],
-      transformation: [{ width: 300, height: 300, crop: 'limit' }],
-      filename(req, file, cb) {
-        if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
-          cb(null, true);
-        } else {
-          cb(err.message, false);
-        }
-      }
-    });
+  uploadImage(image) {
     const parser = multer({ storage });
     return parser.single(image);
   }
