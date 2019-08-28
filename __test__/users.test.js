@@ -2,6 +2,7 @@ const request = require('supertest');
 const fs = require('fs');
 const server = require('../server');
 const jwt = require('../api/helpers/jwt');
+const mail = require('../api/helpers/mail');
 
 describe('PATCH /:username/image/upload', () => {
   it('should return 401 if no token is provided', () => {
@@ -29,7 +30,6 @@ describe('PATCH /:username/image/upload', () => {
       username: 'john'
     };
     const jwtToken = await jwt.generateToken(user);
-    console.log(jwtToken);
     return request(server)
       .patch('/api/user/:cristos/image/upload')
       .set({ token: jwtToken })
@@ -51,6 +51,55 @@ describe('PATCH /:username/image/upload', () => {
       .attach('file', fs.createReadStream('./_test_/assests/contact.png'))
       .then(res => {
         console.log(res.status, res.body);
+      });
+  });
+});
+
+describe('USER PASSWORD RESET', () => {
+  it('should return 400 if email is not valid', () => {
+    return request(server)
+      .post('/api/user/resetpassword')
+      .send({ email: 'cristos' })
+      .then(res => {
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe('Input a valid email');
+      });
+  });
+  it('should return 404 if email is not found', () => {
+    return request(server)
+      .post('/api/user/resetpassword')
+      .send({ email: 'cristos@gmail.com' })
+      .then(res => {
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('User not found');
+      });
+  });
+  it('should send an email', () => {
+    jest.spyOn(mail, 'passwordResetMail').mockResolvedValue({ success: true });
+    return request(server)
+      .post('/api/user/resetpassword')
+      .send({ email: 'nmereginivincent@gmail.com' })
+      .then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.data).toBe('Email sent to nmereginivincent@gmail.com');
+      });
+  });
+  it('should return a 400 if password type is not correct', () => {
+    return request(server)
+      .patch('/api/user/newpassword')
+      .send({ password: '123' })
+      .then(res => {
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe('Password must be at least 5 characters');
+      });
+  });
+  it('should return 401 with invalid token', () => {
+    return request(server)
+      .patch('/api/user/newpassword?token="yregfdbdhdghghhfdhdh"')
+      .send({ password: '1234567' })
+      .then(res => {
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe('Invalid token to reset password');
       });
   });
 });

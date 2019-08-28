@@ -3,7 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const logger = require('morgan');
 const apiRouter = require('./api');
-const jwt = require('./api/helpers/jwt');
+// const jwt = require('./api/helpers/jwt');
 
 const server = express();
 
@@ -15,12 +15,12 @@ server.use(express.json());
 server.use('/api', apiRouter);
 
 server.get('/', async (_, res) => {
-  const user = {
-    id: 1,
-    username: 'john'
-  };
-  const token = await jwt.generateToken(user);
-  res.status(200).json(`API endpoints exposed at /api ${token}`);
+  // const user = {
+  //   id: 1,
+  //   username: 'john'
+  // };
+  // const token = await jwt.generateToken(user);
+  res.status(200).json(`API endpoints exposed at /api`);
 });
 
 server.all('*', (req, res) => {

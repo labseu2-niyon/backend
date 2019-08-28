@@ -9,6 +9,12 @@ module.exports = {
           city_name: 'Lagos',
           createdAt: new Date(),
           updatedAt: new Date()
+        },
+        {
+          country_name: 'Nigeria',
+          city_name: 'Enugu',
+          createdAt: new Date(),
+          updatedAt: new Date()
         }
       ],
       {}

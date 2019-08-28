@@ -20,7 +20,7 @@ module.exports = {
     const validator = new Validator(req.body, {
       email: 'required|email'
     });
-    if (validator.fails) {
+    if (validator.fails()) {
       return response.error(res, 400, 'Input a valid email');
     }
     try {
@@ -43,7 +43,7 @@ module.exports = {
     const validator = new Validator(body, {
       password: 'required|min:5'
     });
-    if (validator.fails) {
+    if (validator.fails()) {
       return response.error(res, 400, 'Password must be at least 5 characters');
     }
     return next();
