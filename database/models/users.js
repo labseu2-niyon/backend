@@ -70,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true
       },
       resetPasswordExpires: {
-        type: DataTypes.DATE,
+        type: DataTypes.BIGINT,
         allowNull: true
       },
       location_id: {

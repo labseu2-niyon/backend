@@ -99,7 +99,7 @@ module.exports = {
       }
       const savedDate = user.dataValues.resetPasswordExpires;
       const date = Date.now() - savedDate;
-      if (date < 1) {
+      if (date > 0) {
         return response.error(res, 400, 'Password reset have expired');
       }
       const newUserPassword = await models.Users.update(

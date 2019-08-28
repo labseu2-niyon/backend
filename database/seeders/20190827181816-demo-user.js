@@ -20,6 +20,20 @@ module.exports = {
           email: 'c001@gmail.com',
           password: 'password',
           username: 'john',
+          resetPasswordToken: 'niyon',
+          resetPasswordExpires: Date.now(),
+          location_id: 2,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          first_name: 'John',
+          last_name: 'Doe',
+          email: 'c0012@gmail.com',
+          password: 'password',
+          username: 'john',
+          resetPasswordToken: 'niyonapp',
+          resetPasswordExpires: Date.now() + 360000,
           location_id: 2,
           createdAt: new Date(),
           updatedAt: new Date()

@@ -4,7 +4,7 @@
   "description": "Backend for Niyon application",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --coverage --watch",
+    "test": "cross-env NODE_ENV=test jest --coverage",
     "testcircleci": "cross-env NODE_ENV=test jest --coverage",
     "start": "node index.js",
     "start:dev": "nodemon index.js",

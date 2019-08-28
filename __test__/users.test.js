@@ -102,4 +102,22 @@ describe('USER PASSWORD RESET', () => {
         expect(res.body.message).toBe('Invalid token to reset password');
       });
   });
+  it('should return a 400 if token is expired', () => {
+    return request(server)
+      .patch('/api/user/newpassword?token=niyon')
+      .send({ password: '1234567' })
+      .then(res => {
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe('Password reset have expired');
+      });
+  });
+  it('should return a 200 for successful password reset', () => {
+    return request(server)
+      .patch('/api/user/newpassword?token=niyonapp')
+      .send({ password: '1234567' })
+      .then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.data).toBe('Password reset was succesful');
+      });
+  });
 });
