@@ -8,7 +8,11 @@ router.get('/users', controller.getAllUsers);
 router.get('/:username', controller.getUserByUsername);
 router.patch(
   '/:username/profile',
-  [userValidators.validateUserExists],
+  [
+    authUser.authUser,
+    userValidators.validateUserExists,
+    userValidators.validateUserProfileUpdate
+  ],
   controller.updateUserProfile
 );
 

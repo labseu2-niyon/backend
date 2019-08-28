@@ -137,8 +137,8 @@ describe('GET /users', () => {
       .set({ token: 'gdgfhhrbgegq2ehnfnsnjthrtn' })
       .send()
       .then(res => {
-        expect(res.status).toBe(500);
-        expect(res.body.message).toBe(undefined);
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe('Error token type');
       });
   });
 
