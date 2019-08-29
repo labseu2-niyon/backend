@@ -133,7 +133,7 @@ describe('GET /users', () => {
       .get('/api/user/john/users')
       .set({ token: jwtToken })
       .then(res => {
-        expect(res.status).toBe(201);
+        expect(res.status).toBe(200);
       });
   });
 
