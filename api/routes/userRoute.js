@@ -31,11 +31,7 @@ router.patch(
 // Auth Routes
 router.post('/signup', controller.createUser);
 
-router.post(
-  '/login',
-  [userValidators.validateUserExists, userValidators.validateUserEmail],
-  controller.loginUser
-);
+router.post('/login', [userValidators.validateUserEmail], controller.loginUser);
 
 router.get('/login/?provider=facebook', [
   passport.authenticate('facebook', {
