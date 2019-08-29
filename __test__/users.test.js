@@ -36,7 +36,7 @@ describe('PATCH /:username/image/upload', () => {
       .send()
       .then(res => {
         expect(res.status).toBe(401);
-        expect(res.body.message).toBe('Error user acces');
+        expect(res.body.message).toBe('Error user access');
       });
   });
   xit('should return 200 for succesful upload', async () => {
@@ -173,6 +173,22 @@ describe('GET user profile information', () => {
       .set({ token: jwtToken })
       .then(res => {
         expect(res.status).toBe(401);
+        expect(res.body.message).toBe('Error user access');
+      });
+  });
+
+  it('should return a 404 code user does not exist', async () => {
+    const user = {
+      id: 5,
+      username: 'damola'
+    };
+    const jwtToken = await jwt.generateToken(user);
+    return request(server)
+      .get('/api/user/damola/profile')
+      .set({ token: jwtToken })
+      .then(res => {
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('User not found');
       });
   });
 

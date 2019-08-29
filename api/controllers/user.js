@@ -19,8 +19,12 @@ module.exports = {
           }
         ]
       });
-
-      return response.success(res, 200, user);
+      if (user) return response.success(res, 200, user);
+      return response.error(
+        res,
+        404,
+        `user with the username ${username} does not exist `
+      );
     } catch (error) {
       return response.error(res, 500, error.message);
     }
