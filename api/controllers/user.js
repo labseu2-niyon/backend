@@ -22,12 +22,20 @@ module.exports = {
     }
   },
 
-  async getAllUsers(req, res) {
+  async getAllUsers(req, res, next) {
     try {
-      const users = await models.Users.findAll();
-      return response.success(res, 201, users);
+      const users = await models.Users.findAll({
+        include: [
+          {
+            model: models.Locations,
+            as: 'location'
+          }
+        ]
+      });
+      if (users) return response.success(res, 200, users);
+      return response.error(res, 404, 'Could not fetch all users');
     } catch (error) {
-      return response.error(res, 500, error.message);
+      return next({ message: error.message });
     }
   },
 
@@ -114,7 +122,8 @@ module.exports = {
       const sendMail = await mail.passwordResetMail(
         secret.frontEndUrl,
         token,
-        req.userEmail.email
+        req.userEmail.email,
+        req.userEmail.username
       );
       if (!sendMail) {
         return response.error(res, 400, 'Error sending mail try again');
