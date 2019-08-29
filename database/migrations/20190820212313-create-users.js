@@ -44,13 +44,14 @@ module.exports = {
       },
       username: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
-      resetPasswordToken: {
+      reset_password_token: {
         type: Sequelize.STRING,
         allowNull: true
       },
-      resetPasswordExpires: {
+      reset_password_expires: {
         type: Sequelize.BIGINT,
         allowNull: true
       },
@@ -62,11 +63,11 @@ module.exports = {
           as: 'location'
         }
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }

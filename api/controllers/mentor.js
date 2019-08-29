@@ -4,7 +4,16 @@ const response = require('../helpers/response');
 module.exports = {
   async getAllMentors(req, res) {
     try {
-      const mentors = await models.Mentors.findAll();
+      const mentors = await models.Mentors.findAll({
+        include: [
+          {
+            model: models.Users,
+            as: 'user',
+            required: true
+          }
+        ]
+      });
+      console.log(mentors, 'hello');
       if (mentors) {
         return response.success(res, 200, mentors);
       }
@@ -14,15 +23,26 @@ module.exports = {
     }
   },
 
-  async createMentor(req, res) {
+  async makeUserMentor(req, res) {
     try {
-      const mentor = await models.Mentors.create(req.body);
-      if (mentor) {
-        return response.success(res, 200, mentor);
+      const { userName } = req.params;
+      const userId = await models.Users.findOne({
+        attributes: ['id'],
+        where: { username: userName }
+      });
+      if (userId) {
+        const mentor = await models.Mentors.create({
+          user_id: userId,
+          ...req.body
+        });
+        if (mentor) {
+          return response.success(res, 200, mentor);
+        }
+        return response.error(res, 404, 'Could not create Mentor');
       }
-      return response.error(res, 404, 'Could not create Mentor');
+      return response.error(res, 404, `user ${userName} does not exist`);
     } catch (error) {
-      return response.success(res, 500, error.message);
+      return response.error(res, 500, error.message);
     }
   }
 };

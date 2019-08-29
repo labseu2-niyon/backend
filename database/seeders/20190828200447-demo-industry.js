@@ -2,17 +2,10 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
-      'Locations',
+      'Industries',
       [
         {
-          country_name: 'Nigeria',
-          city_name: 'Lagos',
-          created_at: new Date(),
-          updated_at: new Date()
-        },
-        {
-          country_name: 'Nigeria',
-          city_name: 'Enugu',
+          industry_name: 'Technology',
           created_at: new Date(),
           updated_at: new Date()
         }
@@ -22,6 +15,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Locations', null, {});
+    return queryInterface.bulkDelete('Industries', null, {});
   }
 };

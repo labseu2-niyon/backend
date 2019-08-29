@@ -11,32 +11,32 @@ module.exports = {
           password: 'password',
           username: 'john',
           location_id: 1,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          created_at: new Date(),
+          updated_at: new Date()
         },
         {
           first_name: 'John',
           last_name: 'Doe',
           email: 'c001@gmail.com',
           password: 'password',
-          username: 'john',
-          resetPasswordToken: 'niyon',
-          resetPasswordExpires: Date.now(),
+          username: 'john1',
+          reset_password_token: 'niyon',
+          reset_password_expires: Date.now(),
           location_id: 2,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          created_at: new Date(),
+          updated_at: new Date()
         },
         {
           first_name: 'John',
           last_name: 'Doe',
           email: 'c0012@gmail.com',
           password: 'password',
-          username: 'john',
-          resetPasswordToken: 'niyonapp',
-          resetPasswordExpires: Date.now() + 360000,
+          username: 'john2',
+          reset_password_token: 'niyonapp',
+          reset_password_expires: Date.now() + 360000,
           location_id: 2,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          created_at: new Date(),
+          updated_at: new Date()
         }
       ],
       {}

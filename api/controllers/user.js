@@ -9,7 +9,7 @@ const generateToken = require('../helpers/jwt');
 module.exports = {
   async getUserByUsername(req, res) {
     try {
-      const { userName } = req.query;
+      const { userName } = req.params;
       const user = await models.Users.findOne({
         where: { username: userName }
       });
@@ -31,15 +31,32 @@ module.exports = {
     }
   },
 
-  async createUserProfile(req, res) {
+  async updateUserProfile(req, res, next) {
     try {
-      const user = await models.Users.create(req.body);
-      if (user) {
-        return response.success(res, 201, user);
+      const { username } = req.params;
+      const { firstName, lastName, bio, countryName, cityName } = req.body;
+
+      const locations = await models.Locations.findOne({
+        where: { country_name: countryName, city_name: cityName },
+        attributes: ['id']
+      });
+      const locationId = locations.dataValues.id;
+      if (!locationId) {
+        return response.error(res, 404, 'Location not found');
       }
-      return response.error(res, 404, 'Could not create Profile');
+      const updateUser = await models.Users.update(
+        {
+          first_name: firstName,
+          last_name: lastName,
+          biography: bio,
+          location_id: locationId
+        },
+        { where: { username }, returning: true }
+      );
+      if (updateUser) return response.success(res, 200, updateUser);
+      return response.error(res, 404, 'Could not update user');
     } catch (error) {
-      return response.error(res, 500, error.message);
+      return next({ message: 'Error updating profile' });
     }
   },
 
@@ -101,8 +118,8 @@ module.exports = {
       }
       const user = await models.Users.update(
         {
-          resetPasswordToken: token,
-          resetPasswordExpires: expiringDate
+          reset_password_token: token,
+          reset_password_expires: expiringDate
         },
         { where: { email: req.userEmail.email } }
       );
@@ -123,13 +140,13 @@ module.exports = {
     const { token } = req.query;
     try {
       const user = await models.Users.findOne({
-        where: { resetPasswordToken: token },
-        attributes: ['resetPasswordExpires', 'id']
+        where: { reset_password_token: token },
+        attributes: ['reset_password_expires', 'id']
       });
       if (!user) {
         return response.error(res, 401, 'Invalid token to reset password');
       }
-      const savedDate = user.dataValues.resetPasswordExpires;
+      const savedDate = user.dataValues.reset_password_expires;
       const date = Date.now() - savedDate;
       if (date > 0) {
         return response.error(res, 400, 'Password reset have expired');
@@ -137,8 +154,8 @@ module.exports = {
       const newUserPassword = await models.Users.update(
         {
           password: req.body.password,
-          // resetPasswordExpires: '',
-          resetPasswordToken: ''
+          // reset_password_expires: '',
+          reset_password_token: ''
         },
         {
           where: { id: user.dataValues.id }
