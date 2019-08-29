@@ -1,8 +1,10 @@
 const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 const models = require('../../database/models');
 const response = require('../helpers/response');
 const mail = require('../helpers/mail');
 const secret = require('../../config/secret');
+const jwt = require('../helpers/jwt');
 
 module.exports = {
   async getUserByUsername(req, res) {
@@ -67,6 +69,39 @@ module.exports = {
       return response.error(res, 404, 'Could not update user');
     } catch (error) {
       return next({ message: 'Error updating profile' });
+    }
+  },
+
+  async createUser(req, res) {
+    try {
+      const user = await models.Users.create(req.body);
+      if (user) {
+        return response.success(res, 201, user);
+      }
+      return response.error(res, 400, 'Could not create Profile');
+    } catch (error) {
+      return response.error(res, 500, error.message);
+    }
+  },
+
+  async loginUser(req, res, next) {
+    const { email, password } = req.body;
+
+    try {
+      const user = await models.Users.findOne({
+        where: { email },
+        attributes: ['password', 'email', 'username', 'id']
+      });
+      if (user && bcrypt.compareSync(password, user.dataValues.password)) {
+        const token = await jwt.generateToken(user.dataValues);
+        return response.success(res, 201, {
+          message: `${email} successfully logged in.`,
+          token
+        });
+      }
+      return response.error(res, 401, 'Invalid credentials');
+    } catch (error) {
+      return next({ message: 'Error logging in user' });
     }
   },
 
