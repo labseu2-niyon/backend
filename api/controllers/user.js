@@ -17,10 +17,8 @@ module.exports = {
           }
         ]
       });
-      if (user) {
-        return response.success(res, 201, user);
-      }
-      return response.error(res, 404, 'User with that username does not exist');
+
+      return response.success(res, 200, user);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -36,7 +34,7 @@ module.exports = {
           }
         ]
       });
-      if (users) return response.success(res, 201, users);
+      if (users) return response.success(res, 200, users);
       return response.error(res, 404, 'Could not fetch all users');
     } catch (error) {
       return next({ message: error.message });
