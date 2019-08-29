@@ -8,7 +8,7 @@ module.exports = {
         include: [
           {
             model: models.Users,
-            attributes: {},
+            attributes: {}, // Still in development
             as: 'user',
             required: true
           }
