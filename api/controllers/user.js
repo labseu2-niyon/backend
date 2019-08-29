@@ -68,7 +68,6 @@ module.exports = {
       }
       return response.error(res, 400, 'Could not create Profile');
     } catch (error) {
-      console.log(error.message);
       return response.error(res, 500, error.message);
     }
   },
