@@ -47,5 +47,19 @@ module.exports = {
       return response.error(res, 400, 'Password must be at least 5 characters');
     }
     return next();
+  },
+
+  validateUserProfileUpdate(req, res, next) {
+    const validator = new Validator(req.body, {
+      firstName: 'required|alpha',
+      lastName: 'required|alpha',
+      countryName: 'required|alpha',
+      cityName: 'required|alpha',
+      bio: 'required|min:10'
+    });
+    if (validator.fails()) {
+      return response.error(res, 400, validator.errors.all());
+    }
+    return next();
   }
 };

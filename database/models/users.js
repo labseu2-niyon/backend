@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define(
@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
           isAlphanumeric: {
             args: true,
             msg: 'Please enter your username'
+          },
+          isUnique: {
+            args: true,
+            msg: 'Username already exists'
           }
         }
       },
