@@ -1,4 +1,5 @@
 const Validator = require('validatorjs');
+const Sequelize = require('sequelize');
 const response = require('../helpers/response');
 const userQuery = require('../helpers/users');
 const models = require('../../database/models');
@@ -61,5 +62,40 @@ module.exports = {
       return response.error(res, 400, validator.errors.all());
     }
     return next();
+  },
+
+  async validateUserSignup(req, res, next) {
+    const validator = new Validator(req.body, {
+      firstName: 'required|alpha',
+      lastName: 'required|alpha',
+      username: 'required|alpha_num',
+      password: 'required|min:8',
+      email: 'required|email'
+    });
+
+    if (validator.fails()) {
+      return response.error(res, 400, validator.errors.all());
+    }
+    try {
+      const user = await models.Users.findOne({
+        where: {
+          [Sequelize.Op.or]: [
+            { email: req.body.email },
+            { username: req.body.username }
+          ]
+        },
+        attributes: ['id']
+      });
+      if (!user) {
+        return next();
+      }
+      return response.error(
+        res,
+        400,
+        'User already registered with username or email provided'
+      );
+    } catch (error) {
+      return next({ message: 'Error validating user signup' });
+    }
   }
 };

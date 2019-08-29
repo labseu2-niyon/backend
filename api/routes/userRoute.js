@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const passport = require('passport');
 const controller = require('../controllers/user');
 const userValidators = require('../validator/userValidator');
 const cloudinary = require('../middleware/cloudinaryImage');
@@ -31,6 +32,30 @@ router.patch(
   controller.uploadUserImage
 );
 
+// Auth Routes
+router.post(
+  '/signup',
+  [userValidators.validateUserSignup],
+  controller.createUser
+);
+
+router.post('/login', [userValidators.validateUserEmail], controller.loginUser);
+
+router.get('/login/?provider=facebook', [
+  passport.authenticate('facebook', {
+    scope: ['profile']
+  })
+]);
+
+router.get(
+  '/login/?provider=facebook/redirect',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
+);
+
 router.post(
   '/resetpassword',
   [userValidators.validateUserEmail],
@@ -42,4 +67,5 @@ router.patch(
   [userValidators.validatePassword],
   controller.resetPassword
 );
+
 module.exports = router;
