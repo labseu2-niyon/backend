@@ -6,7 +6,9 @@ const cloudinary = require('../middleware/cloudinaryImage');
 const authUser = require('../helpers/jwt');
 
 router.get('/users', controller.getAllUsers);
+
 router.get('/:username', controller.getUserByUsername);
+
 router.patch(
   '/:username/profile',
   [
@@ -37,20 +39,32 @@ router.post(
 
 router.post('/login', [userValidators.validateUserEmail], controller.loginUser);
 
-router.get('/login/?provider=facebook', [
-  passport.authenticate('facebook', {
-    scope: ['profile']
-  })
-]);
+router.get('/auth/github', passport.authenticate('github'));
 
-router.get(
-  '/login/?provider=facebook/redirect',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  }
-);
+// router.get(
+//   '/auth/github/callback',
+//   passport.authenticate('github', { failureRedirect: '/api/user/login' }),
+
+//   function(req, res) {
+//     Successful authentication, redirect home.
+//     res.redirect('/');
+//   }
+// );
+
+// router.get('/login/?provider=facebook', [
+//   passport.authenticate('facebook', {
+//     scope: ['profile']
+//   })
+// ]);
+
+// router.get(
+//   '/login/?provider=facebook/redirect',
+//   passport.authenticate('facebook', { failureRedirect: '/login' }),
+//   (req, res) => {
+//     // Successful authentication, redirect home.
+//     res.redirect('/');
+//   }
+// );
 
 router.post(
   '/resetpassword',

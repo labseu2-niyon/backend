@@ -1,9 +1,13 @@
 const express = require('express');
+const passport = require('passport');
+
 const cors = require('cors');
 const helmet = require('helmet');
 const logger = require('morgan');
 const apiRouter = require('./api');
+// const keys = require('./config/secret');
 // const jwt = require('./api/helpers/jwt');
+const github = require('./api/middleware/authStrategies');
 
 const server = express();
 
@@ -13,6 +17,9 @@ server.use(logger('dev'));
 server.use(express.json());
 
 server.use('/api', apiRouter);
+
+passport.use(github.githubStrategy());
+server.use(passport.initialize());
 
 server.get('/', async (_, res) => {
   // const user = {
