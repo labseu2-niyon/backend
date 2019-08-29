@@ -14,8 +14,9 @@ module.exports = {
           }
         ]
       });
+      console.log(mentors, 'hello');
       if (mentors) {
-        return response.success(res, 201, mentors);
+        return response.success(res, 200, mentors);
       }
       return response.error(res, 404, 'Could not find all Mentors');
     } catch (error) {

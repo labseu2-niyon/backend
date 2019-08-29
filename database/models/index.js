@@ -19,7 +19,11 @@ else {
     config.url,
     {
       host: 'localhost',
-      dialect: 'postgres'
+      dialect: 'postgres',
+      define: {
+        underscored: true,
+        freezeTableName: true,
+    },
     }
   );
 }

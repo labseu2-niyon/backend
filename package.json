@@ -12,7 +12,7 @@
     "test:watch": "jest --watch",
     "generator": "npx sequelize model:generate --name Mentees_chioces --attributes username:string",
     "migration": "npx sequelize db:migrate",
-    "create:seeds": "npx sequelize-cli seed:generate --name demo-user",
+    "create:seeds": "npx sequelize-cli seed:generate --name demo-mentors",
     "dropMigration": "npx sequelize db:migrate:undo:all",
     "undo:seed": "npx sequelize-cli db:seed:undo:all",
     "seed": "npx sequelize-cli db:seed:all",

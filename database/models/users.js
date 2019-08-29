@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
           isAlphanumeric: {
             args: true,
             msg: 'Please enter your username'
+          },
+          isUnique: {
+            args: true,
+            msg: 'Username already exists'
           }
         }
       },
