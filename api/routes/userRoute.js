@@ -29,7 +29,11 @@ router.patch(
 );
 
 // Auth Routes
-router.post('/signup', controller.createUser);
+router.post(
+  '/signup',
+  [userValidators.validateUserSignup],
+  controller.createUser
+);
 
 router.post('/login', [userValidators.validateUserEmail], controller.loginUser);
 
