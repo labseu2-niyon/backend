@@ -20,12 +20,20 @@ module.exports = {
     }
   },
 
-  async getAllUsers(req, res) {
+  async getAllUsers(req, res, next) {
     try {
-      const users = await models.Users.findAll();
-      return response.success(res, 201, users);
+      const users = await models.Users.findAll({
+        include: [
+          {
+            model: models.Locations,
+            as: 'location'
+          }
+        ]
+      });
+      if (users) return response.success(res, 201, users);
+      return response.error(res, 404, 'Could not fetch all users');
     } catch (error) {
-      return response.error(res, 500, error.message);
+      return next({ message: error.message });
     }
   },
 
