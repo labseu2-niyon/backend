@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const models = require('../../database/models');
 const response = require('../helpers/response');
 const mail = require('../helpers/mail');
