@@ -81,7 +81,6 @@ module.exports = {
         where: { email },
         attributes: ['password', 'email', 'username', 'id']
       });
-      console.log(user.dataValues.password);
       if (user && bcrypt.compareSync(password, user.dataValues.password)) {
         const token = await jwt.generateToken(user.dataValues);
         return response.success(res, 201, {
@@ -91,7 +90,6 @@ module.exports = {
       }
       return response.error(res, 401, 'Invalid credentials');
     } catch (error) {
-      console.log(error.message);
       return next({ message: 'Error logging in user' });
     }
   },

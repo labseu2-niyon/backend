@@ -95,7 +95,6 @@ module.exports = {
         'User already registered with username or email provided'
       );
     } catch (error) {
-      console.log(error.message);
       return next({ message: 'Error validating user signup' });
     }
   }
