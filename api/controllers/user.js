@@ -7,9 +7,15 @@ const secret = require('../../config/secret');
 module.exports = {
   async getUserByUsername(req, res) {
     try {
-      const { userName } = req.params;
+      const { username } = req.params;
       const user = await models.Users.findOne({
-        where: { username: userName }
+        where: { username },
+        include: [
+          {
+            model: models.Locations,
+            as: 'location'
+          }
+        ]
       });
       if (user) {
         return response.success(res, 201, user);
