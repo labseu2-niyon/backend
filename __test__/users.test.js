@@ -123,31 +123,37 @@ describe('USER PASSWORD RESET', () => {
 });
 
 describe('GET /users', () => {
-  it('should return ', () => {
+  it('should return a 201 code', async () => {
+    const user = {
+      id: 1,
+      username: 'john'
+    };
+    const jwtToken = await jwt.generateToken(user);
     return request(server)
-      .get('/api/user/all')
+      .get('/api/user/john/users')
+      .set({ token: jwtToken })
       .then(res => {
-        expect(res.status).toBe(500);
+        expect(res.status).toBe(200);
       });
   });
 
-  it('should return 401 if token is invalid', () => {
+  it('should return 401 if no token is provided', () => {
     return request(server)
-      .patch('/api/user/:damola/profile')
-      .set({ token: 'gdgfhhrbgegq2ehnfnsnjthrtn' })
-      .send()
+      .get('/api/user/john/users')
       .then(res => {
         expect(res.status).toBe(401);
-        expect(res.body.message).toBe('Error token type');
+        expect(res.body.message).toBe('Token is required');
       });
   });
 
-  // it('should return ', () => {
+  // it('should return 401 if token is invalid', () => {
   //   return request(server)
-  //     .get('/api/user/all')
+  //     .patch('/api/user/:damola/profile')
+  //     .set({ token: 'gdgfhhrbgegq2ehnfnsnjthrtn' })
+  //     .send()
   //     .then(res => {
-  //       expect(res.status).toBe(201);
-  //       expect(res.body.message).toBe(Object);
+  //       expect(res.status).toBe(401);
+  //       expect(res.body.message).toBe('Error token type');
   //     });
   // });
 });
