@@ -56,6 +56,7 @@ describe('POST /mentor/:username/mentor', () => {
       .set({ token: jwtToken })
       .then(res => {
         expect(res.status).toBe(201);
+        expect(res.type).toEqual('application/json');
       });
   });
   it('should return 401 if no token is provided', () => {
