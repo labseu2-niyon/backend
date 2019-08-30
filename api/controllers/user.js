@@ -109,6 +109,11 @@ module.exports = {
     }
   },
 
+  logOut(req, res) {
+    req.logout();
+    res.redirect('/');
+  },
+
   async uploadUserImage(req, res, next) {
     const { params, file } = req;
     try {

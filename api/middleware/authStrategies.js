@@ -7,18 +7,47 @@ const TwitterStrategy = require('passport-twitter').Strategy;
 const models = require('../../database/models');
 const keys = require('../../config/secret');
 
+passport.serializeUser((user, done) => {
+  // Identify the user
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  // Fetch the user and send it with every request
+  models.Users.findByPk(id, (err, user) => {
+    console.log('deserialize', user);
+    done(err, user);
+  });
+});
+
 async function callbackStrategy(profile, cb) {
   const email = profile.emails[0].value;
+
   models.Users.findOne({ where: { email } }, (err, user) => {
-    console.log(user);
+    console.log('step2', user);
     if (!user) {
       models.Users.findOrCreate({ auth_id: profile.id }, (error, User) => {
-        console.log(User);
+        console.log('step3', User);
         return cb(error, User);
       });
     }
     return cb(err, user);
   });
+}
+
+function githubStrategy() {
+  return new GitHubStrategy(
+    {
+      clientID: keys.GITHUB_CLIENT_ID,
+      clientSecret: keys.GITHUB_CLIENT_SECRET,
+      callbackURL: 'http://localhost:5000/api/user/auth/github/callback',
+      scope: 'user:email'
+    },
+    (accessToken, refreshToken, profile, cb) => {
+      console.log('step 1', profile);
+      return callbackStrategy(profile, cb);
+    }
+  );
 }
 
 function facebookStrategy() {
@@ -34,22 +63,6 @@ function facebookStrategy() {
         return callbackStrategy(profile, cb);
       }
     )
-  );
-}
-
-function githubStrategy() {
-  return new GitHubStrategy(
-    {
-      clientID: keys.GITHUB_CLIENT_ID,
-      clientSecret: keys.GITHUB_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5000/api/user/auth/github/callback',
-      scope: 'user:email'
-    },
-    // eslint-disable-next-line no-unused-vars
-    (accessToken, refreshToken, profile, cb) => {
-      console.log(profile);
-      // return callbackStrategy(profile, cb);
-    }
   );
 }
 
