@@ -14,6 +14,7 @@ describe('Get /mentor/:username/mentors', () => {
       .set({ token: jwtToken })
       .then(res => {
         expect(res.status).toBe(200);
+        expect(res.type).toEqual('application/json');
       });
   });
 

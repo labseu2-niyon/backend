@@ -51,12 +51,6 @@ module.exports = {
         where: { username }
       });
       const userId = user.dataValues.id;
-      // const token = {
-      //   id: 2,
-      //   username: 'john1'
-      // };
-      // const jwtToken = await jwt.generateToken(token);
-      // console.log(jwtToken);
       if (userId) {
         const mentor = await models.Mentors.create({
           user_id: userId,
