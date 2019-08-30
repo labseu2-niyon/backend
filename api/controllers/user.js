@@ -52,7 +52,7 @@ module.exports = {
       const { username } = req.params;
       const { firstName, lastName, bio, countryName, cityName } = req.body;
 
-      const locations = await models.Locations.findOne({
+      const locations = await models.Locations.findOrCreate({
         where: { country_name: countryName, city_name: cityName },
         attributes: ['id']
       });
@@ -96,7 +96,10 @@ module.exports = {
         where: { email },
         attributes: ['password', 'email', 'username', 'id']
       });
-      if (user && bcrypt.compareSync(password, user.dataValues.password)) {
+      if (
+        Object.keys(user).length &&
+        bcrypt.compareSync(password, user.dataValues.password)
+      ) {
         const token = await jwt.generateToken(user.dataValues);
         return response.success(res, 201, {
           message: `${email} successfully logged in.`,
