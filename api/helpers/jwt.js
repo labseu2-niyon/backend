@@ -31,7 +31,7 @@ module.exports = {
     try {
       const { username } = req.params;
       if (username !== req.decode.username) {
-        return response.error(res, 401, 'Error user acces');
+        return response.error(res, 401, 'Error user access');
       }
       return next();
     } catch (error) {
