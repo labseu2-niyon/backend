@@ -130,7 +130,8 @@ module.exports = {
       const sendMail = await mail.passwordResetMail(
         secret.frontEndUrl,
         token,
-        req.userEmail.email
+        req.userEmail.email,
+        req.userEmail.username
       );
       if (!sendMail) {
         return response.error(res, 400, 'Error sending mail try again');

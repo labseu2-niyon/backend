@@ -27,7 +27,7 @@ module.exports = {
     try {
       const user = await models.Users.findOne({
         where: { email },
-        attributes: ['email']
+        attributes: ['email', 'username', 'id']
       });
       if (!user) {
         return response.error(res, 404, 'User not found');
