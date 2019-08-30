@@ -7,17 +7,6 @@ const TwitterStrategy = require('passport-twitter').Strategy;
 const models = require('../../database/models');
 const keys = require('../../config/secret');
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-  models.Users.findByPk(id, (err, user) => {
-    console.log('deserialize', user);
-    done(err, user);
-  });
-});
-
 async function callbackStrategy(profile, cb) {
   const email = profile.emails[0].value;
   models.Users.findOne({ where: { email } }, (err, user) => {

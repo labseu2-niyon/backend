@@ -5,10 +5,16 @@ const userValidators = require('../validator/userValidator');
 const cloudinary = require('../middleware/cloudinaryImage');
 const authUser = require('../helpers/jwt');
 
-router.get('/users', controller.getAllUsers);
-
-router.get('/:username', controller.getUserByUsername);
-
+router.get(
+  '/:username/users',
+  [authUser.authUser, userValidators.validateUserExists],
+  controller.getAllUsers
+);
+router.get(
+  '/:username/profile',
+  [authUser.authUser, userValidators.validateUserExists],
+  controller.getUserByUsername
+);
 router.patch(
   '/:username/profile',
   [

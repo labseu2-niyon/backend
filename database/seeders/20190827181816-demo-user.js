@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+const bcrypt = require('bcryptjs');
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
@@ -8,7 +10,7 @@ module.exports = {
           first_name: 'John',
           last_name: 'Doe',
           email: 'nmereginivincent@gmail.com',
-          password: 'password',
+          password: bcrypt.hashSync('password', 14),
           username: 'john',
           location_id: 1,
           created_at: new Date(),
@@ -18,7 +20,7 @@ module.exports = {
           first_name: 'John',
           last_name: 'Doe',
           email: 'c001@gmail.com',
-          password: 'password',
+          password: bcrypt.hashSync('password', 14),
           username: 'john1',
           reset_password_token: 'niyon',
           reset_password_expires: Date.now(),
@@ -30,7 +32,7 @@ module.exports = {
           first_name: 'John',
           last_name: 'Doe',
           email: 'c0012@gmail.com',
-          password: 'password',
+          password: bcrypt.hashSync('password', 14),
           username: 'john2',
           reset_password_token: 'niyonapp',
           reset_password_expires: Date.now() + 360000,
