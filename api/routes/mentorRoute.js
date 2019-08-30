@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
   res.status(200).json('Mentor routes can be seen here');
 });
 router.get(
-  '/mentors',
+  '/:username/mentors',
   [auth.authUser, userValidator.validateUserExists],
   controller.getAllMentors
 );
