@@ -9,14 +9,22 @@ const jwt = require('../helpers/jwt');
 module.exports = {
   async getUserByUsername(req, res) {
     try {
-      const { userName } = req.params;
+      const { username } = req.params;
       const user = await models.Users.findOne({
-        where: { username: userName }
+        where: { username },
+        include: [
+          {
+            model: models.Locations,
+            as: 'location'
+          }
+        ]
       });
-      if (user) {
-        return response.success(res, 201, user);
-      }
-      return response.error(res, 404, 'User with that username does not exist');
+      if (user) return response.success(res, 200, user);
+      return response.error(
+        res,
+        404,
+        `user with the username ${username} does not exist `
+      );
     } catch (error) {
       return response.error(res, 500, error.message);
     }
