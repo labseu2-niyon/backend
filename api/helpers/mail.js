@@ -7,7 +7,7 @@ async function passwordResetMail(url, token, email, username) {
     theme: 'default',
     product: {
       name: 'Niyon',
-      link: 'http://localhost:500/'
+      link: `${url}`
       // logo: ;
     }
   });
