@@ -19,7 +19,6 @@ module.exports = {
 
   async authUser(req, res, next) {
     const token = req.headers.authorization;
-    console.log(token);
     if (!token) {
       return response.error(res, 401, 'Token is required');
     }
