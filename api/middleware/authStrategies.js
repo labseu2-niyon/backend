@@ -13,7 +13,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   models.Users.findByPk(id, (err, user) => {
-    console.log('deserialize', user);
     done(err, user);
   });
 });
@@ -35,7 +34,6 @@ async function callbackStrategy(profile, cb) {
     }
     return cb(null, existingUser);
   } catch (error) {
-    console.log(error.message);
     return cb(error, null);
   }
 }
