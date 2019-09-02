@@ -45,20 +45,32 @@ router.post(
 
 router.post('/login', [userValidators.validateUserEmail], controller.loginUser);
 
-router.get('/login/?provider=facebook', [
-  passport.authenticate('facebook', {
-    scope: ['profile']
-  })
-]);
+// Github
+router.get('/auth/github', passport.authenticate('github', { session: false }));
 
 router.get(
-  '/login/?provider=facebook/redirect',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  }
+  '/auth/github/callback',
+  passport.authenticate('github', {
+    failureMessage: 'Error logging in with github'
+  }),
+
+  controller.socialAuthlogin
 );
+
+// router.get('/login/?provider=facebook', [
+//   passport.authenticate('facebook', {
+//     scope: ['profile']
+//   })
+// ]);
+
+// router.get(
+//   '/login/?provider=facebook/redirect',
+//   passport.authenticate('facebook', { failureRedirect: '/login' }),
+//   (req, res) => {
+//     // Successful authentication, redirect home.
+//     res.redirect('/');
+//   }
+// );
 
 router.post(
   '/resetpassword',
