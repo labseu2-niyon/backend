@@ -7,7 +7,7 @@ const mail = require('../api/helpers/mail');
 describe('PATCH /:username/image/upload', () => {
   it('should return 401 if no token is provided', () => {
     return request(server)
-      .patch('/api/user/:vincent/image/upload')
+      .patch('/api/users/:vincent/image/upload')
       .send({})
       .then(res => {
         expect(res.status).toBe(401);
@@ -16,37 +16,37 @@ describe('PATCH /:username/image/upload', () => {
   });
   it('should return 401 if token is invalid', () => {
     return request(server)
-      .patch('/api/user/:vincent/image/upload')
-      .set({ token: 'gdgfhhrbgegq2ehnfnsnjthrtn' })
-      .send()
-      .then(res => {
-        expect(res.status).toBe(401);
-        expect(res.body.message).toBe('Error token type');
-      });
-  });
-  it("should return 404 if user doesn't exists", async () => {
-    const user = {
-      id: 1,
-      username: 'john'
-    };
-    const jwtToken = await jwt.generateToken(user);
-    return request(server)
-      .patch('/api/user/:cristos/image/upload')
-      .set({ token: jwtToken })
+      .patch('/api/users/:vincent/image/upload')
+      .set({ authorization: 'gdgfhhrbgegq2ehnfnsnjthrtn' })
       .send()
       .then(res => {
         expect(res.status).toBe(401);
         expect(res.body.message).toBe('Error user access');
       });
   });
-  xit('should return 200 for succesful upload', async () => {
+  xit("should return 404 if user doesn't exists", async () => {
     const user = {
       id: 1,
       username: 'john'
     };
     const jwtToken = await jwt.generateToken(user);
     return request(server)
-      .patch('/api/user/john/image/upload')
+      .patch('/api/users/:cristos/image/upload')
+      .set({ authorization: jwtToken })
+      .send()
+      .then(res => {
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe('Error user access');
+      });
+  });
+  xit('should return 200 for successful upload', async () => {
+    const user = {
+      id: 1,
+      username: 'john'
+    };
+    const jwtToken = await jwt.generateToken(user);
+    return request(server)
+      .patch('/api/users/john/image/upload')
       .set({ token: jwtToken })
       .attach('file', fs.createReadStream('./_test_/assests/contact.png'))
       .then(res => {
@@ -58,7 +58,7 @@ describe('PATCH /:username/image/upload', () => {
 describe('USER PASSWORD RESET', () => {
   it('should return 400 if email is not valid', () => {
     return request(server)
-      .post('/api/user/resetpassword')
+      .post('/api/users/resetpassword')
       .send({ email: 'cristos' })
       .then(res => {
         expect(res.status).toBe(400);
@@ -67,7 +67,7 @@ describe('USER PASSWORD RESET', () => {
   });
   it('should return 404 if email is not found', () => {
     return request(server)
-      .post('/api/user/resetpassword')
+      .post('/api/users/resetpassword')
       .send({ email: 'cristos@gmail.com' })
       .then(res => {
         expect(res.status).toBe(404);
@@ -77,7 +77,7 @@ describe('USER PASSWORD RESET', () => {
   it('should send an email', () => {
     jest.spyOn(mail, 'passwordResetMail').mockResolvedValue({ success: true });
     return request(server)
-      .post('/api/user/resetpassword')
+      .post('/api/users/resetpassword')
       .send({ email: 'nmereginivincent@gmail.com' })
       .then(res => {
         expect(res.status).toBe(200);
@@ -86,7 +86,7 @@ describe('USER PASSWORD RESET', () => {
   });
   it('should return a 400 if password type is not correct', () => {
     return request(server)
-      .patch('/api/user/newpassword')
+      .patch('/api/users/newpassword')
       .send({ password: '123' })
       .then(res => {
         expect(res.status).toBe(400);
@@ -95,7 +95,7 @@ describe('USER PASSWORD RESET', () => {
   });
   it('should return 401 with invalid token', () => {
     return request(server)
-      .patch('/api/user/newpassword?token="yregfdbdhdghghhfdhdh"')
+      .patch('/api/users/newpassword?token="yregfdbdhdghghhfdhdh"')
       .send({ password: '1234567' })
       .then(res => {
         expect(res.status).toBe(401);
@@ -104,7 +104,7 @@ describe('USER PASSWORD RESET', () => {
   });
   it('should return a 400 if token is expired', () => {
     return request(server)
-      .patch('/api/user/newpassword?token=niyon')
+      .patch('/api/users/newpassword?token=niyon')
       .send({ password: '1234567' })
       .then(res => {
         expect(res.status).toBe(400);
@@ -113,7 +113,7 @@ describe('USER PASSWORD RESET', () => {
   });
   it('should return a 200 for successful password reset', () => {
     return request(server)
-      .patch('/api/user/newpassword?token=niyonapp')
+      .patch('/api/users/newpassword?token=niyonapp')
       .send({ password: '1234567' })
       .then(res => {
         expect(res.status).toBe(200);
@@ -122,7 +122,7 @@ describe('USER PASSWORD RESET', () => {
   });
 });
 
-describe('GET /users', () => {
+describe('GET /api/users', () => {
   it('should return a 200 code', async () => {
     const user = {
       id: 1,
@@ -130,8 +130,8 @@ describe('GET /users', () => {
     };
     const jwtToken = await jwt.generateToken(user);
     return request(server)
-      .get('/api/user/john/users')
-      .set({ token: jwtToken })
+      .get('/api/users')
+      .set({ authorization: jwtToken })
       .then(res => {
         expect(res.status).toBe(200);
       });
@@ -139,7 +139,7 @@ describe('GET /users', () => {
 
   it('should return 401 if not token is provided', () => {
     return request(server)
-      .get('/api/user/users')
+      .get('/api/users')
       .then(res => {
         expect(res.status).toBe(401);
         expect(res.body.message).toBe('Token is required');
@@ -155,25 +155,10 @@ describe('GET user profile information', () => {
     };
     const jwtToken = await jwt.generateToken(user);
     return request(server)
-      .get('/api/user/john/profile')
-      .set({ token: jwtToken })
+      .get('/api/users/john/profile')
+      .set({ authorization: jwtToken })
       .then(res => {
         expect(res.status).toBe(200);
-      });
-  });
-
-  it('should return a 401 code if token does not match user', async () => {
-    const user = {
-      id: 1,
-      username: 'john'
-    };
-    const jwtToken = await jwt.generateToken(user);
-    return request(server)
-      .get('/api/user/damola/profile')
-      .set({ token: jwtToken })
-      .then(res => {
-        expect(res.status).toBe(401);
-        expect(res.body.message).toBe('Error user access');
       });
   });
 
@@ -184,17 +169,19 @@ describe('GET user profile information', () => {
     };
     const jwtToken = await jwt.generateToken(user);
     return request(server)
-      .get('/api/user/damola/profile')
-      .set({ token: jwtToken })
+      .get('/api/users/damola/profile')
+      .set({ authorization: jwtToken })
       .then(res => {
         expect(res.status).toBe(404);
-        expect(res.body.message).toBe('User not found');
+        expect(res.body.message).toBe(
+          'user with the username damola does not exist '
+        );
       });
   });
 
   it('should return 401 if no token is provided', () => {
     return request(server)
-      .get('/api/user/john/profile')
+      .get('/api/users/john/profile')
       .then(res => {
         expect(res.status).toBe(401);
         expect(res.body.message).toBe('Token is required');

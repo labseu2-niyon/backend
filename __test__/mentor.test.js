@@ -11,7 +11,7 @@ describe('Get /mentor/:username/mentors', () => {
     const jwtToken = await jwt.generateToken(user);
     return request(server)
       .get('/api/mentor/john/mentors')
-      .set({ token: jwtToken })
+      .set({ authorization: jwtToken })
       .then(res => {
         expect(res.status).toBe(200);
         expect(res.type).toEqual('application/json');
@@ -35,7 +35,7 @@ describe('Get /mentor/:username/mentors', () => {
     const jwtToken = await jwt.generateToken(user);
     return request(server)
       .get('/api/mentor/damola/mentors')
-      .set({ token: jwtToken })
+      .set({ authorization: jwtToken })
       .then(res => {
         expect(res.status).toBe(404);
         expect(res.body.message).toBe('User not found');

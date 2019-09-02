@@ -10,7 +10,7 @@ module.exports = {
     };
 
     const options = {
-      expiresIn: '1d'
+      expiresIn: '14d'
     };
 
     const token = await jwt.sign(payload, secret.jwtSecret, options);
@@ -27,7 +27,7 @@ module.exports = {
       req.decode = decode;
       return next();
     } catch (error) {
-      return response.error(res, 401, 'Error token type');
+      return response.error(res, 401, 'Error user access');
     }
   }
 };
