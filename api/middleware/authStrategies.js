@@ -8,12 +8,10 @@ const models = require('../../database/models');
 const keys = require('../../config/secret');
 
 passport.serializeUser((user, done) => {
-  // Identify the user
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  // Fetch the user and send it with every request
   models.Users.findByPk(id, (err, user) => {
     console.log('deserialize', user);
     done(err, user);
@@ -23,16 +21,23 @@ passport.deserializeUser((id, done) => {
 async function callbackStrategy(profile, cb) {
   const email = profile.emails[0].value;
 
-  models.Users.findOne({ where: { email } }, (err, user) => {
-    console.log('step2', user);
-    if (!user) {
-      models.Users.findOrCreate({ auth_id: profile.id }, (error, User) => {
-        console.log('step3', User);
-        return cb(error, User);
+  try {
+    const existingUser = await models.Users.findOne({ where: { email } });
+    if (!existingUser) {
+      const newUser = await models.Users.findOrCreate({
+        where: { auth_id: profile.id },
+        defaults: { username: profile.username, email, password: ' ' }
       });
+      if (!newUser) {
+        return new Error();
+      }
+      return cb(null, newUser);
     }
-    return cb(err, user);
-  });
+    return cb(null, existingUser);
+  } catch (error) {
+    console.log(error.message);
+    return cb(error, null);
+  }
 }
 
 function githubStrategy() {
@@ -40,11 +45,10 @@ function githubStrategy() {
     {
       clientID: keys.GITHUB_CLIENT_ID,
       clientSecret: keys.GITHUB_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5000/api/user/auth/github/callback',
+      callbackURL: '/api/user/auth/github/callback',
       scope: 'user:email'
     },
     (accessToken, refreshToken, profile, cb) => {
-      console.log('step 1', profile);
       return callbackStrategy(profile, cb);
     }
   );

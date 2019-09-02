@@ -1,6 +1,5 @@
 const express = require('express');
 const passport = require('passport');
-
 const cors = require('cors');
 const helmet = require('helmet');
 const logger = require('morgan');
@@ -16,10 +15,9 @@ server.use(cors());
 server.use(logger('dev'));
 server.use(express.json());
 
-server.use('/api', apiRouter);
-
-passport.use(github.githubStrategy());
 server.use(passport.initialize());
+server.use('/api', apiRouter);
+passport.use(github.githubStrategy());
 
 server.get('/', async (_, res) => {
   // const user = {

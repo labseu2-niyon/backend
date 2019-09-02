@@ -48,7 +48,7 @@ router.post('/login', [userValidators.validateUserEmail], controller.loginUser);
 router.get('/logout', controller.logOut);
 
 // Github
-router.get('/auth/github', passport.authenticate('github'));
+router.get('/auth/github', passport.authenticate('github', { session: false }));
 
 router.get(
   '/auth/github/callback',
@@ -56,10 +56,7 @@ router.get(
     failureMessage: 'Error logging in with github'
   }),
 
-  (req, res) => {
-    // Successful authentication, redirect home and send
-    res.redirect('/');
-  }
+  controller.socialAuthlogin
 );
 
 // router.get('/login/?provider=facebook', [
