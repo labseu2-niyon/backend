@@ -45,8 +45,6 @@ router.post(
 
 router.post('/login', [userValidators.validateUserEmail], controller.loginUser);
 
-router.get('/logout', controller.logOut);
-
 // Github
 router.get('/auth/github', passport.authenticate('github', { session: false }));
 
