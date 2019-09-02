@@ -18,24 +18,17 @@ module.exports = {
   },
 
   async authUser(req, res, next) {
-    const { token } = req.headers;
+    const token = req.headers.authorization;
+    console.log(token);
     if (!token) {
       return response.error(res, 401, 'Token is required');
     }
     try {
       const decode = await jwt.verify(token, secret.jwtSecret);
       req.decode = decode;
-    } catch (error) {
-      return response.error(res, 401, 'Error token type');
-    }
-    try {
-      const { username } = req.params;
-      if (username !== req.decode.username) {
-        return response.error(res, 401, 'Error user access');
-      }
       return next();
     } catch (error) {
-      return next({ message: 'Error validating User' });
+      return response.error(res, 401, 'Error token type');
     }
   }
 };

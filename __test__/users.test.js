@@ -137,9 +137,9 @@ describe('GET /users', () => {
       });
   });
 
-  it('should return 401 if no token is provided', () => {
+  it('should return 401 if not token is provided', () => {
     return request(server)
-      .get('/api/user/john/users')
+      .get('/api/user/users')
       .then(res => {
         expect(res.status).toBe(401);
         expect(res.body.message).toBe('Token is required');
