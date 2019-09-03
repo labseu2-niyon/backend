@@ -100,3 +100,6 @@ typings/
 # Local Database
 # database/
 test.js
+
+# intellij config files
+.idea
