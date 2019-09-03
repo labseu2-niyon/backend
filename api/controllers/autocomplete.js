@@ -5,7 +5,6 @@ const response = require('../helpers/response');
 module.exports = {
   async autoComplete(req, res) {
     const { place } = req.params;
-    console.log(place);
     try {
       const result = await Axios.get(
         `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${place}
