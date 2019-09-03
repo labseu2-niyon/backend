@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
-          iisAlphanumeric: {
+          isAlphanumeric: {
             args: true,
             msg: 'Please enter your firstname'
           }
