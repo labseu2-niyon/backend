@@ -52,7 +52,7 @@ module.exports = {
       const { username } = req.params;
       const { firstName, lastName, bio, countryName, cityName } = req.body;
 
-      const locations = await models.Locations.findOne({
+      const locations = await models.Locations.findOrCreate({
         where: { country_name: countryName, city_name: cityName },
         attributes: ['id']
       });
@@ -213,6 +213,22 @@ module.exports = {
       return response.success(res, 200, 'Password reset was succesful');
     } catch (error) {
       return next({ message: error.message });
+    }
+  },
+
+  async addSocialMediaAccount(req, res, next) {
+    try {
+      const { body } = req;
+      if (!Object.keys(body).length) {
+        return response.error(res, 400, 'Empty body not allowed');
+      }
+      const socialMedia = await models.Social_medias.create({
+        ...body,
+        user_id: req.user.id
+      });
+      return response.success(res, 201, socialMedia);
+    } catch (error) {
+      return next({ message: 'Error posting users social media handle' });
     }
   }
 };
