@@ -5,7 +5,7 @@ module.exports = {
   async getAllTypes(req, res) {
     try {
       const types = await models.Mentoring_types.findAll({
-        attributes: ['mentor_type_name']
+        attributes: ['id', 'mentor_type_name']
       });
       if (types) return response.success(res, 200, types);
 

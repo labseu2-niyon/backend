@@ -115,8 +115,10 @@ module.exports = (sequelize, DataTypes) => {
       'password',
       user.dataValues.password
     );
+    console.log(changedPassword);
     if (
-      changedPassword.previous.password !== changedPassword.dataValues.password
+      changedPassword._previousDataValues.password !==
+      changedPassword.dataValues.password
     ) {
       const hash = await bcrypt.hash(user.dataValues.password, 14);
       await user.setDataValue('password', hash);

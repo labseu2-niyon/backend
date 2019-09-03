@@ -26,6 +26,12 @@ router.patch(
 );
 
 router.patch(
+  '/:username/password',
+  // [authUser.authUser, userValidators.validateUserExists],
+  controller.updateUserPassword
+);
+
+router.patch(
   '/:username/image/upload',
   [
     authUser.authUser,

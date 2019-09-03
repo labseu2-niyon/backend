@@ -47,6 +47,26 @@ module.exports = {
     }
   },
 
+  async updateUserPassword(req, res, next) {
+    try {
+      const { username } = req.params;
+      const { password } = req.body;
+      console.log(password);
+      const updatePassword = await models.Users.update(
+        {
+          password
+        },
+        { where: { username }, returning: true }
+      );
+      if (updatePassword) return response.success(res, 200, updatePassword);
+      return response.error(res, 404, 'Could not update user');
+    } catch (error) {
+      return next({
+        message: error.message
+      });
+    }
+  },
+
   async updateUserProfile(req, res, next) {
     try {
       const { username } = req.params;
