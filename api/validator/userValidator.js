@@ -66,8 +66,6 @@ module.exports = {
 
   async validateUserSignup(req, res, next) {
     const validator = new Validator(req.body, {
-      firstName: 'required|alpha',
-      lastName: 'required|alpha',
       username: 'required|alpha_num',
       password: 'required|min:8',
       email: 'required|email'
