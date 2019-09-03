@@ -56,7 +56,7 @@ module.exports = {
         where: { country_name: countryName, city_name: cityName },
         attributes: ['id']
       });
-      const locationId = locations.dataValues.id;
+      const locationId = locations[0].dataValues.id;
       if (!locationId) {
         return response.error(res, 404, 'Location not found');
       }
@@ -80,7 +80,15 @@ module.exports = {
     try {
       const user = await models.Users.create(req.body);
       if (user) {
-        return response.success(res, 201, user);
+        const newUser = {
+          password: user.password,
+          username: user.username,
+          email: user.email,
+          id: user.id
+        };
+
+        const token = await jwt.generateToken(newUser);
+        return response.success(res, 201, { user: newUser, token });
       }
       return response.error(res, 400, 'Could not create Profile');
     } catch (error) {

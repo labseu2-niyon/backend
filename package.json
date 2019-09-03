@@ -4,7 +4,7 @@
   "description": "Backend for Niyon application",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --coverage",
+    "test": "cross-env NODE_ENV=test jest --coverage --forceExit --detectOpenHandles --maxWorkers=1",
     "testcircleci": "cross-env NODE_ENV=test jest --coverage",
     "start": "node index.js",
     "start:dev": "nodemon index.js",
@@ -64,7 +64,6 @@
     ]
   },
   "dependencies": {
-    "babel-jest": "^24.9.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.14.0",
     "cors": "^2.8.5",

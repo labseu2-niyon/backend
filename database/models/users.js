@@ -115,6 +115,7 @@ module.exports = (sequelize, DataTypes) => {
       'password',
       user.dataValues.password
     );
+    console.log(changedPassword);
     if (
       changedPassword.previous.password !== changedPassword.dataValues.password
     ) {

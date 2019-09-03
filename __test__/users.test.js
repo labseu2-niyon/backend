@@ -229,26 +229,26 @@ describe('POST user update social media info', () => {
   it("should return 404 if user doesn't exists", async () => {
     const user = {
       id: 1,
+      username: 'john123'
+    };
+    const jwtToken = await jwt.generateToken(user);
+    return request(server)
+      .post('/api/user/john123/socialmedia')
+      .set({ token: jwtToken })
+      .send({})
+      .then(res => {
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('User not found');
+      });
+  });
+  it('should return 400 if body is empty', async () => {
+    const user = {
+      id: 1,
       username: 'john'
     };
     const jwtToken = await jwt.generateToken(user);
     return request(server)
-      .post('/api/user/cristos/socialmedia')
-      .set({ token: jwtToken })
-      .send()
-      .then(res => {
-        expect(res.status).toBe(401);
-        expect(res.body.message).toBe('Error user access');
-      });
-  });
-  it('should return a 400 if body is empty', async () => {
-    const user = {
-      id: 1,
-      username: 'john3'
-    };
-    const jwtToken = await jwt.generateToken(user);
-    return request(server)
-      .post('api/user/john/socialmedia')
+      .post('/api/user/john/socialmedia')
       .set({ token: jwtToken })
       .send({})
       .then(res => {
@@ -256,19 +256,18 @@ describe('POST user update social media info', () => {
         expect(res.body.message).toBe('Empty body not allowed');
       });
   });
-  // it('should return a 201 when social media is updated', async () => {
-  //   const user = {
-  //     id: 3,
-  //     username: 'john2'
-  //   };
-  //   const jwtToken = await jwt.generateToken(user);
-  //   return request(server)
-  //     .post('api/user/john2/socialmedia')
-  //     .set({ token: jwtToken })
-  //     .send({ facebook: 'hellopeople' })
-  //     .then(res => {
-  //       expect(res.status).toBe(201);
-  //       expect(res.body.data).toContain(1);
-  //     });
-  // });
+  it('should return a 201 when social media is updated', async () => {
+    const user = {
+      id: 1,
+      username: 'john'
+    };
+    const jwtToken = await jwt.generateToken(user);
+    return request(server)
+      .post('/api/user/john/socialmedia')
+      .set({ token: jwtToken })
+      .send({ facebook: 'userfacebooking' })
+      .then(res => {
+        expect(res.status).toBe(201);
+      });
+  });
 });
