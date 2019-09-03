@@ -1,8 +1,9 @@
 const request = require('supertest');
-const fs = require('fs');
+const path = require('path');
 const server = require('../server');
 const jwt = require('../api/helpers/jwt');
 const mail = require('../api/helpers/mail');
+const cloudinary = require('../api/middleware/cloudinaryImage');
 
 describe('PATCH /:username/image/upload', () => {
   it('should return 401 if no token is provided', () => {
@@ -39,18 +40,21 @@ describe('PATCH /:username/image/upload', () => {
         expect(res.body.message).toBe('Error user access');
       });
   });
-  xit('should return 200 for succesful upload', async () => {
+  it('should return 200 for succesful upload', async () => {
     const user = {
       id: 1,
       username: 'john'
     };
+    jest.spyOn(cloudinary, 'uploadImage').mockResolvedValue({ success: true });
     const jwtToken = await jwt.generateToken(user);
     return request(server)
       .patch('/api/user/john/image/upload')
       .set({ token: jwtToken })
-      .attach('file', fs.createReadStream('./_test_/assests/contact.png'))
+      .set('Content-Type', 'multipart/form-data')
+      .attach('image', path.join(__dirname, 'assests/contact.png'))
       .then(res => {
-        console.log(res.status, res.body);
+        expect(res.status).toBe(200);
+        expect(res.body.data).toContain(1);
       });
   });
 });
