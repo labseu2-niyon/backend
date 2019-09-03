@@ -90,4 +90,10 @@ router.patch(
   controller.resetPassword
 );
 
+router.post(
+  '/:username/socialmedia',
+  [authUser.authUser, userValidators.validateUserExists],
+  controller.addSocialMediaAccount
+);
+
 module.exports = router;

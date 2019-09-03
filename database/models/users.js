@@ -107,7 +107,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Users.hasOne(models.Mentors);
     Users.hasOne(models.Mentees);
-    // Users.hasOne(models.SocialMedias);
+    Users.hasMany(models.Social_medias);
   };
   Users.hashPassword = async user => {
     // if (!user.dataValues.password) return user _previousDataValues;

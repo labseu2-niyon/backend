@@ -72,11 +72,11 @@ module.exports = {
       const { username } = req.params;
       const { firstName, lastName, bio, countryName, cityName } = req.body;
 
-      const locations = await models.Locations.findOne({
+      const locations = await models.Locations.findOrCreate({
         where: { country_name: countryName, city_name: cityName },
         attributes: ['id']
       });
-      const locationId = locations.dataValues.id;
+      const locationId = locations[0].dataValues.id;
       if (!locationId) {
         return response.error(res, 404, 'Location not found');
       }
@@ -100,7 +100,15 @@ module.exports = {
     try {
       const user = await models.Users.create(req.body);
       if (user) {
-        return response.success(res, 201, user);
+        const newUser = {
+          password: user.password,
+          username: user.username,
+          email: user.email,
+          id: user.id
+        };
+
+        const token = await jwt.generateToken(newUser);
+        return response.success(res, 201, { user: newUser, token });
       }
       return response.error(res, 400, 'Could not create Profile');
     } catch (error) {
@@ -225,6 +233,22 @@ module.exports = {
       return response.success(res, 200, 'Password reset was succesful');
     } catch (error) {
       return next({ message: error.message });
+    }
+  },
+
+  async addSocialMediaAccount(req, res, next) {
+    try {
+      const { body } = req;
+      if (!Object.keys(body).length) {
+        return response.error(res, 400, 'Empty body not allowed');
+      }
+      const socialMedia = await models.Social_medias.create({
+        ...body,
+        user_id: req.user.id
+      });
+      return response.success(res, 201, socialMedia);
+    } catch (error) {
+      return next({ message: 'Error posting users social media handle' });
     }
   }
 };

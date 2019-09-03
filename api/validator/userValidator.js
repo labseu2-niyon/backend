@@ -55,8 +55,7 @@ module.exports = {
       firstName: 'required|alpha',
       lastName: 'required|alpha',
       countryName: 'required|alpha',
-      cityName: 'required|alpha',
-      bio: 'required|min:10'
+      cityName: 'required|alpha'
     });
     if (validator.fails()) {
       return response.error(res, 400, validator.errors.all());
@@ -66,8 +65,6 @@ module.exports = {
 
   async validateUserSignup(req, res, next) {
     const validator = new Validator(req.body, {
-      firstName: 'required|alpha',
-      lastName: 'required|alpha',
       username: 'required|alpha_num',
       password: 'required|min:8',
       email: 'required|email'
