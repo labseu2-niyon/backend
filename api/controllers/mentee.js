@@ -36,7 +36,7 @@ module.exports = {
       if (mentees) {
         return response.success(res, 200, mentees);
       }
-      return response.error(res, 404, 'Could not find all Mentees');
+      return response.error(res, 404, 'Not Mentee found');
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -52,13 +52,13 @@ module.exports = {
       });
       const userId = user.dataValues.id;
       if (userId) {
-        const mentor = await models.Mentees.create({
+        const mentee = await models.Mentees.create({
           user_id: userId,
           location_id: locationId,
           industry_id: industryId
         });
-        if (mentor) {
-          return response.success(res, 201, mentor);
+        if (mentee) {
+          return response.success(res, 201, mentee);
         }
         return response.error(res, 404, 'Could not create Mentee');
       }
