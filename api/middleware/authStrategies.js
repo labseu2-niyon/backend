@@ -7,16 +7,49 @@ const TwitterStrategy = require('passport-twitter').Strategy;
 const models = require('../../database/models');
 const keys = require('../../config/secret');
 
-async function callbackStrategy(profile, cb) {
-  const userEmail = await models.Users.findOne({
-    where: { email: profile.email }
-  });
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
 
-  if (!userEmail) {
-    const user = models.Users.findOrCreate({ auth_id: profile.id });
-    return cb(null, user);
+passport.deserializeUser((id, done) => {
+  models.Users.findByPk(id, (err, user) => {
+    done(err, user);
+  });
+});
+
+async function callbackStrategy(profile, cb) {
+  const email = profile.emails[0].value;
+
+  try {
+    const existingUser = await models.Users.findOne({ where: { email } });
+    if (!existingUser) {
+      const newUser = await models.Users.findOrCreate({
+        where: { auth_id: profile.id },
+        defaults: { username: profile.username, email, password: ' ' }
+      });
+      if (!newUser) {
+        return new Error();
+      }
+      return cb(null, newUser);
+    }
+    return cb(null, existingUser);
+  } catch (error) {
+    return cb(error, null);
   }
-  return cb(null, userEmail);
+}
+
+function githubStrategy() {
+  return new GitHubStrategy(
+    {
+      clientID: keys.GITHUB_CLIENT_ID,
+      clientSecret: keys.GITHUB_CLIENT_SECRET,
+      callbackURL: '/api/user/auth/github/callback',
+      scope: 'user:email'
+    },
+    (accessToken, refreshToken, profile, cb) => {
+      return callbackStrategy(profile, cb);
+    }
+  );
 }
 
 function facebookStrategy() {
@@ -27,21 +60,6 @@ function facebookStrategy() {
         clientSecret: keys.FACEBOOK_APP_SECRET,
         callbackURL: '/login/?provider=facebook/redirect',
         profileFields: ['id', 'first-name', 'last-name', 'email-address']
-      },
-      (accessToken, refreshToken, profile, cb) => {
-        return callbackStrategy(profile, cb);
-      }
-    )
-  );
-}
-
-function githubStrategy() {
-  passport.use(
-    new GitHubStrategy(
-      {
-        clientID: keys.GITHUB_CLIENT_ID,
-        clientSecret: keys.GITHUB_CLIENT_SECRET,
-        callbackURL: '/login/?provider=github/redirect'
       },
       (accessToken, refreshToken, profile, cb) => {
         return callbackStrategy(profile, cb);

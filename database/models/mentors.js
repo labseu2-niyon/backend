@@ -58,7 +58,9 @@ module.exports = (sequelize, DataTypes) => {
     Mentors.belongsToMany(models.Mentoring_types, {
       through: 'Mentors_choices',
       foreignKey: 'mentoring_type_id',
-      as: 'Mentor_choice'
+      as: 'Mentor_choice',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
   };
   return Mentors;

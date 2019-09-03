@@ -9,14 +9,22 @@ const jwt = require('../helpers/jwt');
 module.exports = {
   async getUserByUsername(req, res) {
     try {
-      const { userName } = req.params;
+      const { username } = req.params;
       const user = await models.Users.findOne({
-        where: { username: userName }
+        where: { username },
+        include: [
+          {
+            model: models.Locations,
+            as: 'location'
+          }
+        ]
       });
-      if (user) {
-        return response.success(res, 201, user);
-      }
-      return response.error(res, 404, 'User with that username does not exist');
+      if (user) return response.success(res, 200, user);
+      return response.error(
+        res,
+        404,
+        `user with the username ${username} does not exist `
+      );
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -72,7 +80,15 @@ module.exports = {
     try {
       const user = await models.Users.create(req.body);
       if (user) {
-        return response.success(res, 201, user);
+        const newUser = {
+          password: user.password,
+          username: user.username,
+          email: user.email,
+          id: user.id
+        };
+
+        const token = await jwt.generateToken(newUser);
+        return response.success(res, 201, { user: newUser, token });
       }
       return response.error(res, 400, 'Could not create Profile');
     } catch (error) {
@@ -88,7 +104,10 @@ module.exports = {
         where: { email },
         attributes: ['password', 'email', 'username', 'id']
       });
-      if (user && bcrypt.compareSync(password, user.dataValues.password)) {
+      if (
+        Object.keys(user).length &&
+        bcrypt.compareSync(password, user.dataValues.password)
+      ) {
         const token = await jwt.generateToken(user.dataValues);
         return response.success(res, 201, {
           message: `${email} successfully logged in.`,
@@ -98,6 +117,21 @@ module.exports = {
       return response.error(res, 401, 'Invalid credentials');
     } catch (error) {
       return next({ message: 'Error logging in user' });
+    }
+  },
+
+  async socialAuthlogin(req, res, next) {
+    const { user } = req;
+
+    try {
+      const token = await jwt.generateToken(user.dataValues);
+
+      return response.success(res, 200, {
+        message: `${user.dataValues.email} successfully logged in.`,
+        token
+      });
+    } catch (error) {
+      return next({ message: `${error.message}` });
     }
   },
 
@@ -122,7 +156,8 @@ module.exports = {
       const sendMail = await mail.passwordResetMail(
         secret.frontEndUrl,
         token,
-        req.userEmail.email
+        req.userEmail.email,
+        req.userEmail.username
       );
       if (!sendMail) {
         return response.error(res, 400, 'Error sending mail try again');

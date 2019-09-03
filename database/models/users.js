@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
-          iisAlphanumeric: {
+          isAlphanumeric: {
             args: true,
             msg: 'Please enter your firstname'
           }
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlphanumeric: {
+          notNull: {
             args: true,
             msg: 'Please enter your username'
           }
@@ -86,10 +86,6 @@ module.exports = (sequelize, DataTypes) => {
           isAlphanumeric: {
             args: true,
             msg: 'Please enter the user id from social auth'
-          },
-          isUnique: {
-            args: true,
-            msg: 'User already exists'
           }
         }
       }

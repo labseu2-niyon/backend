@@ -3,9 +3,9 @@ const models = require('../../database/models');
 const response = require('../helpers/response');
 
 module.exports = {
-  async getAllMentors(req, res) {
+  async getAllMentees(req, res) {
     try {
-      const mentors = await models.Mentors.findAll({
+      const mentees = await models.Mentees.findAll({
         attributes: ['user_id', 'industry_id', 'location_id'],
         include: [
           {
@@ -33,16 +33,16 @@ module.exports = {
           }
         ]
       });
-      if (mentors) {
-        return response.success(res, 200, mentors);
+      if (mentees) {
+        return response.success(res, 200, mentees);
       }
-      return response.error(res, 404, 'Could not find all Mentors');
+      return response.error(res, 404, 'No Mentee found');
     } catch (error) {
       return response.error(res, 500, error.message);
     }
   },
 
-  async makeUserMentor(req, res) {
+  async makeUserMentee(req, res) {
     try {
       const { locationId, industryId } = req.body;
       const { username } = req.params;
@@ -52,15 +52,15 @@ module.exports = {
       });
       const userId = user.dataValues.id;
       if (userId) {
-        const mentor = await models.Mentors.create({
+        const mentee = await models.Mentees.create({
           user_id: userId,
           location_id: locationId,
           industry_id: industryId
         });
-        if (mentor) {
-          return response.success(res, 201, mentor);
+        if (mentee) {
+          return response.success(res, 201, mentee);
         }
-        return response.error(res, 404, 'Could not create Mentor');
+        return response.error(res, 404, 'Could not create Mentee');
       }
       return response.error(res, 404, `user ${username} does not exist`);
     } catch (error) {

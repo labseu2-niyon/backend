@@ -27,7 +27,7 @@ module.exports = {
     try {
       const user = await models.Users.findOne({
         where: { email },
-        attributes: ['email']
+        attributes: ['email', 'username', 'id']
       });
       if (!user) {
         return response.error(res, 404, 'User not found');
@@ -66,8 +66,6 @@ module.exports = {
 
   async validateUserSignup(req, res, next) {
     const validator = new Validator(req.body, {
-      firstName: 'required|alpha',
-      lastName: 'required|alpha',
       username: 'required|alpha_num',
       password: 'required|min:8',
       email: 'required|email'
