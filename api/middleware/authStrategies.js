@@ -50,18 +50,17 @@ function githubStrategy() {
 }
 
 function linkedInStrategy() {
-  passport.use(
-    new LinkedInStrategy(
-      {
-        consumerKey: keys.LINKEDIN_API_KEY,
-        consumerSecret: keys.LINKEDIN_SECRET_KEY,
-        callbackURL: '/api/user/auth/linkedin/callback'
-      },
-      (accessToken, refreshToken, profile, cb) => {
-        console.log(profile);
-        return callbackStrategy(profile, cb);
-      }
-    )
+  return new LinkedInStrategy(
+    {
+      consumerKey: keys.LINKEDIN_API_KEY,
+      consumerSecret: keys.LINKEDIN_SECRET_KEY,
+      callbackURL: '/api/user/auth/linkedin/callback',
+      profileFields: ['id', 'first-name', 'last-name', 'email-address']
+    },
+    (accessToken, refreshToken, profile, cb) => {
+      console.log(profile);
+      return callbackStrategy(profile, cb);
+    }
   );
 }
 

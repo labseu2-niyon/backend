@@ -51,27 +51,32 @@ router.get('/auth/github', passport.authenticate('github', { session: false }));
 router.get(
   '/auth/github/callback',
   passport.authenticate('github', {
-    failureMessage: 'Error logging in with github'
+    failureMessage: 'Error logging in with Github'
   }),
 
   controller.socialAuthlogin
 );
 
-// router.get('/login/?provider=facebook', [
-//   passport.authenticate('facebook', {
-//     scope: ['profile']
-//   })
-// ]);
+// Linkedin
+router.get(
+  '/auth/linkedin',
+  passport.authenticate(
+    'linkedin',
+    { scope: ['r_basicprofile', 'r_emailaddress'] },
+    { session: false }
+  )
+);
 
-// router.get(
-//   '/login/?provider=facebook/redirect',
-//   passport.authenticate('facebook', { failureRedirect: '/login' }),
-//   (req, res) => {
-//     // Successful authentication, redirect home.
-//     res.redirect('/');
-//   }
-// );
+router.get(
+  '/auth/linkedin/callback',
+  passport.authenticate('linkedin', {
+    failureMessage: 'Error logging in with LinkedIn'
+  }),
 
+  controller.socialAuthlogin
+);
+
+// Password Reset
 router.post(
   '/resetpassword',
   [userValidators.validateUserEmail],
