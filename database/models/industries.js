@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Industries.hasMany(models.Mentors);
     Industries.hasMany(models.Mentees);
+    Industries.hasMany(models.Tech_jobs);
   };
   return Industries;
 };
