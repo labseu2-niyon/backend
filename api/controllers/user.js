@@ -56,7 +56,7 @@ module.exports = {
         where: { country_name: countryName, city_name: cityName },
         attributes: ['id']
       });
-      const locationId = locations.dataValues.id;
+      const locationId = locations[0].dataValues.id;
       if (!locationId) {
         return response.error(res, 404, 'Location not found');
       }
