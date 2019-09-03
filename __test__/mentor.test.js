@@ -68,7 +68,7 @@ describe('POST /mentor/:username/mentor', () => {
         expect(res.body.message).toBe('Token is required');
       });
   });
-  it('should return a 404 code if the wrong token is sent', async () => {
+  it('should return a 401 code if the wrong token is sent', async () => {
     const user = {
       id: 5,
       username: 'damola'
@@ -79,7 +79,6 @@ describe('POST /mentor/:username/mentor', () => {
       .set({ token: jwtToken })
       .then(res => {
         expect(res.status).toBe(401);
-        expect(res.body.message).toBe('Error user access');
         expect(res.body.message).toBe('Error user access');
       });
   });
