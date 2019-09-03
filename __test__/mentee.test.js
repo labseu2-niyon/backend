@@ -2,7 +2,7 @@ const request = require('supertest');
 const server = require('../server');
 const jwt = require('../api/helpers/jwt');
 
-describe('Get /mentor/:username/mentors', () => {
+describe('Get /mentee/:username/mentees', () => {
   it('should return a 200 code', async () => {
     const user = {
       id: 1,
@@ -10,7 +10,7 @@ describe('Get /mentor/:username/mentors', () => {
     };
     const jwtToken = await jwt.generateToken(user);
     return request(server)
-      .get('/api/mentor/john/mentors')
+      .get('/api/mentee/john/mentees')
       .set({ token: jwtToken })
       .then(res => {
         expect(res.status).toBe(200);
@@ -20,7 +20,7 @@ describe('Get /mentor/:username/mentors', () => {
 
   it('should return 401 if no token is provided', () => {
     return request(server)
-      .get('/api/mentor/john/mentors')
+      .get('/api/mentee/john/mentees')
       .then(res => {
         expect(res.status).toBe(401);
         expect(res.body.message).toBe('Token is required');
@@ -34,7 +34,7 @@ describe('Get /mentor/:username/mentors', () => {
     };
     const jwtToken = await jwt.generateToken(user);
     return request(server)
-      .get('/api/mentor/damola/mentors')
+      .get('/api/mentee/damola/mentees')
       .set({ token: jwtToken })
       .then(res => {
         expect(res.status).toBe(404);
@@ -43,7 +43,7 @@ describe('Get /mentor/:username/mentors', () => {
   });
 });
 
-describe('POST /mentor/:username/mentor', () => {
+describe('POST /mentee/:username/mentee', () => {
   it('should return a 201 code', async () => {
     const user = {
       id: 2,
@@ -51,7 +51,7 @@ describe('POST /mentor/:username/mentor', () => {
     };
     const jwtToken = await jwt.generateToken(user);
     return request(server)
-      .post('/api/mentor/john1/mentor')
+      .post('/api/mentee/john1/mentee')
       .send({ locationId: 2, industryId: 1 })
       .set({ token: jwtToken })
       .then(res => {
@@ -61,21 +61,21 @@ describe('POST /mentor/:username/mentor', () => {
   });
   it('should return 401 if no token is provided', () => {
     return request(server)
-      .post('/api/mentor/john1/mentor')
+      .post('/api/mentee/john1/mentee')
       .send({ locationId: 2, industryId: 1 })
       .then(res => {
         expect(res.status).toBe(401);
         expect(res.body.message).toBe('Token is required');
       });
   });
-  it('should return a 401 code if the wrong token is sent', async () => {
+  it('should return a 404 code if the wrong token is sent', async () => {
     const user = {
       id: 5,
       username: 'damola'
     };
     const jwtToken = await jwt.generateToken(user);
     return request(server)
-      .post('/api/mentor/john/mentor')
+      .post('/api/mentee/john/mentee')
       .set({ token: jwtToken })
       .then(res => {
         expect(res.status).toBe(401);
