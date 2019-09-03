@@ -4,7 +4,9 @@ const response = require('../helpers/response');
 module.exports = {
   async getAllTypes(req, res) {
     try {
-      const types = await models.Mentoring_types.findAll();
+      const types = await models.Mentoring_types.findAll({
+        attributes: ['mentor_type_name']
+      });
       if (types) return response.success(res, 200, types);
 
       return response.error(res, 404, 'Could not fetch Types');
