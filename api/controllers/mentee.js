@@ -36,7 +36,7 @@ module.exports = {
       if (mentees) {
         return response.success(res, 200, mentees);
       }
-      return response.error(res, 404, 'Not Mentee found');
+      return response.error(res, 404, 'No Mentee found');
     } catch (error) {
       return response.error(res, 500, error.message);
     }
