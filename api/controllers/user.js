@@ -50,11 +50,14 @@ module.exports = {
   async updateUserPassword(req, res, next) {
     try {
       const { username } = req.params;
-      const { password } = req.body;
-      console.log(password);
+      const { password, newPassword } = req.body;
+      const hash = await bcrypt.hash(newPassword, 14);
+      if (!bcrypt.compareSync(password, req.user.password)) {
+        return response.error(res, 403, 'Password did not match');
+      }
       const updatePassword = await models.Users.update(
         {
-          password
+          password: hash
         },
         { where: { username }, returning: true }
       );
@@ -217,9 +220,10 @@ module.exports = {
       if (date > 0) {
         return response.error(res, 400, 'Password reset have expired');
       }
+      const hash = await bcrypt.hash(req.body.password, 14);
       const newUserPassword = await models.Users.update(
         {
-          password: req.body.password,
+          password: hash,
           // reset_password_expires: '',
           reset_password_token: ''
         },

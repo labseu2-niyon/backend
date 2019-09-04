@@ -27,7 +27,7 @@ router.patch(
 
 router.patch(
   '/:username/password',
-  // [authUser.authUser, userValidators.validateUserExists],
+  [authUser.authUser, userValidators.validateUserExists],
   controller.updateUserPassword
 );
 

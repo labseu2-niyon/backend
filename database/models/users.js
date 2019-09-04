@@ -61,11 +61,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true
       },
-      resetPasswordToken: {
+      reset_password_token: {
         type: DataTypes.STRING,
         allowNull: true
       },
-      resetPasswordExpires: {
+      reset_password_expires: {
         type: DataTypes.BIGINT,
         allowNull: true
       },
@@ -76,6 +76,16 @@ module.exports = (sequelize, DataTypes) => {
           isInt: {
             args: true,
             msg: 'Please enter your location'
+          }
+        }
+      },
+      job_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+          isInt: {
+            args: true,
+            msg: 'Please enter your job'
           }
         }
       },
@@ -105,17 +115,22 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
+    Users.belongsTo(models.Tech_jobs, {
+      foreignKey: 'job_id',
+      as: 'job',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
     Users.hasOne(models.Mentors);
     Users.hasOne(models.Mentees);
     Users.hasMany(models.Social_medias);
   };
   Users.hashPassword = async user => {
-    // if (!user.dataValues.password) return user _previousDataValues;
+    // console.log(user);
     const changedPassword = await user.changed(
       'password',
       user.dataValues.password
     );
-    console.log(changedPassword);
     if (
       changedPassword._previousDataValues.password !==
       changedPassword.dataValues.password
