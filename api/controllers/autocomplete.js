@@ -13,7 +13,17 @@ module.exports = {
       );
       const result = await request.json();
       const locations = result.predictions.map(p => p.description);
-      response.success(res, 200, locations);
+      // returns the city and country from each location
+      const reformed = locations
+        .map(v => v.split`,`)
+        .map(a =>
+          a
+            .slice(-2)
+            .join(',')
+            .trim()
+        );
+      // new Set(reformed) removes duplicate locations
+      response.success(res, 200, [...new Set(reformed)]);
     } catch (error) {
       response.error(res, 500, `Couldn't get possible locations`);
     }
