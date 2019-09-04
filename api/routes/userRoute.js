@@ -26,6 +26,12 @@ router.patch(
 );
 
 router.patch(
+  '/:username/password',
+  [authUser.authUser, userValidators.validateUserExists],
+  controller.updateUserPassword
+);
+
+router.patch(
   '/:username/image/upload',
   [
     authUser.authUser,
@@ -82,6 +88,12 @@ router.patch(
   '/newpassword',
   [userValidators.validatePassword],
   controller.resetPassword
+);
+
+router.post(
+  '/:username/socialmedia',
+  [authUser.authUser, userValidators.validateUserExists],
+  controller.addSocialMediaAccount
 );
 
 module.exports = router;

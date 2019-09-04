@@ -63,6 +63,14 @@ module.exports = {
           as: 'location'
         }
       },
+      job_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Tech_jobs',
+          key: 'id',
+          as: 'job'
+        }
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE
