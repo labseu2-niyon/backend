@@ -45,7 +45,7 @@ module.exports = {
       return response.error(
         res,
         404,
-        `user with the username ${username} does not exist `
+        `user with the username ${username} does not exist`
       );
     } catch (error) {
       return response.error(res, 500, error.message);
