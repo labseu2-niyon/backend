@@ -46,6 +46,7 @@ describe('PATCH /:username/image/upload', () => {
       username: 'john'
     };
     jest.spyOn(cloudinary, 'uploadImage').mockResolvedValue({ success: true });
+    jest.setTimeout(10000);
     const jwtToken = await jwt.generateToken(user);
     return request(server)
       .patch('/api/user/john/image/upload')
