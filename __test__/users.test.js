@@ -193,9 +193,7 @@ describe('GET user profile information', () => {
       .set({ token: jwtToken })
       .then(res => {
         expect(res.status).toBe(404);
-        expect(res.body.message).toBe(
-          'user with username damola does not exist'
-        );
+        expect(res.body.message).toBe('User not found');
       });
   });
 
