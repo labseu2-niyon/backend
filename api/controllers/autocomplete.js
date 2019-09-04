@@ -9,10 +9,9 @@ module.exports = {
     try {
       const request = await fetch(
         `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${place}
-        &key=AIzaSyDCaZJ5l-dUK6_eK7NBiIOdW6zBoxmpMWw&sessiontoken=${uuid()}&geometry`
+        &key=AIzaSyCJt2Ze7Xg7mt7mR9ylZp2Nrwhc2AUxu2c&sessiontoken=${uuid()}&geometry`
       );
       const result = await request.json();
-      console.log(result);
       const locations = result.predictions.map(p => p.description);
       response.success(res, 200, locations);
     } catch (error) {
