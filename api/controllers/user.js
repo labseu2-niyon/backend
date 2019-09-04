@@ -12,10 +12,32 @@ module.exports = {
       const { username } = req.params;
       const user = await models.Users.findOne({
         where: { username },
+        attributes: [
+          'id',
+          'first_name',
+          'last_name',
+          'username',
+          'email',
+          'biography',
+          'profile_picture'
+        ],
         include: [
           {
             model: models.Locations,
+            attributes: ['id', 'city_name', 'country_name'],
             as: 'location'
+          },
+          {
+            model: models.Tech_jobs,
+            attributes: ['tech_name'],
+            as: 'job',
+            include: [
+              {
+                model: models.Industries,
+                attributes: ['industry_name'],
+                as: 'industry'
+              }
+            ]
           }
         ]
       });
@@ -23,7 +45,7 @@ module.exports = {
       return response.error(
         res,
         404,
-        `user with the username ${username} does not exist `
+        `user with the username ${username} does not exist`
       );
     } catch (error) {
       return response.error(res, 500, error.message);
@@ -73,7 +95,14 @@ module.exports = {
   async updateUserProfile(req, res, next) {
     try {
       const { username } = req.params;
-      const { firstName, lastName, bio, countryName, cityName } = req.body;
+      const {
+        firstName,
+        lastName,
+        bio,
+        countryName,
+        cityName,
+        jobId
+      } = req.body;
 
       const locations = await models.Locations.findOrCreate({
         where: { country_name: countryName, city_name: cityName },
@@ -88,7 +117,8 @@ module.exports = {
           first_name: firstName,
           last_name: lastName,
           biography: bio,
-          location_id: locationId
+          location_id: locationId,
+          job_id: jobId
         },
         { where: { username }, returning: true }
       );
@@ -101,7 +131,12 @@ module.exports = {
 
   async createUser(req, res) {
     try {
-      const user = await models.Users.create(req.body);
+      const createUser = {
+        ...req.body,
+        email: req.body.email.toLowerCase(),
+        username: req.body.username.toLowerCase()
+      };
+      const user = await models.Users.create(createUser);
       if (user) {
         const newUser = {
           password: user.password,
@@ -132,7 +167,7 @@ module.exports = {
         bcrypt.compareSync(password, user.dataValues.password)
       ) {
         const token = await jwt.generateToken(user.dataValues);
-        return response.success(res, 201, {
+        return response.success(res, 200, {
           message: `${email} successfully logged in.`,
           token
         });

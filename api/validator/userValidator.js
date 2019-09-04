@@ -77,8 +77,8 @@ module.exports = {
       const user = await models.Users.findOne({
         where: {
           [Sequelize.Op.or]: [
-            { email: req.body.email },
-            { username: req.body.username }
+            { email: req.body.email.toLowerCase() },
+            { username: req.body.username.toLowerCase() }
           ]
         },
         attributes: ['id']

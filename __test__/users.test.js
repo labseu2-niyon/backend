@@ -46,6 +46,7 @@ describe('PATCH /:username/image/upload', () => {
       username: 'john'
     };
     jest.spyOn(cloudinary, 'uploadImage').mockResolvedValue({ success: true });
+    jest.setTimeout(10000);
     const jwtToken = await jwt.generateToken(user);
     return request(server)
       .patch('/api/user/john/image/upload')
@@ -138,6 +139,7 @@ describe('GET /users', () => {
       .set({ token: jwtToken })
       .then(res => {
         expect(res.status).toBe(200);
+        expect(res.body.data).toHaveLength(3);
       });
   });
 
@@ -268,6 +270,110 @@ describe('POST user update social media info', () => {
       .send({ facebook: 'userfacebooking' })
       .then(res => {
         expect(res.status).toBe(201);
+      });
+  });
+});
+
+describe('POST Create User', () => {
+  it('should return 400 if username is not provided', () => {
+    const user = {
+      email: 'gmail@gmail.com',
+      password: '123456789'
+    };
+    return request(server)
+      .post('/api/user/signup')
+      .send(user)
+      .then(res => {
+        expect(res.status).toBe(400);
+        expect(res.body.message.username[0]).toBe(
+          'The username field is required.'
+        );
+      });
+  });
+  it('should return a 400 if user already exists', () => {
+    const user = {
+      username: 'John',
+      email: 'gmail@gmail.com',
+      password: '123456789'
+    };
+
+    return request(server)
+      .post('/api/user/signup')
+      .send(user)
+      .then(res => {
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe(
+          'User already registered with username or email provided'
+        );
+      });
+  });
+  it('should return a 201 when user is created succesful', async () => {
+    const user = {
+      username: 'Johnson',
+      email: 'gmail@gmail.com',
+      password: '123456789'
+    };
+    return request(server)
+      .post('/api/user/signup')
+      .send(user)
+      .then(res => {
+        expect(res.status).toBe(201);
+        expect(res.body.data.user.email).toBe(user.email);
+      });
+  });
+});
+
+describe('POST Login User', () => {
+  it('should return 400 if email type is not valid', () => {
+    const user = {
+      email: 'email'
+    };
+    return request(server)
+      .post('/api/user/login')
+      .send(user)
+      .then(res => {
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe('Input a valid email');
+      });
+  });
+  it('should return 404 if user doesn exists', () => {
+    const user = {
+      email: 'email@gmail.com'
+    };
+    return request(server)
+      .post('/api/user/login')
+      .send(user)
+      .then(res => {
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('User not found');
+      });
+  });
+  it('should return 401 if credientials are not valid', () => {
+    const user = {
+      email: 'nmereginivincent@gmail.com',
+      password: '123456789'
+    };
+    return request(server)
+      .post('/api/user/login')
+      .send(user)
+      .then(res => {
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe('Invalid credentials');
+      });
+  });
+  it('should return 200 when details are correct', () => {
+    const user = {
+      email: 'nmereginivincent@gmail.com',
+      password: 'password'
+    };
+    return request(server)
+      .post('/api/user/login')
+      .send(user)
+      .then(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.data.message).toBe(
+          `${user.email} successfully logged in.`
+        );
       });
   });
 });
