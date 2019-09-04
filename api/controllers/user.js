@@ -55,10 +55,32 @@ module.exports = {
   async getAllUsers(req, res, next) {
     try {
       const users = await models.Users.findAll({
+        attributes: [
+          'id',
+          'first_name',
+          'last_name',
+          'username',
+          'email',
+          'biography',
+          'profile_picture'
+        ],
         include: [
           {
             model: models.Locations,
+            attributes: ['id', 'city_name', 'country_name'],
             as: 'location'
+          },
+          {
+            model: models.Tech_jobs,
+            attributes: ['tech_name'],
+            as: 'job',
+            include: [
+              {
+                model: models.Industries,
+                attributes: ['industry_name'],
+                as: 'industry'
+              }
+            ]
           }
         ]
       });
