@@ -55,8 +55,7 @@ module.exports = {
       firstName: 'required|alpha',
       lastName: 'required|alpha',
       countryName: 'required|alpha',
-      cityName: 'required|alpha',
-      bio: 'required|min:10'
+      cityName: 'required|alpha'
     });
     if (validator.fails()) {
       return response.error(res, 400, validator.errors.all());

@@ -47,16 +47,39 @@ module.exports = {
     }
   },
 
+  async updateUserPassword(req, res, next) {
+    try {
+      const { username } = req.params;
+      const { password, newPassword } = req.body;
+      const hash = await bcrypt.hash(newPassword, 14);
+      if (!bcrypt.compareSync(password, req.user.password)) {
+        return response.error(res, 403, 'Password did not match');
+      }
+      const updatePassword = await models.Users.update(
+        {
+          password: hash
+        },
+        { where: { username }, returning: true }
+      );
+      if (updatePassword) return response.success(res, 200, updatePassword);
+      return response.error(res, 404, 'Could not update user');
+    } catch (error) {
+      return next({
+        message: error.message
+      });
+    }
+  },
+
   async updateUserProfile(req, res, next) {
     try {
       const { username } = req.params;
       const { firstName, lastName, bio, countryName, cityName } = req.body;
 
-      const locations = await models.Locations.findOne({
+      const locations = await models.Locations.findOrCreate({
         where: { country_name: countryName, city_name: cityName },
         attributes: ['id']
       });
-      const locationId = locations.dataValues.id;
+      const locationId = locations[0].dataValues.id;
       if (!locationId) {
         return response.error(res, 404, 'Location not found');
       }
@@ -197,9 +220,10 @@ module.exports = {
       if (date > 0) {
         return response.error(res, 400, 'Password reset have expired');
       }
+      const hash = await bcrypt.hash(req.body.password, 14);
       const newUserPassword = await models.Users.update(
         {
-          password: req.body.password,
+          password: hash,
           // reset_password_expires: '',
           reset_password_token: ''
         },
@@ -213,6 +237,22 @@ module.exports = {
       return response.success(res, 200, 'Password reset was succesful');
     } catch (error) {
       return next({ message: error.message });
+    }
+  },
+
+  async addSocialMediaAccount(req, res, next) {
+    try {
+      const { body } = req;
+      if (!Object.keys(body).length) {
+        return response.error(res, 400, 'Empty body not allowed');
+      }
+      const socialMedia = await models.Social_medias.create({
+        ...body,
+        user_id: req.user.id
+      });
+      return response.success(res, 201, socialMedia);
+    } catch (error) {
+      return next({ message: 'Error posting users social media handle' });
     }
   }
 };
