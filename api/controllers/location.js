@@ -30,7 +30,7 @@ module.exports = {
     }
   },
 
-  async FindorCreateLocation(req, res, next) {
+  async findOrCreateLocation(req, res, next) {
     try {
       const { cityName, countryName } = req.body;
       const locations = await models.Locations.findOrCreate({
