@@ -5,7 +5,7 @@ const authUser = require('../helpers/jwt');
 router.post(
   '/getLocation',
   [authUser.authUser],
-  controller.FindorCreateLocation
+  controller.findOrCreateLocation
 );
 
 module.exports = router;
