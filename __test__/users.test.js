@@ -40,7 +40,7 @@ describe('PATCH /:username/image/upload', () => {
         expect(res.body.message).toBe('Error user access');
       });
   });
-  xit('should return 200 for succesful upload', async () => {
+  it('should return 200 for succesful upload', async () => {
     const user = {
       id: 1,
       username: 'john'
@@ -56,7 +56,7 @@ describe('PATCH /:username/image/upload', () => {
         expect(res.status).toBe(200);
         expect(res.body.data).toContain(1);
       });
-  }, 10000);
+  });
 });
 
 describe('USER PASSWORD RESET', () => {
