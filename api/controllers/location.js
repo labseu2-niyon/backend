@@ -33,7 +33,7 @@ module.exports = {
   async FindorCreateLocation(req, res, next) {
     try {
       const { cityName, countryName } = req.body;
-      const locations = await models.Locations.findorCreate({
+      const locations = await models.Locations.findOrCreate({
         where: { country_name: countryName, city_name: cityName },
         attributes: ['id']
       });

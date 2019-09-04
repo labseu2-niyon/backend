@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlphanumeric: {
+          isAlpha: {
             args: true,
             msg: 'Please enter your country name'
           }
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlphanumeric: {
+          isAlpha: {
             args: true,
             msg: 'Please enter your country name'
           }

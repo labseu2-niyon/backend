@@ -12,7 +12,7 @@ router.get(
 );
 router.get(
   '/:username/profile',
-  [authUser.authUser, userValidators.validateUserExists],
+  // [authUser.authUser, userValidators.validateUserExists],
   controller.getUserByUsername
 );
 router.patch(
