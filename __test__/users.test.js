@@ -56,7 +56,7 @@ describe('PATCH /:username/image/upload', () => {
         expect(res.status).toBe(200);
         expect(res.body.data).toContain(1);
       });
-  });
+  }, 10000);
 });
 
 describe('USER PASSWORD RESET', () => {
