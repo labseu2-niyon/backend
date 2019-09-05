@@ -117,23 +117,16 @@ module.exports = {
   async updateUserProfile(req, res, next) {
     try {
       const { username } = req.params;
-      const {
-        firstName,
-        lastName,
-        bio,
-        countryName,
-        cityName,
-        jobId
-      } = req.body;
+      const { firstName, lastName, bio, locationId, jobId } = req.body;
 
-      const locations = await models.Locations.findOrCreate({
-        where: { country_name: countryName, city_name: cityName },
-        attributes: ['id']
-      });
-      const locationId = locations[0].dataValues.id;
-      if (!locationId) {
-        return response.error(res, 404, 'Location not found');
-      }
+      // const locations = await models.Locations.findOrCreate({
+      //   where: { country_name: countryName, city_name: cityName },
+      //   attributes: ['id']
+      // });
+      // const locationId = locations[0].dataValues.id;
+      // if (!locationId) {
+      //   return response.error(res, 404, 'Location not found');
+      // }
       const updateUser = await models.Users.update(
         {
           first_name: firstName,
