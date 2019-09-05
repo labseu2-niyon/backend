@@ -15,6 +15,7 @@ describe('Get /mentor/:username/mentors', () => {
       .then(res => {
         expect(res.status).toBe(200);
         expect(res.type).toEqual('application/json');
+        expect(res.body.data).toHaveLength(1);
       });
   });
 
@@ -57,6 +58,7 @@ describe('POST /mentor/:username/mentor', () => {
       .then(res => {
         expect(res.status).toBe(201);
         expect(res.type).toEqual('application/json');
+        expect(res.body.data.IndustryId).toBe(1);
       });
   });
   it('should return 401 if no token is provided', () => {
@@ -80,6 +82,26 @@ describe('POST /mentor/:username/mentor', () => {
       .then(res => {
         expect(res.status).toBe(401);
         expect(res.body.message).toBe('Error user access');
+      });
+  });
+});
+
+describe('POST /api/mentor/choice', () => {
+  it('should return 500 if there are no choices', () => {
+    return request(server)
+      .post('/api/mentor/choice')
+      .send({ mentorTypeId: 20, mentorId: 15 })
+      .then(res => {
+        expect(res.status).toBe(500);
+      });
+  });
+  it('should return a 201 if mentor choice was added', () => {
+    return request(server)
+      .post('/api/mentor/choice')
+      .send({ mentorTypeId: 1, mentorId: 1 })
+      .then(res => {
+        expect(res.status).toBe(201);
+        expect(res.body.data.mentor_id).toBe(1);
       });
   });
 });

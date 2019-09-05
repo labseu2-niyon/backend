@@ -28,6 +28,30 @@ module.exports = {
             as: 'location'
           },
           {
+            model: models.Mentees,
+            attributes: ['id'],
+            as: 'Mentee',
+            include: [
+              {
+                model: models.Industries,
+                attributes: ['industry_name'],
+                as: 'industry'
+              }
+            ]
+          },
+          {
+            model: models.Mentors,
+            attributes: ['id'],
+            as: 'Mentor',
+            include: [
+              {
+                model: models.Industries,
+                attributes: ['industry_name'],
+                as: 'industry'
+              }
+            ]
+          },
+          {
             model: models.Tech_jobs,
             attributes: ['tech_name'],
             as: 'job',
@@ -41,12 +65,7 @@ module.exports = {
           }
         ]
       });
-      if (user) return response.success(res, 200, user);
-      return response.error(
-        res,
-        404,
-        `user with the username ${username} does not exist`
-      );
+      return response.success(res, 200, user);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -71,9 +90,9 @@ module.exports = {
             as: 'location'
           },
           {
-            model: models.Tech_jobs,
-            attributes: ['tech_name'],
-            as: 'job',
+            model: models.Mentees,
+            attributes: ['id'],
+            as: 'Mentee',
             include: [
               {
                 model: models.Industries,
@@ -81,6 +100,23 @@ module.exports = {
                 as: 'industry'
               }
             ]
+          },
+          {
+            model: models.Mentors,
+            attributes: ['id'],
+            as: 'Mentor',
+            include: [
+              {
+                model: models.Industries,
+                attributes: ['industry_name'],
+                as: 'industry'
+              }
+            ]
+          },
+          {
+            model: models.Tech_jobs,
+            attributes: ['tech_name'],
+            as: 'job'
           }
         ]
       });
@@ -136,8 +172,7 @@ module.exports = {
         },
         { where: { username }, returning: true }
       );
-      if (updateUser) return response.success(res, 200, updateUser);
-      return response.error(res, 404, 'Could not update user');
+      return response.success(res, 200, updateUser);
     } catch (error) {
       return next({ message: 'Error updating profile' });
     }
@@ -214,8 +249,7 @@ module.exports = {
         { profile_picture: file.secure_url, public_id: file.public_id },
         { where: { username: params.username }, returning: true }
       );
-      if (user) return response.success(res, 200, user);
-      return response.error(res, 400, 'Image was not uploaded');
+      return response.success(res, 200, user);
     } catch (error) {
       return next({ message: 'Error updating image' });
     }
@@ -234,21 +268,14 @@ module.exports = {
       if (!sendMail) {
         return response.error(res, 400, 'Error sending mail try again');
       }
-      const user = await models.Users.update(
+      await models.Users.update(
         {
           reset_password_token: token,
           reset_password_expires: expiringDate
         },
         { where: { email: req.userEmail.email } }
       );
-      if (user) {
-        return response.success(
-          res,
-          200,
-          `Email sent to ${req.userEmail.email}`
-        );
-      }
-      return response.error(res, 400, 'User email error');
+      return response.success(res, 200, `Email sent to ${req.userEmail.email}`);
     } catch (error) {
       return next({ message: 'Error sending mail tryagain' });
     }

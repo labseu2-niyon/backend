@@ -7,9 +7,7 @@ module.exports = {
       const jobs = await models.Tech_jobs.findAll({
         attributes: ['id', 'tech_name']
       });
-      if (jobs) return response.success(res, 200, jobs);
-
-      return response.error(res, 404, 'Could not fetch jobs');
+      return response.success(res, 200, jobs);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
