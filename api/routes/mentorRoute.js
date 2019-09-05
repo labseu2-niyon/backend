@@ -11,10 +11,19 @@ router.get(
   [auth.authUser, userValidator.validateUserExists],
   controller.getAllMentors
 );
+
+router.get(
+  '/:username',
+  [auth.authUser, userValidator.validateUserExists],
+  controller.checkifUserIsMentor
+);
+
 router.post(
   '/:username/mentor',
   [auth.authUser, userValidator.validateUserExists],
   controller.makeUserMentor
 );
+
+router.post('/choice', controller.addMentorChoice);
 
 module.exports = router;

@@ -66,5 +66,44 @@ module.exports = {
     } catch (error) {
       return response.error(res, 500, error.message);
     }
+  },
+
+  async checkifUserIsMentor(req, res) {
+    try {
+      const { username } = req.params;
+      const user = await models.Users.findOne({
+        attributes: ['id'],
+        where: { username }
+      });
+      if (user) {
+        const userId = user.dataValues.id;
+        const mentor = await models.Mentors.findOne({
+          where: { user_id: userId },
+          attributes: ['id', 'location_id', 'industry_id']
+        });
+        if (mentor) {
+          const newMentor = { ...mentor.dataValues, mentor: true };
+          return response.success(res, 200, newMentor);
+        }
+        return response.success(res, 201, 'user is not a mentor');
+      }
+      return response.error(res, 500, 'user is not found');
+    } catch (error) {
+      return response.error(res, 500, error.message);
+    }
+  },
+
+  async addMentorChoice(req, res) {
+    try {
+      const { mentorTypeId, mentorId } = req.body;
+      const mentorChoice = await models.Mentors_choices.create({
+        mentoring_type_id: mentorTypeId,
+        mentor_id: mentorId
+      });
+      if (mentorChoice) return response.success(res, 201, mentorChoice);
+      return response.error(res, 404, 'could assign mentoring type to mentor');
+    } catch (error) {
+      return response.error(res, 404, error.message);
+    }
   }
 };
