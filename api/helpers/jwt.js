@@ -10,7 +10,7 @@ module.exports = {
     };
 
     const options = {
-      expiresIn: '1d'
+      expiresIn: '14d'
     };
 
     const token = await jwt.sign(payload, secret.jwtSecret, options);
