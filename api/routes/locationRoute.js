@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const controller = require('../controllers/location');
-const authUser = require('../helpers/jwt');
+const userValidators = require('../validator/userValidator');
 
 router.post(
   '/getLocation',
-  [authUser.authUser],
+  userValidators.validateLocationInfo,
   controller.findOrCreateLocation
 );
 

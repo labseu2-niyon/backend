@@ -11,10 +11,19 @@ router.get(
   [auth.authUser, userValidator.validateUserExists],
   controller.getAllMentees
 );
+
+router.get(
+  '/:username',
+  [auth.authUser, userValidator.validateUserExists],
+  controller.checkIfUserIsMentee
+);
+
 router.post(
   '/:username/mentee',
   [auth.authUser, userValidator.validateUserExists],
   controller.makeUserMentee
 );
+
+router.post('/choice', controller.addMenteeChoice);
 
 module.exports = router;

@@ -8,6 +8,7 @@ describe('Get /types/all', () => {
       .then(res => {
         expect(res.status).toBe(200);
         expect(res.type).toEqual('application/json');
+        expect(res.body.data).toHaveLength(4);
       });
   });
 });

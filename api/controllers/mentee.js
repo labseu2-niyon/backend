@@ -66,5 +66,48 @@ module.exports = {
     } catch (error) {
       return response.error(res, 500, error.message);
     }
+  },
+
+  async checkIfUserIsMentee(req, res) {
+    try {
+      const { username } = req.params;
+      const user = await models.Users.findOne({
+        attributes: ['id'],
+        where: { username }
+      });
+      if (user) {
+        const userId = user.dataValues.id;
+        const mentee = await models.Mentees.findOne({
+          where: { user_id: userId },
+          attributes: ['id', 'location_id', 'industry_id']
+        });
+        if (mentee) {
+          const newMentee = { mentee: true };
+          return response.success(res, 200, newMentee);
+        }
+        return response.success(res, 201, 'user is not a mentee');
+      }
+      return response.error(res, 404, 'user is not found');
+    } catch (error) {
+      return response.error(res, 500, error.message);
+    }
+  },
+
+  async addMenteeChoice(req, res) {
+    try {
+      const { mentorTypeId, menteeId } = req.body;
+      const menteeChoice = await models.Mentees_choices.create({
+        mentoring_type_id: mentorTypeId,
+        mentee_id: menteeId
+      });
+      if (menteeChoice) return response.success(res, 201, menteeChoice);
+      return response.error(
+        res,
+        404,
+        'Could not assign mentoring type to mentee'
+      );
+    } catch (error) {
+      return response.error(res, 500, error.message);
+    }
   }
 };

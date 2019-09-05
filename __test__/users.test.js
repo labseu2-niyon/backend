@@ -1,9 +1,11 @@
 const request = require('supertest');
 const path = require('path');
+const passport = require('passport');
 const server = require('../server');
 const jwt = require('../api/helpers/jwt');
 const mail = require('../api/helpers/mail');
 const cloudinary = require('../api/middleware/cloudinaryImage');
+const authMiddleware = require('../api/middleware/authStrategies');
 
 describe('PATCH /:username/image/upload', () => {
   it('should return 401 if no token is provided', () => {
@@ -374,6 +376,119 @@ describe('POST Login User', () => {
         expect(res.body.data.message).toBe(
           `${user.email} successfully logged in.`
         );
+      });
+  });
+});
+
+describe('GET /auth/github', () => {
+  it('should return 302', () => {
+    jest
+      .spyOn(authMiddleware, 'githubStrategy')
+      .mockResolvedValue({ success: true });
+    return request(server)
+      .get('/api/user/auth/github/')
+      .then(res => {
+        expect(res.status).toBe(302);
+      });
+  });
+  it('should return 302', () => {
+    jest
+      .spyOn(authMiddleware, 'githubStrategy')
+      .mockResolvedValue({ success: true });
+    jest.spyOn(passport, 'authenticate').mockResolvedValue({ success: true });
+    return request(server)
+      .get('/api/user/auth/github/callback')
+      .then(res => {
+        expect(res.status).toBe(302);
+      });
+  });
+});
+
+describe('PATCH /api/user/:username/password', () => {
+  it('should return 401 if no token is provided', () => {
+    return request(server)
+      .patch('/api/user/:vincent/password')
+      .send({})
+      .then(res => {
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe('Token is required');
+      });
+  });
+  it('should return 401 if token is invalid', () => {
+    return request(server)
+      .patch('/api/user/:vincent/password')
+      .set({ token: 'gdgfhhrbgegq2ehnfnsnjthrtn' })
+      .send()
+      .then(res => {
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe('Error token type');
+      });
+  });
+  it("should return 404 if user doesn't exists", async () => {
+    const user = {
+      id: 1,
+      username: 'john'
+    };
+    const jwtToken = await jwt.generateToken(user);
+    return request(server)
+      .patch('/api/user/:vincent/password')
+      .set({ token: jwtToken })
+      .send()
+      .then(res => {
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe('Error user access');
+      });
+  });
+  it("should return 404 if user doesn't exists", async () => {
+    const user = {
+      id: 1,
+      username: 'vincent'
+    };
+    const jwtToken = await jwt.generateToken(user);
+    return request(server)
+      .patch('/api/user/vincent/password')
+      .set({ token: jwtToken })
+      .send()
+      .then(res => {
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('User not found');
+      });
+  });
+  it("should return 403 if password don't match old password", async () => {
+    const user = {
+      id: 1,
+      username: 'john'
+    };
+    const body = {
+      password: '12345678',
+      newPassword: 'password'
+    };
+    const jwtToken = await jwt.generateToken(user);
+    return request(server)
+      .patch('/api/user/john/password')
+      .set({ token: jwtToken })
+      .send(body)
+      .then(res => {
+        expect(res.status).toBe(403);
+        expect(res.body.message).toBe('Password did not match');
+      });
+  });
+  it('should return 200 if password is updated', async () => {
+    const user = {
+      id: 1,
+      username: 'john'
+    };
+    const body = {
+      password: 'password',
+      newPassword: 'password'
+    };
+    const jwtToken = await jwt.generateToken(user);
+    return request(server)
+      .patch('/api/user/john/password')
+      .set({ token: jwtToken })
+      .send(body)
+      .then(res => {
+        expect(res.status).toBe(200);
       });
   });
 });
