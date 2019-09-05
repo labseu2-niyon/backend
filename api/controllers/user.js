@@ -28,6 +28,30 @@ module.exports = {
             as: 'location'
           },
           {
+            model: models.Mentees,
+            attributes: ['id'],
+            as: 'Mentee',
+            include: [
+              {
+                model: models.Industries,
+                attributes: ['industry_name'],
+                as: 'industry'
+              }
+            ]
+          },
+          {
+            model: models.Mentors,
+            attributes: ['id'],
+            as: 'Mentor',
+            include: [
+              {
+                model: models.Industries,
+                attributes: ['industry_name'],
+                as: 'industry'
+              }
+            ]
+          },
+          {
             model: models.Tech_jobs,
             attributes: ['tech_name'],
             as: 'job',
