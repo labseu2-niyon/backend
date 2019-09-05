@@ -55,10 +55,32 @@ module.exports = {
   async getAllUsers(req, res, next) {
     try {
       const users = await models.Users.findAll({
+        attributes: [
+          'id',
+          'first_name',
+          'last_name',
+          'username',
+          'email',
+          'biography',
+          'profile_picture'
+        ],
         include: [
           {
             model: models.Locations,
+            attributes: ['id', 'city_name', 'country_name'],
             as: 'location'
+          },
+          {
+            model: models.Tech_jobs,
+            attributes: ['tech_name'],
+            as: 'job',
+            include: [
+              {
+                model: models.Industries,
+                attributes: ['industry_name'],
+                as: 'industry'
+              }
+            ]
           }
         ]
       });
@@ -95,23 +117,16 @@ module.exports = {
   async updateUserProfile(req, res, next) {
     try {
       const { username } = req.params;
-      const {
-        firstName,
-        lastName,
-        bio,
-        countryName,
-        cityName,
-        jobId
-      } = req.body;
+      const { firstName, lastName, bio, locationId, jobId } = req.body;
 
-      const locations = await models.Locations.findOrCreate({
-        where: { country_name: countryName, city_name: cityName },
-        attributes: ['id']
-      });
-      const locationId = locations[0].dataValues.id;
-      if (!locationId) {
-        return response.error(res, 404, 'Location not found');
-      }
+      // const locations = await models.Locations.findOrCreate({
+      //   where: { country_name: countryName, city_name: cityName },
+      //   attributes: ['id']
+      // });
+      // const locationId = locations[0].dataValues.id;
+      // if (!locationId) {
+      //   return response.error(res, 404, 'Location not found');
+      // }
       const updateUser = await models.Users.update(
         {
           first_name: firstName,

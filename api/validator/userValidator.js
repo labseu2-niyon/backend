@@ -53,7 +53,16 @@ module.exports = {
   validateUserProfileUpdate(req, res, next) {
     const validator = new Validator(req.body, {
       firstName: 'required|alpha',
-      lastName: 'required|alpha',
+      lastName: 'required|alpha'
+    });
+    if (validator.fails()) {
+      return response.error(res, 400, validator.errors.all());
+    }
+    return next();
+  },
+
+  validateLocationInfo(req, res, next) {
+    const validator = new Validator(req.body, {
       countryName: 'required|alpha',
       cityName: 'required|alpha'
     });

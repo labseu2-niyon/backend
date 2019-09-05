@@ -5,7 +5,7 @@ module.exports = {
   async getAllJobs(req, res) {
     try {
       const jobs = await models.Tech_jobs.findAll({
-        attributes: ['tech_name']
+        attributes: ['id', 'tech_name']
       });
       if (jobs) return response.success(res, 200, jobs);
 
