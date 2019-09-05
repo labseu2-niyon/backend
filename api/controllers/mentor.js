@@ -82,12 +82,12 @@ module.exports = {
           attributes: ['id', 'location_id', 'industry_id']
         });
         if (mentor) {
-          const newMentor = { ...mentor.dataValues, mentor: true };
+          const newMentor = { mentor: true };
           return response.success(res, 200, newMentor);
         }
         return response.success(res, 201, 'user is not a mentor');
       }
-      return response.error(res, 500, 'user is not found');
+      return response.error(res, 404, 'user is not found');
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -101,9 +101,13 @@ module.exports = {
         mentor_id: mentorId
       });
       if (mentorChoice) return response.success(res, 201, mentorChoice);
-      return response.error(res, 404, 'could assign mentoring type to mentor');
+      return response.error(
+        res,
+        404,
+        'could not assign mentoring type to mentor'
+      );
     } catch (error) {
-      return response.error(res, 404, error.message);
+      return response.error(res, 500, error.message);
     }
   }
 };

@@ -82,12 +82,12 @@ module.exports = {
           attributes: ['id', 'location_id', 'industry_id']
         });
         if (mentee) {
-          const newMentee = { ...mentee.dataValues, mentee: true };
+          const newMentee = { mentee: true };
           return response.success(res, 200, newMentee);
         }
         return response.success(res, 201, 'user is not a mentee');
       }
-      return response.error(res, 500, 'user is not found');
+      return response.error(res, 404, 'user is not found');
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -101,9 +101,13 @@ module.exports = {
         mentee_id: menteeId
       });
       if (menteeChoice) return response.success(res, 201, menteeChoice);
-      return response.error(res, 404, 'Could assign mentoring type to mentee');
+      return response.error(
+        res,
+        404,
+        'Could not assign mentoring type to mentee'
+      );
     } catch (error) {
-      return response.error(res, 404, error.message);
+      return response.error(res, 500, error.message);
     }
   }
 };
