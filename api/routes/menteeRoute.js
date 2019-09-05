@@ -14,7 +14,7 @@ router.get(
 
 router.get(
   '/:username',
-  // [auth.authUser, userValidator.validateUserExists],
+  [auth.authUser, userValidator.validateUserExists],
   controller.checkifUserIsMentee
 );
 
