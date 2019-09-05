@@ -15,7 +15,7 @@ router.get(
 router.get(
   '/:username',
   [auth.authUser, userValidator.validateUserExists],
-  controller.checkifUserIsMentee
+  controller.checkIfUserIsMentee
 );
 
 router.post(

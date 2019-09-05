@@ -68,7 +68,7 @@ module.exports = {
     }
   },
 
-  async checkifUserIsMentor(req, res) {
+  async checkIfUserIsMentor(req, res) {
     try {
       const { username } = req.params;
       const user = await models.Users.findOne({
