@@ -210,6 +210,25 @@ describe('GET user profile information', () => {
   });
 });
 
+describe('GET user by username', () => {
+  it('should return a 200 code', async () => {
+    return request(server)
+      .get('/api/user/john')
+      .then(res => {
+        expect(res.status).toBe(200);
+      });
+  });
+
+  it('should return a 404 code user does not exist', async () => {
+    return request(server)
+      .get('/api/user/damola')
+      .then(res => {
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('User not found');
+      });
+  });
+});
+
 describe('POST user update social media info', () => {
   it('should return 401 if no token is provided', () => {
     return request(server)
