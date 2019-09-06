@@ -96,4 +96,10 @@ router.post(
   controller.addSocialMediaAccount
 );
 
+router.get(
+  '/:username',
+  [userValidators.validateUserExists],
+  controller.getUserByUsername
+);
+
 module.exports = router;
