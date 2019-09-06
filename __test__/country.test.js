@@ -1,7 +1,7 @@
 const request = require('supertest');
 const server = require('../server');
 
-describe('GET /api/countries/counties', () => {
+describe('GET /api/countries/countries', () => {
   it('should return a 201 after getting all countries', () => {
     return request(server)
       .get('/api/countries/countries')

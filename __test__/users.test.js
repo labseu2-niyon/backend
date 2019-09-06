@@ -309,7 +309,7 @@ describe('POST Create User', () => {
         );
       });
   });
-  it('should return a 201 when user is created succesful', async () => {
+  it('should return a 201 when user is created successfully', async () => {
     const user = {
       username: 'Johnson',
       email: 'gmail@gmail.com',
@@ -338,7 +338,7 @@ describe('POST Login User', () => {
         expect(res.body.message).toBe('Input a valid email');
       });
   });
-  it('should return 404 if user doesn exists', () => {
+  it('should return 404 if user does not exists', () => {
     const user = {
       email: 'email@gmail.com'
     };
@@ -350,7 +350,7 @@ describe('POST Login User', () => {
         expect(res.body.message).toBe('User not found');
       });
   });
-  it('should return 401 if credientials are not valid', () => {
+  it('should return 401 if credentials are not valid', () => {
     const user = {
       email: 'nmereginivincent@gmail.com',
       password: '123456789'
