@@ -8,13 +8,12 @@ module.exports = {
         attributes: ['country_name'],
         returning: true
       });
-      if (countries) return response.success(res, 201, countries);
-      return response.error(res, 404, 'Could not fetch countries');
+      return response.success(res, 200, countries);
     } catch (error) {
       return next({ message: error.message });
     }
   },
-
+  // currently not in use
   async getCitiesByCountries(req, res, next) {
     try {
       const { country } = req.params;
@@ -23,8 +22,10 @@ module.exports = {
         where: { country_name: country },
         returning: true
       });
-      if (cities) return response.success(res, 201, cities);
-      return response.error(res, 404, 'Could not fetch cities');
+      if (!cities.length) {
+        return response.success(res, 200, 'No cities saved in the country');
+      }
+      return response.success(res, 200, cities);
     } catch (error) {
       return next({ message: error.message });
     }
@@ -38,10 +39,7 @@ module.exports = {
         attributes: ['id']
       });
       const locationId = locations[0].dataValues.id;
-      if (locationId) {
-        return response.success(res, 201, locationId);
-      }
-      return response.error(res, 404, 'Error finding or creating location');
+      return response.success(res, 201, locationId);
     } catch (error) {
       return next({ message: error.message });
     }

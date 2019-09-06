@@ -65,12 +65,7 @@ module.exports = {
           }
         ]
       });
-      if (user) return response.success(res, 200, user);
-      return response.error(
-        res,
-        404,
-        `user with the username ${username} does not exist`
-      );
+      return response.success(res, 200, user);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -146,8 +141,7 @@ module.exports = {
         },
         { where: { username }, returning: true }
       );
-      if (updatePassword) return response.success(res, 200, updatePassword);
-      return response.error(res, 404, 'Could not update user');
+      return response.success(res, 200, updatePassword);
     } catch (error) {
       return next({
         message: error.message
@@ -178,8 +172,7 @@ module.exports = {
         },
         { where: { username }, returning: true }
       );
-      if (updateUser) return response.success(res, 200, updateUser);
-      return response.error(res, 404, 'Could not update user');
+      return response.success(res, 200, updateUser);
     } catch (error) {
       return next({ message: 'Error updating profile' });
     }
@@ -187,7 +180,12 @@ module.exports = {
 
   async createUser(req, res) {
     try {
-      const user = await models.Users.create(req.body);
+      const createUser = {
+        ...req.body,
+        email: req.body.email.toLowerCase(),
+        username: req.body.username.toLowerCase()
+      };
+      const user = await models.Users.create(createUser);
       if (user) {
         const newUser = {
           password: user.password,
@@ -218,7 +216,7 @@ module.exports = {
         bcrypt.compareSync(password, user.dataValues.password)
       ) {
         const token = await jwt.generateToken(user.dataValues);
-        return response.success(res, 201, {
+        return response.success(res, 200, {
           message: `${email} successfully logged in.`,
           token
         });
@@ -251,8 +249,7 @@ module.exports = {
         { profile_picture: file.secure_url, public_id: file.public_id },
         { where: { username: params.username }, returning: true }
       );
-      if (user) return response.success(res, 200, user);
-      return response.error(res, 400, 'Image was not uploaded');
+      return response.success(res, 200, user);
     } catch (error) {
       return next({ message: 'Error updating image' });
     }
@@ -271,21 +268,14 @@ module.exports = {
       if (!sendMail) {
         return response.error(res, 400, 'Error sending mail try again');
       }
-      const user = await models.Users.update(
+      await models.Users.update(
         {
           reset_password_token: token,
           reset_password_expires: expiringDate
         },
         { where: { email: req.userEmail.email } }
       );
-      if (user) {
-        return response.success(
-          res,
-          200,
-          `Email sent to ${req.userEmail.email}`
-        );
-      }
-      return response.error(res, 400, 'User email error');
+      return response.success(res, 200, `Email sent to ${req.userEmail.email}`);
     } catch (error) {
       return next({ message: 'Error sending mail tryagain' });
     }

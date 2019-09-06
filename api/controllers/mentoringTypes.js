@@ -7,9 +7,7 @@ module.exports = {
       const types = await models.Mentoring_types.findAll({
         attributes: ['id', 'mentor_type_name']
       });
-      if (types) return response.success(res, 200, types);
-
-      return response.error(res, 404, 'Could not fetch Types');
+      return response.success(res, 200, types);
     } catch (error) {
       return response.error(res, 500, error.message);
     }

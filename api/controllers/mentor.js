@@ -33,10 +33,7 @@ module.exports = {
           }
         ]
       });
-      if (mentors) {
-        return response.success(res, 200, mentors);
-      }
-      return response.error(res, 404, 'Could not find all Mentors');
+      return response.success(res, 200, mentors);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -45,24 +42,13 @@ module.exports = {
   async makeUserMentor(req, res) {
     try {
       const { locationId, industryId } = req.body;
-      const { username } = req.params;
-      const user = await models.Users.findOne({
-        attributes: ['id'],
-        where: { username }
+      const userId = req.user.id;
+      const mentor = await models.Mentors.create({
+        user_id: userId,
+        location_id: locationId,
+        industry_id: industryId
       });
-      const userId = user.dataValues.id;
-      if (userId) {
-        const mentor = await models.Mentors.create({
-          user_id: userId,
-          location_id: locationId,
-          industry_id: industryId
-        });
-        if (mentor) {
-          return response.success(res, 201, mentor);
-        }
-        return response.error(res, 404, 'Could not create Mentor');
-      }
-      return response.error(res, 404, `user ${username} does not exist`);
+      return response.success(res, 201, mentor);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -70,24 +56,13 @@ module.exports = {
 
   async checkIfUserIsMentor(req, res) {
     try {
-      const { username } = req.params;
-      const user = await models.Users.findOne({
-        attributes: ['id'],
-        where: { username }
+      const userId = req.user.id;
+      await models.Mentors.findOne({
+        where: { user_id: userId },
+        attributes: ['id', 'location_id', 'industry_id']
       });
-      if (user) {
-        const userId = user.dataValues.id;
-        const mentor = await models.Mentors.findOne({
-          where: { user_id: userId },
-          attributes: ['id', 'location_id', 'industry_id']
-        });
-        if (mentor) {
-          const newMentor = { mentor: true };
-          return response.success(res, 200, newMentor);
-        }
-        return response.success(res, 201, 'user is not a mentor');
-      }
-      return response.error(res, 404, 'user is not found');
+      const newMentor = { mentor: true };
+      return response.success(res, 200, newMentor);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -100,12 +75,7 @@ module.exports = {
         mentoring_type_id: mentorTypeId,
         mentor_id: mentorId
       });
-      if (mentorChoice) return response.success(res, 201, mentorChoice);
-      return response.error(
-        res,
-        404,
-        'could not assign mentoring type to mentor'
-      );
+      return response.success(res, 201, mentorChoice);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
