@@ -33,10 +33,7 @@ module.exports = {
           }
         ]
       });
-      if (mentees) {
-        return response.success(res, 200, mentees);
-      }
-      return response.error(res, 404, 'No Mentee found');
+      return response.success(res, 200, mentees);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -45,24 +42,13 @@ module.exports = {
   async makeUserMentee(req, res) {
     try {
       const { locationId, industryId } = req.body;
-      const { username } = req.params;
-      const user = await models.Users.findOne({
-        attributes: ['id'],
-        where: { username }
+      const userId = req.user.id;
+      const mentee = await models.Mentees.create({
+        user_id: userId,
+        location_id: locationId,
+        industry_id: industryId
       });
-      const userId = user.dataValues.id;
-      if (userId) {
-        const mentee = await models.Mentees.create({
-          user_id: userId,
-          location_id: locationId,
-          industry_id: industryId
-        });
-        if (mentee) {
-          return response.success(res, 201, mentee);
-        }
-        return response.error(res, 404, 'Could not create Mentee');
-      }
-      return response.error(res, 404, `user ${username} does not exist`);
+      return response.success(res, 201, mentee);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -70,24 +56,16 @@ module.exports = {
 
   async checkIfUserIsMentee(req, res) {
     try {
-      const { username } = req.params;
-      const user = await models.Users.findOne({
-        attributes: ['id'],
-        where: { username }
+      const userId = req.user.id;
+      const mentee = await models.Mentees.findOne({
+        where: { user_id: userId },
+        attributes: ['id', 'location_id', 'industry_id']
       });
-      if (user) {
-        const userId = user.dataValues.id;
-        const mentee = await models.Mentees.findOne({
-          where: { user_id: userId },
-          attributes: ['id', 'location_id', 'industry_id']
-        });
-        if (mentee) {
-          const newMentee = { mentee: true };
-          return response.success(res, 200, newMentee);
-        }
-        return response.success(res, 201, 'user is not a mentee');
+      if (mentee) {
+        const newMentee = { mentee: true };
+        return response.success(res, 200, newMentee);
       }
-      return response.error(res, 404, 'user is not found');
+      return response.success(res, 200, 'user is not a mentee');
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -100,12 +78,7 @@ module.exports = {
         mentoring_type_id: mentorTypeId,
         mentee_id: menteeId
       });
-      if (menteeChoice) return response.success(res, 201, menteeChoice);
-      return response.error(
-        res,
-        404,
-        'Could not assign mentoring type to mentee'
-      );
+      return response.success(res, 201, menteeChoice);
     } catch (error) {
       return response.error(res, 500, error.message);
     }

@@ -4,13 +4,13 @@
   "description": "Backend for Niyon application",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --coverage --forceExit --detectOpenHandles --maxWorkers=1",
+    "test": "cross-env NODE_ENV=test jest --coverage --forceExit --detectOpenHandles",
     "testcircleci": "cross-env NODE_ENV=test jest --coverage",
     "start": "node index.js",
     "start:dev": "nodemon index.js",
     "lint": "./node_modules/.bin/eslint . --fix",
     "test:watch": "jest --watch",
-    "generator": "./node_modules/.bin/sequelize  model:generate --name Mentees_chioces --attributes username:string",
+    "generator": "./node_modules/.bin/sequelize model:generate --name Mentees_chioces --attributes username:string",
     "migration": "./node_modules/.bin/sequelize db:migrate",
     "create:seeds": "./node_modules/.bin/sequelize seed:generate --name demo-mentors",
     "dropMigration": "./node_modules/.bin/sequelize db:migrate:undo:all",
@@ -20,6 +20,16 @@
     "coverall": "npm test && cat ./coverage/lcov.info | coveralls",
     "coveralls": "nyc npm run testcircleci --coverageReporters=text-lcov | coveralls",
     "test-ci": "nyc npm run testcircleci --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "api/**/*.js",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/api/middleware/authStrategies.js",
+      "!<rootDir>/api/middleware/cloudinaryImage.js",
+      "!<rootDir>/api/helpers/mail.js",
+      "!<rootDir>/_test_"
+    ]
   },
   "repository": {
     "type": "git",
