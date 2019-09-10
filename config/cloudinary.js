@@ -13,7 +13,7 @@ const storage = cloudinaryStorage({
   cloudinary,
   folder: 'niyon-app',
   allowedFormats: ['jpg', 'png'],
-  transformation: [{ width: 300, height: 300, crop: 'limit' }],
+  transformation: [{ width: 300, height: 300, crop: 'scale' }],
   filename(req, file, cb) {
     if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
       cb(null, true);
