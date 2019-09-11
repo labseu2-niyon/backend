@@ -1,4 +1,5 @@
 [![Coverage Status](https://coveralls.io/repos/github/labseu2-niyon/backend/badge.svg?branch=development)](https://coveralls.io/github/labseu2-niyon/backend?branch=development) [![CircleCI](https://circleci.com/gh/labseu2-niyon/backend.svg?style=svg)](https://circleci.com/gh/labseu2-niyon/backend)
+
 🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.
 
 🚫 The numbers 1️⃣ through 3️⃣ next to each item represent the week that part of the docs needs to be comepleted by. Make sure to delete the numbers by the end of Labs.
