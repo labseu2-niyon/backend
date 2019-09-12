@@ -492,7 +492,6 @@ describe('PATCH /api/user/:username/password', () => {
       });
   });
 });
-
 describe('GET user by username', () => {
   it('should return a 200 code', async () => {
     return request(server)
