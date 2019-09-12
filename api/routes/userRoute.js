@@ -63,20 +63,18 @@ router.get(
   controller.socialAuthlogin
 );
 
-// router.get('/login/?provider=facebook', [
-//   passport.authenticate('facebook', {
-//     scope: ['profile']
-//   })
-// ]);
+// Facebook
+router.get('/auth/facebook', [
+  passport.authenticate('facebook', {
+    scope: ['email']
+  })
+]);
 
-// router.get(
-//   '/login/?provider=facebook/redirect',
-//   passport.authenticate('facebook', { failureRedirect: '/login' }),
-//   (req, res) => {
-//     // Successful authentication, redirect home.
-//     res.redirect('/');
-//   }
-// );
+router.get(
+  '/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  controller.socialAuthlogin
+);
 
 router.post(
   '/resetpassword',
