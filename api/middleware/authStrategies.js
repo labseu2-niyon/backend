@@ -1,5 +1,7 @@
+/* eslint-disable no-param-reassign */
 const passport = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
+const FaceBookStrategy = require('passport-facebook');
 const LinkedInStrategy = require('passport-linkedin');
 const models = require('../../database/models');
 const keys = require('../../config/secret');
@@ -22,7 +24,11 @@ async function callbackStrategy(profile, cb) {
     if (!existingUser) {
       const newUser = await models.Users.findOrCreate({
         where: { auth_id: profile.id },
-        defaults: { username: profile.username, email, password: ' ' }
+        defaults: {
+          username: profile.username,
+          email,
+          password: ' '
+        }
       });
       if (!newUser) {
         return new Error();
@@ -40,7 +46,7 @@ function githubStrategy() {
     {
       clientID: keys.GITHUB_CLIENT_ID,
       clientSecret: keys.GITHUB_CLIENT_SECRET,
-      callbackURL: '/api/user/auth/github/callback',
+      callbackURL: '/api/auth/github/callback',
       scope: 'user:email'
     },
     (accessToken, refreshToken, profile, cb) => {
@@ -49,22 +55,73 @@ function githubStrategy() {
   );
 }
 
-function linkedInStrategy() {
-  return new LinkedInStrategy(
+function facebookStrategy() {
+  return new FaceBookStrategy(
     {
-      consumerKey: keys.LINKEDIN_API_KEY,
-      consumerSecret: keys.LINKEDIN_SECRET_KEY,
-      callbackURL: '/api/user/auth/linkedin/callback',
-      profileFields: ['id', 'first-name', 'last-name', 'email-address']
+      clientID: keys.FACEBOOK_APP_ID,
+      clientSecret: keys.FACEBOOK_APP_SECRET,
+      callbackURL: '/api/auth/facebook/callback',
+      profileFields: ['id', 'last_name', 'first_name', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
-      console.log(profile);
+      // Make sure there is a username, needed to create a new user
+      if (!profile.username) {
+        const newUsername = `${profile.name.familyName}${profile.name.givenName}`;
+        profile = { ...profile, username: newUsername };
+      }
+      console.log(profile.username);
       return callbackStrategy(profile, cb);
     }
   );
 }
 
+function linkedInStrategy() {
+  passport.use(
+    new LinkedInStrategy(
+      {
+        consumerKey: keys.LINKEDIN_API_KEY,
+        consumerSecret: keys.LINKEDIN_SECRET_KEY,
+        callbackURL: '/login/?provider=linkedIn/redirect'
+      },
+      (accessToken, refreshToken, profile, cb) => {
+        return callbackStrategy(profile, cb);
+      }
+    )
+  );
+}
+
+// function googleStrategy() {
+//   passport.use(
+//     new GoogleStrategy(
+//       {
+//         clientID: keys.GOOGLE_CLIENT_ID,
+//         clientSecret: keys.GOOGLE_CLIENT_SECRET,
+//         callbackURL: 'auth/google/redirect'
+//       },
+//       (accessToken, refreshToken, profile, cb) => {
+//         return callbackStrategy(profile, cb);
+//       }
+//     )
+//   );
+// }
+
+// function twitterStrategy() {
+//   passport.use(
+//     new TwitterStrategy(
+//       {
+//         clientID: keys.TWITTER_CONSUMER_KEY,
+//         clientSecret: keys.TWITTER_CONSUMER_SECRET,
+//         callbackURL: '/login/?provider=twitter/redirect'
+//       },
+//       (accessToken, refreshToken, profile, cb) => {
+//         return callbackStrategy(profile, cb);
+//       }
+//     )
+//   );
+// }
+
 module.exports = {
   githubStrategy,
+  facebookStrategy,
   linkedInStrategy
 };

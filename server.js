@@ -6,7 +6,7 @@ const logger = require('morgan');
 const apiRouter = require('./api');
 // const keys = require('./config/secret');
 // const jwt = require('./api/helpers/jwt');
-const social = require('./api/middleware/authStrategies');
+const socialStrategies = require('./api/middleware/authStrategies');
 
 const server = express();
 
@@ -17,8 +17,8 @@ server.use(express.json());
 
 server.use(passport.initialize());
 server.use('/api', apiRouter);
-passport.use(social.githubStrategy());
-passport.use(social.linkedInStrategy());
+passport.use(socialStrategies.githubStrategy());
+passport.use(socialStrategies.facebookStrategy());
 
 server.get('/', async (_, res) => {
   // const user = {

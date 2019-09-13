@@ -1,29 +1,29 @@
 const router = require('express').Router();
 const auth = require('../helpers/jwt');
 const userValidator = require('../validator/userValidator');
-const controller = require('../controllers/mentor');
+const controller = require('../controllers/mentee');
 
 // router.get('/', (req, res) => {
 //   res.status(200).json('Mentor routes can be seen here');
 // });
 router.get(
-  '/:username/mentors',
+  '/:username/mentees',
   [auth.authUser, userValidator.validateUserExists],
-  controller.getAllMentors
+  controller.getAllMentees
 );
 
 router.get(
   '/:username',
   [auth.authUser, userValidator.validateUserExists],
-  controller.checkIfUserIsMentor
+  controller.checkIfUserIsMentee
 );
 
 router.post(
-  '/:username/mentor',
+  '/:username/mentee',
   [auth.authUser, userValidator.validateUserExists],
-  controller.makeUserMentor
+  controller.makeUserMentee
 );
 
-router.post('/choice', controller.addMentorChoice);
+router.post('/choice', controller.addMenteeChoice);
 
 module.exports = router;

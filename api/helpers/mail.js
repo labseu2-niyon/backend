@@ -2,13 +2,16 @@ const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 const secret = require('../../config/secret');
 
+const logo =
+  'https://res.cloudinary.com/niyon/image/upload/v1567491149/Group_2_3_pezgbf.png';
+
 async function passwordResetMail(url, token, email, username) {
   const mailGenerator = new Mailgen({
     theme: 'default',
     product: {
       name: 'Niyon',
-      link: `${url}`
-      // logo: ;
+      link: `${url}`,
+      logo
     }
   });
   const mail = {

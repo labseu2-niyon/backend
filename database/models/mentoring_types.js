@@ -20,11 +20,15 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Mentoring_types.belongsToMany(models.Mentors, {
       through: 'Mentors_choices',
-      foreignKey: 'mentor_id'
+      foreignKey: 'mentor_id',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
     Mentoring_types.belongsToMany(models.Mentees, {
       through: 'Mentees_choices',
-      foreignKey: 'mentee_id'
+      foreignKey: 'mentee_id',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
   };
   return Mentoring_types;

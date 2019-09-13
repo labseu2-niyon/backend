@@ -6,9 +6,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlphanumeric: {
-            args: true,
-            msg: 'Please enter your country name'
+          min: {
+            args: 2,
+            msg: 'Country name should be atleast 2 characters long'
           }
         }
       },
@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlphanumeric: {
-            args: true,
-            msg: 'Please enter your country name'
+          min: {
+            args: 2,
+            msg: 'City name should be atleast 2 characters long'
           }
         }
       }

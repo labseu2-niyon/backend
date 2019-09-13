@@ -31,7 +31,7 @@ module.exports = {
         allowNull: true
       },
       biography: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true
       },
       profile_picture: {
@@ -61,6 +61,14 @@ module.exports = {
           model: 'Locations',
           key: 'id',
           as: 'location'
+        }
+      },
+      job_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Tech_jobs',
+          key: 'id',
+          as: 'job'
         }
       },
       created_at: {

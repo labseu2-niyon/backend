@@ -1,4 +1,6 @@
 {
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "liveshare.increasedGuestLimit": false,
+  "liveshare.languages.allowGuestCommandControl": true
 }
 

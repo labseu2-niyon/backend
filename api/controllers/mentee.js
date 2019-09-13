@@ -3,9 +3,9 @@ const models = require('../../database/models');
 const response = require('../helpers/response');
 
 module.exports = {
-  async getAllMentors(req, res) {
+  async getAllMentees(req, res) {
     try {
-      const mentors = await models.Mentors.findAll({
+      const mentees = await models.Mentees.findAll({
         attributes: ['user_id', 'industry_id', 'location_id'],
         include: [
           {
@@ -33,49 +33,52 @@ module.exports = {
           }
         ]
       });
-      return response.success(res, 200, mentors);
+      return response.success(res, 200, mentees);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
   },
 
-  async makeUserMentor(req, res) {
+  async makeUserMentee(req, res) {
     try {
       const { locationId, industryId } = req.body;
       const userId = req.user.id;
-      const mentor = await models.Mentors.create({
+      const mentee = await models.Mentees.create({
         user_id: userId,
         location_id: locationId,
         industry_id: industryId
       });
-      return response.success(res, 201, mentor);
+      return response.success(res, 201, mentee);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
   },
 
-  async checkIfUserIsMentor(req, res) {
+  async checkIfUserIsMentee(req, res) {
     try {
       const userId = req.user.id;
-      await models.Mentors.findOne({
+      const mentee = await models.Mentees.findOne({
         where: { user_id: userId },
         attributes: ['id', 'location_id', 'industry_id']
       });
-      const newMentor = { mentor: true };
-      return response.success(res, 200, newMentor);
+      if (mentee) {
+        const newMentee = { mentee: true };
+        return response.success(res, 200, newMentee);
+      }
+      return response.success(res, 200, 'user is not a mentee');
     } catch (error) {
       return response.error(res, 500, error.message);
     }
   },
 
-  async addMentorChoice(req, res) {
+  async addMenteeChoice(req, res) {
     try {
-      const { mentorTypeId, mentorId } = req.body;
-      const mentorChoice = await models.Mentors_choices.create({
+      const { mentorTypeId, menteeId } = req.body;
+      const menteeChoice = await models.Mentees_choices.create({
         mentoring_type_id: mentorTypeId,
-        mentor_id: mentorId
+        mentee_id: menteeId
       });
-      return response.success(res, 201, mentorChoice);
+      return response.success(res, 201, menteeChoice);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
