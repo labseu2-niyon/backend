@@ -46,17 +46,23 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    {}
+    {
+      indexes: [
+        {
+          unique: true,
+          fields: ['user_id', 'request_user_id']
+        }
+      ]
+    }
   );
   Connections.associate = models => {
     // associations can be defined here
-    Connections.belolongsTo(models.Users, {
+    Connections.belongsTo(models.Users, {
       foriegnKey: 'user_id',
-      as: 'user',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
-    Connections.belolongsTo(models.Users, {
+    Connections.belongsTo(models.Users, {
       foriegnKey: 'request_user_id',
       as: 'request',
       onUpdate: 'CASCADE',

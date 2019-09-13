@@ -57,13 +57,13 @@ module.exports = (sequelize, DataTypes) => {
     });
     Chats.belongsTo(models.Users, {
       foriegnKey: 'sender',
-      as: 'sender',
+      // as: 'sender',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
     Chats.belongsTo(models.Users, {
       foriegnKey: 'reciever',
-      as: 'reciever',
+      // as: 'reciever',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
