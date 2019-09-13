@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const passport = require('passport');
 const controller = require('../controllers/user');
 const userValidators = require('../validator/userValidator');
 const cloudinary = require('../middleware/cloudinaryImage');
@@ -41,8 +40,8 @@ router.patch(
   [
     authUser.authUser,
     userValidators.validateUserExists,
-    cloudinary.uploadImage('image'),
-    cloudinary.deleteCloudImage
+    cloudinary.uploadImage('image')
+    // cloudinary.deleteCloudImage
   ],
   controller.uploadUserImage
 );
@@ -55,33 +54,6 @@ router.post(
 );
 
 router.post('/login', [userValidators.validateUserEmail], controller.loginUser);
-
-// Github
-router.get('/auth/github', passport.authenticate('github', { session: false }));
-
-router.get(
-  '/auth/github/callback',
-  passport.authenticate('github', {
-    failureMessage: 'Error logging in with github'
-  }),
-
-  controller.socialAuthlogin
-);
-
-// router.get('/login/?provider=facebook', [
-//   passport.authenticate('facebook', {
-//     scope: ['profile']
-//   })
-// ]);
-
-// router.get(
-//   '/login/?provider=facebook/redirect',
-//   passport.authenticate('facebook', { failureRedirect: '/login' }),
-//   (req, res) => {
-//     // Successful authentication, redirect home.
-//     res.redirect('/');
-//   }
-// );
 
 router.post(
   '/resetpassword',
@@ -99,6 +71,12 @@ router.post(
   '/:username/socialmedia',
   [authUser.authUser, userValidators.validateUserExists],
   controller.addSocialMediaAccount
+);
+
+router.get(
+  '/:username',
+  [userValidators.validateUserExists],
+  controller.getUserByUsername
 );
 
 module.exports = router;

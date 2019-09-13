@@ -1,11 +1,9 @@
 const request = require('supertest');
 const path = require('path');
-const passport = require('passport');
 const server = require('../server');
 const jwt = require('../api/helpers/jwt');
 const mail = require('../api/helpers/mail');
 const cloudinary = require('../api/middleware/cloudinaryImage');
-const authMiddleware = require('../api/middleware/authStrategies');
 
 describe('PATCH /:username/image/upload', () => {
   it('should return 401 if no token is provided', () => {
@@ -399,30 +397,6 @@ describe('POST Login User', () => {
   });
 });
 
-describe('GET /auth/github', () => {
-  it('should return 302', () => {
-    jest
-      .spyOn(authMiddleware, 'githubStrategy')
-      .mockResolvedValue({ success: true });
-    return request(server)
-      .get('/api/user/auth/github/')
-      .then(res => {
-        expect(res.status).toBe(302);
-      });
-  });
-  it('should return 302', () => {
-    jest
-      .spyOn(authMiddleware, 'githubStrategy')
-      .mockResolvedValue({ success: true });
-    jest.spyOn(passport, 'authenticate').mockResolvedValue({ success: true });
-    return request(server)
-      .get('/api/user/auth/github/callback')
-      .then(res => {
-        expect(res.status).toBe(302);
-      });
-  });
-});
-
 describe('PATCH /api/user/:username/password', () => {
   it('should return 401 if no token is provided', () => {
     return request(server)
@@ -508,6 +482,25 @@ describe('PATCH /api/user/:username/password', () => {
       .send(body)
       .then(res => {
         expect(res.status).toBe(200);
+      });
+  });
+});
+
+describe('GET user by username', () => {
+  it('should return a 200 code', async () => {
+    return request(server)
+      .get('/api/user/john')
+      .then(res => {
+        expect(res.status).toBe(200);
+      });
+  });
+
+  it('should return a 404 code user does not exist', async () => {
+    return request(server)
+      .get('/api/user/damola')
+      .then(res => {
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('User not found');
       });
   });
 });
