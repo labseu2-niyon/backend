@@ -10,7 +10,7 @@
     "start:dev": "nodemon index.js",
     "lint": "./node_modules/.bin/eslint . --fix",
     "test:watch": "jest --watch",
-    "generator": "./node_modules/.bin/sequelize model:generate --name Mentees_chioces --attributes username:string",
+    "generator": "./node_modules/.bin/sequelize model:generate --name Chats --attributes username:string",
     "migration": "./node_modules/.bin/sequelize db:migrate",
     "create:seeds": "./node_modules/.bin/sequelize seed:generate --name demo-mentors",
     "dropMigration": "./node_modules/.bin/sequelize db:migrate:undo:all",
