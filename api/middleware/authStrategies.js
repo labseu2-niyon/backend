@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 const passport = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
-const FaceBookStrategy = require('passport-facebook');
-const LinkedInStrategy = require('passport-linkedin');
+const FacebookStrategy = require('passport-facebook').Strategy;
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 const models = require('../../database/models');
 const keys = require('../../config/secret');
 
@@ -56,7 +56,7 @@ function githubStrategy() {
 }
 
 function facebookStrategy() {
-  return new FaceBookStrategy(
+  return new FacebookStrategy(
     {
       clientID: keys.FACEBOOK_APP_ID,
       clientSecret: keys.FACEBOOK_APP_SECRET,
@@ -69,24 +69,27 @@ function facebookStrategy() {
         const newUsername = `${profile.name.familyName}${profile.name.givenName}`;
         profile = { ...profile, username: newUsername };
       }
-      console.log(profile.username);
       return callbackStrategy(profile, cb);
     }
   );
 }
 
 function linkedInStrategy() {
-  passport.use(
-    new LinkedInStrategy(
-      {
-        consumerKey: keys.LINKEDIN_API_KEY,
-        consumerSecret: keys.LINKEDIN_SECRET_KEY,
-        callbackURL: '/login/?provider=linkedIn/redirect'
-      },
-      (accessToken, refreshToken, profile, cb) => {
-        return callbackStrategy(profile, cb);
-      }
-    )
+  return new LinkedInStrategy(
+    {
+      clientID: keys.LINKEDIN_CLIENT_ID,
+      clientSecret: keys.LINKEDIN_CLIENT_SECRET,
+      callbackURL: 'http://localhost:5000/api/auth/linkedin/callback',
+      scope: ['r_emailaddress', 'r_liteprofile'],
+      state: true
+    },
+    (accessToken, refreshToken, profile, done) => {
+      process.nextTick(() => {
+        // console.log(profile);
+        return done(null, profile);
+        // return callbackStrategy(profile, cb);
+      });
+    }
   );
 }
 

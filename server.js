@@ -19,6 +19,7 @@ server.use(passport.initialize());
 server.use('/api', apiRouter);
 passport.use(socialStrategies.githubStrategy());
 passport.use(socialStrategies.facebookStrategy());
+passport.use(socialStrategies.linkedInStrategy());
 
 server.get('/', async (_, res) => {
   // const user = {

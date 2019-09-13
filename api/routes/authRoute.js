@@ -27,25 +27,23 @@ router.get(
   controller.socialAuthlogin
 );
 
-// LinkedIn
-
 // Linkedin
 router.get(
-  '/auth/linkedin',
+  '/linkedin',
   passport.authenticate(
     'linkedin',
-    { scope: ['r_basicprofile', 'r_emailaddress'] },
+    { state: 'cjT4OF3pxVWNDrB' },
     { session: false }
   )
 );
 
 router.get(
-  '/auth/linkedin/callback',
+  '/linkedin/callback',
   passport.authenticate('linkedin', {
-    failureMessage: 'Error logging in with LinkedIn'
-  }),
-
-  controller.socialAuthlogin
+    successRedirect: '/',
+    failureRedirect: '/login'
+  })
+  // controller.socialAuthlogin
 );
 
 module.exports = router;
