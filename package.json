@@ -4,13 +4,13 @@
   "description": "Backend for Niyon application",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --coverage --forceExit --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test jest --coverage --forceExit",
     "testcircleci": "cross-env NODE_ENV=test jest --coverage",
     "start": "node index.js",
     "start:dev": "nodemon index.js",
     "lint": "./node_modules/.bin/eslint . --fix",
     "test:watch": "jest --watch",
-    "generator": "./node_modules/.bin/sequelize model:generate --name Mentees_chioces --attributes username:string",
+    "generator": "./node_modules/.bin/sequelize model:generate --name Chats --attributes username:string",
     "migration": "./node_modules/.bin/sequelize db:migrate",
     "create:seeds": "./node_modules/.bin/sequelize seed:generate --name demo-mentors",
     "dropMigration": "./node_modules/.bin/sequelize db:migrate:undo:all",
@@ -103,6 +103,7 @@
     "sequelize": "^5.16.0",
     "sequelize-cli": "^5.5.0",
     "should": "^13.2.3",
+    "socket.io": "^2.2.0",
     "supertest": "^4.0.2",
     "uuid": "^3.3.3",
     "validatorjs": "^3.15.1"

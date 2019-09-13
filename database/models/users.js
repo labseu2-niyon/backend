@@ -124,6 +124,8 @@ module.exports = (sequelize, DataTypes) => {
     Users.hasOne(models.Mentors);
     Users.hasOne(models.Mentees);
     Users.hasMany(models.Social_medias);
+    Users.hasMany(models.Connections);
+    Users.hasMany(models.Chats);
   };
   Users.hashPassword = async user => {
     // console.log(user);
