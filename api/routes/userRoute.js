@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const passport = require('passport');
 const controller = require('../controllers/user');
 const userValidators = require('../validator/userValidator');
 const cloudinary = require('../middleware/cloudinaryImage');
@@ -50,31 +49,6 @@ router.post(
 );
 
 router.post('/login', [userValidators.validateUserEmail], controller.loginUser);
-
-// Github
-router.get('/auth/github', passport.authenticate('github', { session: false }));
-
-router.get(
-  '/auth/github/callback',
-  passport.authenticate('github', {
-    failureMessage: 'Error logging in with github'
-  }),
-
-  controller.socialAuthlogin
-);
-
-// Facebook
-router.get('/auth/facebook', [
-  passport.authenticate('facebook', {
-    scope: ['email']
-  })
-]);
-
-router.get(
-  '/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  controller.socialAuthlogin
-);
 
 router.post(
   '/resetpassword',

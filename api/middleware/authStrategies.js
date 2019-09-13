@@ -48,7 +48,7 @@ function githubStrategy() {
     {
       clientID: keys.GITHUB_CLIENT_ID,
       clientSecret: keys.GITHUB_CLIENT_SECRET,
-      callbackURL: '/api/user/auth/github/callback',
+      callbackURL: '/api/auth/github/callback',
       scope: 'user:email'
     },
     (accessToken, refreshToken, profile, cb) => {
@@ -62,7 +62,7 @@ function facebookStrategy() {
     {
       clientID: keys.FACEBOOK_APP_ID,
       clientSecret: keys.FACEBOOK_APP_SECRET,
-      callbackURL: '/api/user/auth/facebook/callback',
+      callbackURL: '/api/auth/facebook/callback',
       profileFields: ['id', 'last_name', 'first_name', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
