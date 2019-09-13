@@ -1,11 +1,9 @@
 const request = require('supertest');
 const path = require('path');
-const passport = require('passport');
 const server = require('../server');
 const jwt = require('../api/helpers/jwt');
 const mail = require('../api/helpers/mail');
 const cloudinary = require('../api/middleware/cloudinaryImage');
-const authMiddleware = require('../api/middleware/authStrategies');
 
 describe('PATCH /:username/image/upload', () => {
   it('should return 401 if no token is provided', () => {
@@ -376,30 +374,6 @@ describe('POST Login User', () => {
         expect(res.body.data.message).toBe(
           `${user.email} successfully logged in.`
         );
-      });
-  });
-});
-
-describe('GET /auth/github', () => {
-  it('should return 302', () => {
-    jest
-      .spyOn(authMiddleware, 'githubStrategy')
-      .mockResolvedValue({ success: true });
-    return request(server)
-      .get('/api/user/auth/github/')
-      .then(res => {
-        expect(res.status).toBe(302);
-      });
-  });
-  it('should return 302', () => {
-    jest
-      .spyOn(authMiddleware, 'githubStrategy')
-      .mockResolvedValue({ success: true });
-    jest.spyOn(passport, 'authenticate').mockResolvedValue({ success: true });
-    return request(server)
-      .get('/api/user/auth/github/callback')
-      .then(res => {
-        expect(res.status).toBe(302);
       });
   });
 });
