@@ -244,7 +244,6 @@ module.exports = {
 
   async uploadUserImage(req, res, next) {
     const { params, file } = req;
-    console.log(file);
     try {
       const user = await models.Users.update(
         { profile_picture: file.secure_url, public_id: file.public_id },
