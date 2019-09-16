@@ -24,7 +24,7 @@ async function callbackStrategy(profile, cb) {
   try {
     const existingUser = await models.Users.findOne({ where: { email } });
     if (!existingUser) {
-      const newUser = await models.Users.findOrCreate({
+      const newUser = await models.Users.create({
         where: { auth_id: profile.id },
         defaults: {
           username: profile.username,
@@ -32,6 +32,7 @@ async function callbackStrategy(profile, cb) {
           password: ' '
         }
       });
+
       if (!newUser) {
         return new Error();
       }
