@@ -4,7 +4,7 @@ const FaceBookStrategy = require('passport-facebook').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const LinkedInStrategy = require('passport-linkedin');
-const TwitterStrategy = require('passport-twitter').Strategy;
+// const TwitterStrategy = require('passport-twitter').Strategy;
 const models = require('../../database/models');
 const keys = require('../../config/secret');
 
@@ -98,40 +98,44 @@ function googleStrategy() {
   );
 }
 
-function linkedinStrategy() {
-  passport.use(
-    new LinkedInStrategy(
-      {
-        consumerKey: keys.LINKEDIN_API_KEY,
-        consumerSecret: keys.LINKEDIN_SECRET_KEY,
-        callbackURL: '/login/?provider=linkedIn/red'
-      },
-      (accessToken, refreshToken, profile, cb) => {
-        return callbackStrategy(profile, cb);
-      }
-    )
+function linkedInStrategy() {
+  return new LinkedInStrategy(
+    {
+      clientID: keys.LINKEDIN_CLIENT_ID,
+      clientSecret: keys.LINKEDIN_CLIENT_SECRET,
+      callbackURL: 'http://localhost:5000/api/auth/linkedin/callback',
+      scope: ['r_emailaddress', 'r_liteprofile'],
+      state: true
+    },
+    (accessToken, refreshToken, profile, done) => {
+      process.nextTick(() => {
+        // console.log(profile);
+        return done(null, profile);
+        // return callbackStrategy(profile, cb);
+      });
+    }
   );
 }
 
-function twitterStrategy() {
-  passport.use(
-    new TwitterStrategy(
-      {
-        clientID: keys.TWITTER_CONSUMER_KEY,
-        clientSecret: keys.TWITTER_CONSUMER_SECRET,
-        callbackURL: '/login/?provider=twitter/redirect'
-      },
-      (accessToken, refreshToken, profile, cb) => {
-        return callbackStrategy(profile, cb);
-      }
-    )
-  );
-}
+// function twitterStrategy() {
+//   passport.use(
+//     new TwitterStrategy(
+//       {
+//         clientID: keys.TWITTER_CONSUMER_KEY,
+//         clientSecret: keys.TWITTER_CONSUMER_SECRET,
+//         callbackURL: '/login/?provider=twitter/redirect'
+//       },
+//       (accessToken, refreshToken, profile, cb) => {
+//         return callbackStrategy(profile, cb);
+//       }
+//     )
+//   );
+// }
 
 module.exports = {
   facebookStrategy,
   githubStrategy,
   googleStrategy,
-  linkedinStrategy,
-  twitterStrategy
+  linkedInStrategy
+  // twitterStrategy
 };
