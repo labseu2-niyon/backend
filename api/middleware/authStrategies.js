@@ -49,7 +49,7 @@ function githubStrategy() {
     {
       clientID: keys.GITHUB_CLIENT_ID,
       clientSecret: keys.GITHUB_CLIENT_SECRET,
-      callbackURL: '/api/auth/github/callback',
+      callbackURL: keys.GITHUB_CALLBACK,
       scope: 'user:email'
     },
     (accessToken, refreshToken, profile, cb) => {
@@ -63,7 +63,7 @@ function facebookStrategy() {
     {
       clientID: keys.FACEBOOK_APP_ID,
       clientSecret: keys.FACEBOOK_APP_SECRET,
-      callbackURL: '/api/auth/facebook/callback',
+      callbackURL: keys.FACEBOOK_CALLBACK,
       profileFields: ['id', 'last_name', 'first_name', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
@@ -83,7 +83,7 @@ function googleStrategy() {
     {
       clientID: keys.GOOGLE_CLIENT_ID,
       clientSecret: keys.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/api/auth/google/callback',
+      callbackURL: keys.GOOGLE_CALLBACK,
       passReqToCallback: true
     },
     (request, accessToken, refreshToken, profile, cb) => {
@@ -103,7 +103,7 @@ function linkedInStrategy() {
     {
       clientID: keys.LINKEDIN_CLIENT_ID,
       clientSecret: keys.LINKEDIN_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5000/api/auth/linkedin/callback',
+      callbackURL: keys.LINKEDIN_CALLBACK,
       scope: ['r_emailaddress', 'r_liteprofile'],
       state: true
     },
