@@ -53,10 +53,6 @@ module.exports = {
       } catch (error) {
         console.error(error);
       }
-      socket.emit('Delba', { text: 'Hello Sorin' });
-      socket.on('chatOpen', () => {
-        // fetch their chat history
-      });
     });
   }
 };

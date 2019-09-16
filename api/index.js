@@ -3,6 +3,7 @@ const router = require('express').Router();
 
 const userRouter = require('./routes/userRoute');
 const locationRouter = require('./routes/locationRoute');
+const authRouter = require('./routes/authRoute');
 const mentorRouter = require('./routes/mentorRoute');
 const countryRouter = require('./routes/countryRoute');
 const autoCompleteRouter = require('./routes/autocomplete');
@@ -18,5 +19,6 @@ router.use('/types', mentorTypes);
 router.use('/countries', countryRouter);
 router.use('/autocomplete', autoCompleteRouter);
 router.use('/location', locationRouter);
+router.use('/auth', authRouter);
 
 module.exports = router;
