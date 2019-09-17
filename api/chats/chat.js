@@ -67,7 +67,8 @@ module.exports = {
               'reciever_id',
               'created_at',
               'connection_id',
-              'read'
+              'read',
+              'message'
             ],
             include: [
               {
@@ -102,6 +103,7 @@ module.exports = {
               connectionId: chat.dataValues.connection_id,
               read: chat.dataValues.read,
               dateSent: chat.dataValues.created_at,
+              message: chat.dataValues.message,
               sender: chat.dataValues.sender.dataValues,
               reciever: chat.dataValues.reciever.dataValues
             };
