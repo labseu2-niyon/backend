@@ -24,7 +24,7 @@ async function callbackStrategy(profile, cb) {
   try {
     const existingUser = await models.Users.findOne({ where: { email } });
     if (!existingUser) {
-      const newUser = await models.Users.create({
+      let newUser = await models.Users.findOrCreate({
         where: { auth_id: profile.id },
         defaults: {
           username: profile.username,
@@ -32,6 +32,7 @@ async function callbackStrategy(profile, cb) {
           password: ' '
         }
       });
+      [newUser] = newUser;
 
       if (!newUser) {
         return new Error();
@@ -72,7 +73,6 @@ function facebookStrategy() {
         const newUsername = `${profile.name.familyName}${profile.name.givenName}`;
         profile = { ...profile, username: newUsername };
       }
-      console.log(profile.username);
       return callbackStrategy(profile, cb);
     }
   );
@@ -87,18 +87,16 @@ function googleStrategy() {
       passReqToCallback: true
     },
     (request, accessToken, refreshToken, profile, cb) => {
-      console.log(profile);
       if (!profile.username) {
         const newUsername = `${profile.name.familyName}${profile.name.givenName}`;
         profile = { ...profile, username: newUsername };
       }
-      console.log(profile.username);
       return callbackStrategy(profile, cb);
     }
   );
 }
 
-function linkedinStrategy() {
+function linkedInStrategy() {
   passport.use(
     new LinkedInStrategy(
       {
@@ -132,6 +130,6 @@ module.exports = {
   facebookStrategy,
   githubStrategy,
   googleStrategy,
-  linkedinStrategy,
+  linkedInStrategy,
   twitterStrategy
 };
