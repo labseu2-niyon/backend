@@ -95,6 +95,7 @@
     "passport-facebook": "^3.0.0",
     "passport-github": "^1.1.0",
     "passport-google-oauth": "^2.0.0",
+    "passport-google-oauth2": "^0.2.0",
     "passport-jwt": "^4.0.0",
     "passport-linkedin": "^1.0.0",
     "passport-local": "^1.0.0",
@@ -104,6 +105,7 @@
     "sequelize": "^5.16.0",
     "sequelize-cli": "^5.5.0",
     "should": "^13.2.3",
+    "socket.io": "^2.2.0",
     "supertest": "^4.0.2",
     "uuid": "^3.3.3",
     "validatorjs": "^3.15.1"

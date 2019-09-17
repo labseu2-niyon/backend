@@ -14,6 +14,11 @@ router.get(
   [authUser.authUser, userValidators.validateUserExists],
   controller.getUserByUsername
 );
+router.get(
+  '/:username',
+  [userValidators.validateUserExists],
+  controller.getUserByUsername
+);
 router.patch(
   '/:username/profile',
   [
@@ -35,8 +40,8 @@ router.patch(
   [
     authUser.authUser,
     userValidators.validateUserExists,
-    cloudinary.uploadImage('image')
-    // cloudinary.deleteCloudImage
+    cloudinary.uploadImage('image'),
+    cloudinary.deleteCloudImage
   ],
   controller.uploadUserImage
 );

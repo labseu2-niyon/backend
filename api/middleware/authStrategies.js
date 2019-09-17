@@ -2,7 +2,7 @@
 const passport = require('passport');
 const FaceBookStrategy = require('passport-facebook').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
-const GoogleStrategy = require('passport-google-oauth').Strategy;
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const LinkedInStrategy = require('passport-linkedin');
 const TwitterStrategy = require('passport-twitter').Strategy;
 const models = require('../../database/models');
@@ -24,7 +24,7 @@ async function callbackStrategy(profile, cb) {
   try {
     const existingUser = await models.Users.findOne({ where: { email } });
     if (!existingUser) {
-      const newUser = await models.Users.findOrCreate({
+      const newUser = await models.Users.create({
         where: { auth_id: profile.id },
         defaults: {
           username: profile.username,
@@ -32,6 +32,7 @@ async function callbackStrategy(profile, cb) {
           password: ' '
         }
       });
+
       if (!newUser) {
         return new Error();
       }
@@ -78,17 +79,22 @@ function facebookStrategy() {
 }
 
 function googleStrategy() {
-  passport.use(
-    new GoogleStrategy(
-      {
-        clientID: keys.GOOGLE_CLIENT_ID,
-        clientSecret: keys.GOOGLE_CLIENT_SECRET,
-        callbackURL: 'auth/google/redirect'
-      },
-      (accessToken, refreshToken, profile, cb) => {
-        return callbackStrategy(profile, cb);
+  return new GoogleStrategy(
+    {
+      clientID: keys.GOOGLE_CLIENT_ID,
+      clientSecret: keys.GOOGLE_CLIENT_SECRET,
+      callbackURL: '/api/auth/google/callback',
+      passReqToCallback: true
+    },
+    (request, accessToken, refreshToken, profile, cb) => {
+      console.log(profile);
+      if (!profile.username) {
+        const newUsername = `${profile.name.familyName}${profile.name.givenName}`;
+        profile = { ...profile, username: newUsername };
       }
-    )
+      console.log(profile.username);
+      return callbackStrategy(profile, cb);
+    }
   );
 }
 
@@ -98,7 +104,7 @@ function linkedinStrategy() {
       {
         consumerKey: keys.LINKEDIN_API_KEY,
         consumerSecret: keys.LINKEDIN_SECRET_KEY,
-        callbackURL: '/login/?provider=linkedIn/redirect'
+        callbackURL: '/login/?provider=linkedIn/red'
       },
       (accessToken, refreshToken, profile, cb) => {
         return callbackStrategy(profile, cb);
