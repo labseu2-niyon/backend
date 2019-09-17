@@ -128,7 +128,6 @@ module.exports = (sequelize, DataTypes) => {
     Users.hasMany(models.Chats);
   };
   Users.hashPassword = async user => {
-    // console.log(user);
     const changedPassword = await user.changed(
       'password',
       user.dataValues.password
