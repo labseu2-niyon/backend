@@ -25,6 +25,8 @@ async function callbackStrategy(profile, cb) {
     const existingUser = await models.Users.findOne({ where: { email } });
     if (!existingUser) {
       let newUser = await models.Users.findOrCreate({
+        // Check whether the user has already signed up with social login previously.
+        // If we didn't check this, a user who has changed his social profile email would not be able to login anymore.
         where: { auth_id: profile.id },
         defaults: {
           username: profile.username,
