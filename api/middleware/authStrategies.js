@@ -72,7 +72,6 @@ function facebookStrategy() {
       if (!profile.username) {
         const newUsername = `${profile.name.familyName}${profile.name.givenName}`;
         profile = { ...profile, username: newUsername };
-        // profile.username = newUsername;
       }
       console.log(profile.username);
       return callbackStrategy(profile, cb);
