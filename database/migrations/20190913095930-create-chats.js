@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      sender: {
+      sender_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -16,7 +16,7 @@ module.exports = {
           as: 'sender'
         }
       },
-      reciever: {
+      reciever_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -31,6 +31,14 @@ module.exports = {
           key: 'id',
           as: 'connection'
         }
+      },
+      read: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      message: {
+        type: Sequelize.TEXT,
+        allowNull: false
       },
       created_at: {
         allowNull: false,

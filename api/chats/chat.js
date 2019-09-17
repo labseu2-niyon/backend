@@ -42,17 +42,76 @@ module.exports = {
             ]
           }
         });
-        const user = connectedList.map(connection => {
+        const users = connectedList.map(connection => {
           return {
             connectionId: connection.id,
             requestUser: connection.dataValues.request_user.dataValues,
             sentuser: connection.dataValues.sender_user.dataValues
           };
         });
-        socket.emit('connectionList', user);
+        // console.log(users);
+        socket.emit('connectionList', users);
       } catch (error) {
         console.error(error);
       }
+      // create a room for users to chat
+      socket.on('chatOpen', async connection => {
+        const userRoom = Object.keys(socket.rooms)[1];
+        socket.leave(userRoom);
+        socket.join(connection.chatId);
+        try {
+          const chats = await models.Chats.findAll({
+            attributes: [
+              'id',
+              'sender_id',
+              'reciever_id',
+              'created_at',
+              'connection_id',
+              'read'
+            ],
+            include: [
+              {
+                model: models.Users,
+                attributes: [
+                  'id',
+                  'first_name',
+                  'last_name',
+                  'username',
+                  'profile_picture'
+                ],
+                as: 'sender'
+              },
+              {
+                model: models.Users,
+                attributes: [
+                  'id',
+                  'first_name',
+                  'last_name',
+                  'username',
+                  'profile_picture'
+                ],
+                as: 'reciever'
+              }
+            ],
+            order: [['created_at', 'DESC']],
+            where: { connection_id: connection.chatId }
+          });
+          const chatMessages = chats.map(chat => {
+            return {
+              id: chat.dataValues.id,
+              connectionId: chat.dataValues.connection_id,
+              read: chat.dataValues.read,
+              dateSent: chat.dataValues.created_at,
+              sender: chat.dataValues.sender.dataValues,
+              reciever: chat.dataValues.reciever.dataValues
+            };
+          });
+          console.log(chatMessages);
+          socket.emit('chatHistory', chatMessages);
+        } catch (error) {
+          console.error(error);
+        }
+      });
     });
   }
 };

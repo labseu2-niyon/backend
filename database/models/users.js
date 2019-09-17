@@ -126,7 +126,8 @@ module.exports = (sequelize, DataTypes) => {
     Users.hasMany(models.Social_medias);
     Users.hasMany(models.Connections, { as: 'user_id' });
     Users.hasMany(models.Connections, { as: 'requests_user' });
-    Users.hasMany(models.Chats);
+    Users.hasMany(models.Chats, { as: 'sender' });
+    Users.hasMany(models.Chats, { as: 'reciever' });
   };
   Users.hashPassword = async user => {
     // console.log(user);

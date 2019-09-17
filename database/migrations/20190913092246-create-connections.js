@@ -30,11 +30,11 @@ module.exports = {
       },
       accepted: {
         type: Sequelize.BOOLEAN,
-        defaultValue: true
+        defaultValue: false
       },
       rejected: {
         type: Sequelize.BOOLEAN,
-        defaultValue: true
+        defaultValue: false
       },
       created_at: {
         allowNull: false,
