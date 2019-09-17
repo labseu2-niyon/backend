@@ -4,7 +4,7 @@ const FaceBookStrategy = require('passport-facebook').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const LinkedInStrategy = require('passport-linkedin');
-const TwitterStrategy = require('passport-twitter').Strategy;
+// const TwitterStrategy = require('passport-twitter').Strategy;
 const models = require('../../database/models');
 const keys = require('../../config/secret');
 
@@ -24,7 +24,7 @@ async function callbackStrategy(profile, cb) {
   try {
     const existingUser = await models.Users.findOne({ where: { email } });
     if (!existingUser) {
-      const newUser = await models.Users.create({
+      let newUser = await models.Users.findOrCreate({
         where: { auth_id: profile.id },
         defaults: {
           username: profile.username,
@@ -32,6 +32,7 @@ async function callbackStrategy(profile, cb) {
           password: ' '
         }
       });
+      [newUser] = newUser;
 
       if (!newUser) {
         return new Error();
@@ -49,7 +50,7 @@ function githubStrategy() {
     {
       clientID: keys.GITHUB_CLIENT_ID,
       clientSecret: keys.GITHUB_CLIENT_SECRET,
-      callbackURL: '/api/auth/github/callback',
+      callbackURL: keys.GITHUB_CALLBACK,
       scope: 'user:email'
     },
     (accessToken, refreshToken, profile, cb) => {
@@ -63,7 +64,7 @@ function facebookStrategy() {
     {
       clientID: keys.FACEBOOK_APP_ID,
       clientSecret: keys.FACEBOOK_APP_SECRET,
-      callbackURL: '/api/auth/facebook/callback',
+      callbackURL: keys.FACEBOOK_CALLBACK,
       profileFields: ['id', 'last_name', 'first_name', 'email']
     },
     (accessToken, refreshToken, profile, cb) => {
@@ -72,7 +73,6 @@ function facebookStrategy() {
         const newUsername = `${profile.name.familyName}${profile.name.givenName}`;
         profile = { ...profile, username: newUsername };
       }
-      console.log(profile.username);
       return callbackStrategy(profile, cb);
     }
   );
@@ -83,55 +83,56 @@ function googleStrategy() {
     {
       clientID: keys.GOOGLE_CLIENT_ID,
       clientSecret: keys.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/api/auth/google/callback',
+      callbackURL: keys.GOOGLE_CALLBACK,
       passReqToCallback: true
     },
     (request, accessToken, refreshToken, profile, cb) => {
-      console.log(profile);
       if (!profile.username) {
         const newUsername = `${profile.name.familyName}${profile.name.givenName}`;
         profile = { ...profile, username: newUsername };
       }
-      console.log(profile.username);
       return callbackStrategy(profile, cb);
     }
   );
 }
 
-function linkedinStrategy() {
-  passport.use(
-    new LinkedInStrategy(
-      {
-        consumerKey: keys.LINKEDIN_API_KEY,
-        consumerSecret: keys.LINKEDIN_SECRET_KEY,
-        callbackURL: '/login/?provider=linkedIn/red'
-      },
-      (accessToken, refreshToken, profile, cb) => {
-        return callbackStrategy(profile, cb);
-      }
-    )
+function linkedInStrategy() {
+  return new LinkedInStrategy(
+    {
+      clientID: keys.LINKEDIN_CLIENT_ID,
+      clientSecret: keys.LINKEDIN_CLIENT_SECRET,
+      callbackURL: keys.LINKEDIN_CALLBACK,
+      scope: ['r_emailaddress', 'r_liteprofile'],
+      state: true
+    },
+    (accessToken, refreshToken, profile, done) => {
+      process.nextTick(() => {
+        // console.log(profile);
+        return done(null, profile);
+        // return callbackStrategy(profile, cb);
+      });
+    }
   );
 }
 
-function twitterStrategy() {
-  passport.use(
-    new TwitterStrategy(
-      {
-        clientID: keys.TWITTER_CONSUMER_KEY,
-        clientSecret: keys.TWITTER_CONSUMER_SECRET,
-        callbackURL: '/login/?provider=twitter/redirect'
-      },
-      (accessToken, refreshToken, profile, cb) => {
-        return callbackStrategy(profile, cb);
-      }
-    )
-  );
-}
+// function twitterStrategy() {
+//   passport.use(
+//     new TwitterStrategy(
+//       {
+//         clientID: keys.TWITTER_CONSUMER_KEY,
+//         clientSecret: keys.TWITTER_CONSUMER_SECRET,
+//         callbackURL: '/login/?provider=twitter/redirect'
+//       },
+//       (accessToken, refreshToken, profile, cb) => {
+//         return callbackStrategy(profile, cb);
+//       }
+//     )
+//   );
+// }
 
 module.exports = {
   facebookStrategy,
   githubStrategy,
   googleStrategy,
-  linkedinStrategy,
-  twitterStrategy
+  linkedInStrategy
 };
