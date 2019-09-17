@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Chats = sequelize.define(
     'Chats',
     {
-      sender: {
+      sender_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      reciever: {
+      reciever_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -27,6 +27,21 @@ module.exports = (sequelize, DataTypes) => {
           isInt: {
             args: true,
             msg: 'Please enter a valid user'
+          }
+        }
+      },
+      read: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      message: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notNull: {
+            args: true,
+            msg: 'a chat message is required'
           }
         }
       },
@@ -56,14 +71,14 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
     });
     Chats.belongsTo(models.Users, {
-      foriegnKey: 'sender',
-      // as: 'sender',
+      foriegnKey: 'sender_id',
+      as: 'sender',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
     Chats.belongsTo(models.Users, {
-      foriegnKey: 'reciever',
-      // as: 'reciever',
+      foriegnKey: 'reciever_id',
+      as: 'reciever',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
