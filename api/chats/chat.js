@@ -123,10 +123,12 @@ module.exports = {
             reciever_id: chatInfo.receiver
           };
           await models.Chats.create(message);
+          sockets.to(chatInfo.connectionId).emit('newChat', chatInfo);
         } catch (error) {
           console.error(error);
         }
       });
+      socket.broadcast.emit('typing', true);
     });
   }
 };
