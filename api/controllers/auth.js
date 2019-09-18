@@ -9,7 +9,7 @@ module.exports = {
 
     try {
       const token = await jwt.generateToken(user.dataValues);
-
+      res.redirect('http://localhost:3001/auth/social');
       return response.success(res, 200, {
         message: `${user.dataValues.email} successfully logged in.`,
         token
