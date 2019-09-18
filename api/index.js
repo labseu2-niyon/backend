@@ -10,6 +10,7 @@ const autoCompleteRouter = require('./routes/autocomplete');
 const jobsRouter = require('./routes/jobsRoute');
 const mentorTypes = require('./routes/mentoringTypesRoute');
 const menteeRouter = require('./routes/menteeRoute');
+const connectionRouter = require('./routes/connectionRoute');
 
 router.use('/user', userRouter);
 router.use('/mentor', mentorRouter);
@@ -20,5 +21,6 @@ router.use('/countries', countryRouter);
 router.use('/autocomplete', autoCompleteRouter);
 router.use('/location', locationRouter);
 router.use('/auth', authRouter);
+router.use('/connection', connectionRouter);
 
 module.exports = router;
