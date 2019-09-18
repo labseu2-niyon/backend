@@ -74,6 +74,7 @@
     ]
   },
   "dependencies": {
+    "@types/sequelize": "^4.28.4",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.14.0",
     "cors": "^2.8.5",
