@@ -58,7 +58,7 @@ module.exports = {
             connection: m.request_user
           };
         });
-      const recieved = connections
+      const received = connections
         .filter(c => c.request_user_id === parseInt(userId, 10))
         .map(m => {
           return {
@@ -68,7 +68,7 @@ module.exports = {
             connection: m.sender_user
           };
         });
-      return response.success(res, 200, { sent, recieved });
+      return response.success(res, 200, { sent, received });
     } catch (error) {
       return response.error(res, 500, error);
     }
