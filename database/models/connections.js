@@ -56,7 +56,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Connections.associate = models => {
-    // associations can be defined here
     Connections.belongsTo(models.Users, {
       foriegnKey: 'sender_user_id',
       as: 'sender_user',
