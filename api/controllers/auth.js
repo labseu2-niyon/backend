@@ -10,8 +10,7 @@ module.exports = {
 
     try {
       const token = await jwt.generateToken(user.dataValues);
-      console.log(req.headers.host);
-      res.redirect(`${keys.REDIRECT_URL}?token=${token}`);
+      res.redirect(`${keys.FRONTEND_BASE_URL}?token=${token}`);
       return response.success(res, 200, {
         message: `${user.dataValues.email} successfully logged in.`,
         token
