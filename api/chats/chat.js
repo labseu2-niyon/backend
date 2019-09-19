@@ -128,7 +128,9 @@ module.exports = {
           console.error(error);
         }
       });
-      socket.broadcast.emit('typing', true);
+      socket.on('typing', data => {
+        socket.broadcast.emit('userIsTyping', data);
+      });
     });
   }
 };
