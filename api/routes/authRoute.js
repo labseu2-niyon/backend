@@ -23,7 +23,9 @@ router.get('/facebook', [
 
 router.get(
   '/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  passport.authenticate('facebook', {
+    failureRedirect: '/login'
+  }),
   controller.socialAuthlogin
 );
 
