@@ -28,6 +28,7 @@
       "!<rootDir>/api/middleware/authStrategies.js",
       "!<rootDir>/api/middleware/cloudinaryImage.js",
       "!<rootDir>/api/helpers/mail.js",
+      "!<rootDir>/api/chats/chat.js",
       "!<rootDir>/_test_"
     ]
   },
