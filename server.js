@@ -22,11 +22,6 @@ passport.use(socialStrategies.facebookStrategy());
 passport.use(socialStrategies.googleStrategy());
 
 server.get('/', async (_, res) => {
-  // const user = {
-  //   id: 1,
-  //   username: 'john'
-  // };
-  // const token = await jwt.generateToken(user);
   res.status(200).json(`API endpoints exposed at /api`);
 });
 
