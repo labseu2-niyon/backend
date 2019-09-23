@@ -37,5 +37,31 @@ module.exports = {
     } catch (error) {
       return next({ message: 'Error validating User' });
     }
+  },
+  async simpleAuth(req, res, next) {
+    const { token } = req.headers;
+    const { userId } = req.params;
+    const { senderUserId } = req.body;
+    if (!token) {
+      return response.error(res, 401, 'Token is required');
+    }
+    try {
+      const decode = jwt.verify(token, secret.jwtSecret);
+      req.decode = decode;
+    } catch (error) {
+      return response.error(res, 401, 'Error bad token');
+    }
+    try {
+      if (userId || senderUserId) {
+        const { subject } = req.decode;
+        if (subject === userId || subject === senderUserId) {
+          return next();
+        }
+        return response.error(res, 403, 'unathorized access - wrong token');
+      }
+      return next();
+    } catch (error) {
+      return response.error(res, 403, 'unathorized access - wrong token');
+    }
   }
 };
