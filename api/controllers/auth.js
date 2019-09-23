@@ -10,7 +10,10 @@ module.exports = {
 
     try {
       const token = await jwt.generateToken(user.dataValues);
-      res.redirect(`${keys.FRONTEND_BASE_URL}?token=${token}`);
+      if (user.dataValues.first_name) {
+        res.redirect(`${keys.FRONTEND_BASE_URL}/auth/cont?token=${token}`);
+      }
+      res.redirect(`${keys.FRONTEND_BASE_URL}/auth/social?token=${token}`);
       return response.success(res, 200, {
         message: `${user.dataValues.email} successfully logged in.`,
         token

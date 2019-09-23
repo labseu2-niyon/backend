@@ -33,7 +33,7 @@ module.exports = {
               as: 'sender_user'
             }
           ],
-          order: [['updated_at', 'DESC']],
+          order: [['updated_at', 'ASC']],
           where: {
             accepted: true,
             [Sequelize.Op.or]: [
@@ -67,7 +67,8 @@ module.exports = {
               'reciever_id',
               'created_at',
               'connection_id',
-              'read'
+              'read',
+              'message'
             ],
             include: [
               {
@@ -93,7 +94,7 @@ module.exports = {
                 as: 'reciever'
               }
             ],
-            order: [['created_at', 'DESC']],
+            order: [['created_at', 'ASC']],
             where: { connection_id: connection.chatId }
           });
           const chatMessages = chats.map(chat => {
@@ -102,15 +103,33 @@ module.exports = {
               connectionId: chat.dataValues.connection_id,
               read: chat.dataValues.read,
               dateSent: chat.dataValues.created_at,
+              message: chat.dataValues.message,
               sender: chat.dataValues.sender.dataValues,
               reciever: chat.dataValues.reciever.dataValues
             };
           });
-          console.log(chatMessages);
+          // console.log(chatMessages);
           socket.emit('chatHistory', chatMessages);
         } catch (error) {
           console.error(error);
         }
+      });
+      socket.on('messegeAdd', async chatInfo => {
+        try {
+          const message = {
+            sender_id: chatInfo.sender,
+            message: chatInfo.message,
+            connection_id: chatInfo.connectionId,
+            reciever_id: chatInfo.receiver
+          };
+          await models.Chats.create(message);
+          sockets.to(chatInfo.connectionId).emit('newChat', chatInfo);
+        } catch (error) {
+          console.error(error);
+        }
+      });
+      socket.on('typing', data => {
+        socket.broadcast.emit('userIsTyping', data);
       });
     });
   }
