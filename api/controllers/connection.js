@@ -24,7 +24,14 @@ module.exports = {
               'username',
               'profile_picture'
             ],
-            as: 'request_user'
+            as: 'request_user',
+            include: [
+              {
+                model: models.Locations,
+                as: 'location',
+                attributes: ['country_name', 'city_name']
+              }
+            ]
           },
           {
             model: models.Users,
@@ -35,10 +42,16 @@ module.exports = {
               'username',
               'profile_picture'
             ],
-            as: 'sender_user'
+            as: 'sender_user',
+            include: [
+              {
+                model: models.Locations,
+                as: 'location',
+                attributes: ['country_name', 'city_name']
+              }
+            ]
           }
         ],
-        order: [['updated_at', 'DESC']],
         where: {
           [Sequelize.Op.or]: [
             { sender_user_id: userId },
@@ -89,7 +102,14 @@ module.exports = {
               'username',
               'profile_picture'
             ],
-            as: 'request_user'
+            as: 'request_user',
+            include: [
+              {
+                model: models.Locations,
+                as: 'location',
+                attributes: ['country_name', 'city_name']
+              }
+            ]
           },
           {
             model: models.Users,
@@ -100,7 +120,14 @@ module.exports = {
               'username',
               'profile_picture'
             ],
-            as: 'sender_user'
+            as: 'sender_user',
+            include: [
+              {
+                model: models.Locations,
+                as: 'location',
+                attributes: ['country_name', 'city_name']
+              }
+            ]
           }
         ],
         order: [['updated_at', 'DESC']],
@@ -128,15 +155,23 @@ module.exports = {
 
   async makeConnectionRequest(req, res) {
     const { senderUserId, requestUserId } = req.body;
-    try {
-      const connection = await models.Connections.create({
-        sender_user_id: senderUserId,
-        request_user_id: requestUserId,
-        pending: true
-      });
-      return response.success(res, 201, connection);
-    } catch (error) {
-      return response.error(res, 500, error.message);
+    if ((senderUserId, requestUserId)) {
+      try {
+        const connection = await models.Connections.create({
+          sender_user_id: senderUserId,
+          request_user_id: requestUserId,
+          pending: true
+        });
+        return response.success(res, 201, connection);
+      } catch (error) {
+        return response.error(res, 500, error.message);
+      }
+    } else {
+      return response.error(
+        res,
+        400,
+        'Please provide senderUserId and requestUserId'
+      );
     }
   },
 
@@ -153,22 +188,50 @@ module.exports = {
         ],
         where: { id: connectionId, rejected: false }
       });
-      response.success(res, 200, conn);
+      return response.success(res, 200, conn);
     } catch (error) {
-      response.error(res, 500, error);
+      return response.error(res, 500, error);
     }
   },
 
   async updateConnection(req, res) {
     const { connectionId } = req.params;
-    try {
-      const conn = await models.Connections.update(
-        { ...req.body },
-        { where: { id: connectionId } }
+    if (Object.keys(req.body).includes('accepted' || 'pending' || 'rejected')) {
+      try {
+        const conn = await models.Connections.update(
+          { ...req.body },
+          { where: { id: connectionId } }
+        );
+        return response.success(res, 200, conn);
+      } catch (error) {
+        return response.error(res, 500, error);
+      }
+    } else {
+      return response.error(
+        res,
+        400,
+        'Please provide either accepted, pending or rejected fields'
       );
-      response.success(res, 200, conn);
-    } catch (error) {
-      response.error(res, 500, error);
     }
   }
+
+  // async checkConnection(req, res) {
+  //   const { senderUserId, requestUserId } = req.body;
+  //   try {
+  //     const conn = await models.Connections.findAll({
+  //       where: {
+  //         sender_user_id: senderUserId,
+  //         request_user_id: requestUserId
+  //       }
+  //     });
+  //     const conn1 = await models.Connections.findAll({
+  //       where: {
+  //         sender_user_id: senderUserId,
+  //         request_user_id: requestUserId
+  //       }
+  //     });
+  //   } catch (error) {
+  //     response.error(res, 500, error);
+  //   }
+  // }
 };
