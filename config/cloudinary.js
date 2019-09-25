@@ -12,6 +12,6 @@ const storage = cloudinaryStorage({
   cloudinary,
   folder: 'niyon-app',
   allowedFormats: ['jpg', 'png'],
-  transformation: [{ width: 300, height: 300, crop: 'scale' }]
+  transformation: [{ width: 300, height: 300, crop: 'fill' }]
 });
 module.exports = storage;
