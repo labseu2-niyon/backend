@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       twitter: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      github: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     },
     {}
