@@ -65,7 +65,18 @@ module.exports = {
           }
         ]
       });
-      return response.success(res, 200, user);
+      console.log(user.id);
+      const socialMedia = await models.Social_medias.findOne({
+        where: { user_id: user.id },
+        attributes: ['facebook', 'linkedin', 'twitter', 'github']
+      });
+      const newUser = {
+        ...user.dataValues,
+        social_media: socialMedia.dataValues
+      };
+      console.log(newUser);
+
+      return response.success(res, 200, newUser);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -112,6 +123,11 @@ module.exports = {
                 as: 'industry'
               }
             ]
+          },
+          {
+            model: models.Social_medias,
+            attributes: ['facebook', 'linkedin', 'twitter', 'github'],
+            as: 'Social_medias'
           },
           {
             model: models.Tech_jobs,
