@@ -18,18 +18,19 @@ module.exports = {
       },
       facebook: {
         type: Sequelize.STRING,
-        allowNull: true,
-        unique: true
+        allowNull: true
       },
       twitter: {
         type: Sequelize.STRING,
-        allowNull: true,
-        unique: true
+        allowNull: true
       },
       linkedin: {
         type: Sequelize.STRING,
-        allowNull: true,
-        unique: true
+        allowNull: true
+      },
+      github: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
       created_at: {
         allowNull: false,
