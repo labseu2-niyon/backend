@@ -65,7 +65,6 @@ module.exports = {
           }
         ]
       });
-      console.log(user.id);
       const socialMedia = await models.Social_medias.findOne({
         where: { user_id: user.id },
         attributes: ['facebook', 'linkedin', 'twitter', 'github']
@@ -74,8 +73,6 @@ module.exports = {
         ...user.dataValues,
         social_media: socialMedia.dataValues
       };
-      console.log(newUser);
-
       return response.success(res, 200, newUser);
     } catch (error) {
       return response.error(res, 500, error.message);
@@ -334,30 +331,22 @@ module.exports = {
   },
   async updateSocialMediaAccount(req, res, next) {
     try {
-      const { body } = req;
-      console.log(body);
-      if (!Object.keys(body).length) {
+      const { linkedin, facebook, twitter, github } = req.body;
+      if (!Object.keys(req.body).length) {
         return response.error(res, 400, 'Empty body not allowed');
       }
       const socialMedia = await models.Social_medias.update(
         {
-          body
+          linkedin,
+          facebook,
+          twitter,
+          github
         },
         { where: { user_id: req.user.id }, returning: true }
       );
-      console.log(socialMedia);
       return response.success(res, 201, socialMedia);
     } catch (error) {
       return next({ message: 'Error updating users social media handle' });
-    }
-  },
-  async getSocialMedias(req, res, next) {
-    try {
-      const socialMedia = await models.Social_medias.findAll();
-      console.log(socialMedia.dataValues);
-      return response.success(res, 201, socialMedia);
-    } catch (error) {
-      return next({ message: error.message });
     }
   }
 };

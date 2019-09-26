@@ -84,6 +84,4 @@ router.get(
   controller.getUserByUsername
 );
 
-router.get('/social/get', controller.getSocialMedias);
-
 module.exports = router;
