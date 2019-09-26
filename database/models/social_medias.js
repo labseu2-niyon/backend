@@ -24,13 +24,22 @@ module.exports = (sequelize, DataTypes) => {
       twitter: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      github: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     },
     {}
   );
   Social_medias.associate = models => {
     // associations can be defined here
-    Social_medias.belongsTo(models.Users);
+    Social_medias.belongsTo(models.Users, {
+      foreignKey: 'user_id',
+      as: 'user',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
   };
   return Social_medias;
 };

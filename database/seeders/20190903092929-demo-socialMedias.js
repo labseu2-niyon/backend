@@ -12,6 +12,7 @@ module.exports = {
         user_id: 2,
         linkedin: 'facebookin.com',
         facebook: 'facebooking.com',
+        github: 'damolasd',
         created_at: new Date(),
         updated_at: new Date()
       }

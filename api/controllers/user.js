@@ -65,7 +65,15 @@ module.exports = {
           }
         ]
       });
-      return response.success(res, 200, user);
+      const socialMedia = await models.Social_medias.findOne({
+        where: { user_id: user.id },
+        attributes: ['facebook', 'linkedin', 'twitter', 'github']
+      });
+      const newUser = {
+        ...user.dataValues,
+        social_media: socialMedia.dataValues
+      };
+      return response.success(res, 200, newUser);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
@@ -112,6 +120,11 @@ module.exports = {
                 as: 'industry'
               }
             ]
+          },
+          {
+            model: models.Social_medias,
+            attributes: ['facebook', 'linkedin', 'twitter', 'github'],
+            as: 'Social_medias'
           },
           {
             model: models.Tech_jobs,
@@ -314,6 +327,26 @@ module.exports = {
       return response.success(res, 201, socialMedia);
     } catch (error) {
       return next({ message: 'Error posting users social media handle' });
+    }
+  },
+  async updateSocialMediaAccount(req, res, next) {
+    try {
+      const { linkedin, facebook, twitter, github } = req.body;
+      if (!Object.keys(req.body).length) {
+        return response.error(res, 400, 'Empty body not allowed');
+      }
+      const socialMedia = await models.Social_medias.update(
+        {
+          linkedin,
+          facebook,
+          twitter,
+          github
+        },
+        { where: { user_id: req.user.id }, returning: true }
+      );
+      return response.success(res, 201, socialMedia);
+    } catch (error) {
+      return next({ message: 'Error updating users social media handle' });
     }
   }
 };

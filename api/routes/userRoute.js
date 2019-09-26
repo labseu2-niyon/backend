@@ -72,6 +72,11 @@ router.post(
   [authUser.authUser, userValidators.validateUserExists],
   controller.addSocialMediaAccount
 );
+router.patch(
+  '/:username/socialmedia',
+  [authUser.authUser, userValidators.validateUserExists],
+  controller.updateSocialMediaAccount
+);
 
 router.get(
   '/:username',
