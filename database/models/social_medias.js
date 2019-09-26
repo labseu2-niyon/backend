@@ -34,7 +34,12 @@ module.exports = (sequelize, DataTypes) => {
   );
   Social_medias.associate = models => {
     // associations can be defined here
-    Social_medias.belongsTo(models.Users);
+    Social_medias.belongsTo(models.Users, {
+      foreignKey: 'user_id',
+      as: 'user',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
   };
   return Social_medias;
 };
