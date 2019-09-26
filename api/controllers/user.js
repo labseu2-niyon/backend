@@ -69,11 +69,15 @@ module.exports = {
         where: { user_id: user.id },
         attributes: ['facebook', 'linkedin', 'twitter', 'github']
       });
-      const newUser = {
-        ...user.dataValues,
-        social_media: socialMedia.dataValues
-      };
-      return response.success(res, 200, newUser);
+      console.log(user);
+      if (socialMedia) {
+        const newUser = {
+          ...user.dataValues,
+          social_media: socialMedia.dataValues
+        };
+        return response.success(res, 200, newUser);
+      }
+      return response.success(res, 200, user);
     } catch (error) {
       return response.error(res, 500, error.message);
     }
