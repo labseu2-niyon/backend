@@ -73,7 +73,7 @@ router.post(
   controller.addSocialMediaAccount
 );
 router.patch(
-  '/:username/socials',
+  '/:username/socialmedia',
   [authUser.authUser, userValidators.validateUserExists],
   controller.updateSocialMediaAccount
 );
