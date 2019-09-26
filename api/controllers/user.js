@@ -331,5 +331,33 @@ module.exports = {
     } catch (error) {
       return next({ message: 'Error posting users social media handle' });
     }
+  },
+  async updateSocialMediaAccount(req, res, next) {
+    try {
+      const { body } = req;
+      console.log(body);
+      if (!Object.keys(body).length) {
+        return response.error(res, 400, 'Empty body not allowed');
+      }
+      const socialMedia = await models.Social_medias.update(
+        {
+          body
+        },
+        { where: { user_id: req.user.id }, returning: true }
+      );
+      console.log(socialMedia);
+      return response.success(res, 201, socialMedia);
+    } catch (error) {
+      return next({ message: 'Error updating users social media handle' });
+    }
+  },
+  async getSocialMedias(req, res, next) {
+    try {
+      const socialMedia = await models.Social_medias.findAll();
+      console.log(socialMedia.dataValues);
+      return response.success(res, 201, socialMedia);
+    } catch (error) {
+      return next({ message: error.message });
+    }
   }
 };

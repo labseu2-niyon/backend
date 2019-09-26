@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isInt: {
             args: true,
-            msg: 'Please enter your location'
+            msg: 'Please enter your user id'
           }
         }
       },
