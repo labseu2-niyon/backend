@@ -1,20 +1,36 @@
-[![Coverage Status](https://coveralls.io/repos/github/labseu2-niyon/backend/badge.svg?branch=development)](https://coveralls.io/github/labseu2-niyon/backend?branch=development) [![CircleCI](https://circleci.com/gh/labseu2-niyon/backend.svg?style=svg)](https://circleci.com/gh/labseu2-niyon/backend)
+#### Link to frontend documentation https://github.com/labseu2-niyon/frontend/blob/master/README.md
 
-🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.
+# Niyon
 
-🚫 The numbers 1️⃣ through 3️⃣ next to each item represent the week that part of the docs needs to be comepleted by. Make sure to delete the numbers by the end of Labs.
+You can find the deployed project at https://niyonapp.com/
 
-🚫 Each student has a required minimum number of meaningful PRs each week per the rubric. Contributing to docs does NOT count as a PR to meet your weekly requirements.
+## Contributors
 
-# API Documentation
+Check our about page at https://niyonapp.com/about
 
-#### 1️⃣ Backend delpoyed at [🚫name service here](🚫add URL here) <br>
+## Project Overview
 
-## 1️⃣ Getting started
+[Trello Board] https://trello.com/b/fvJgJWWA/niyon
+
+[Product Canvas] https://www.notion.so/Niyon-c215b4850eaf4cc39162e9c455993155
+
+[UX Design files] https://whimsical.com/51S63ddNuAZB5d7azZ9L9d
+
+Find a mentor.
+Niyon is a platform for connecting young professionals with mentors in West Africa.
+We connect you with mentors who are located in the same city, town or local government area you are in.
+
+### Key Features
+
+- Create your account or login with your social account
+- Connect with mentors and mentees
+- Chat with them
+
+## Tech Stack
+
+## Getting started
 
 To get the server running locally:
-
-🚫 adjust these scripts to match your project
 
 - Clone this repo
 - **npm install** to install all required dependencies
@@ -24,116 +40,104 @@ To get the server running locally:
 - **npm run test:watch** to start server using testing environment in watch mode
 - **npm run lint** to lint files using eslint
 
-### Backend framework goes here
+# Back-end
 
-🚫 Why did you choose this framework?
+We use Node.js and it's Express framework to build the server and APIs. For the chat app, we use Socket.IO.
 
-- Point One
-- Point Two
-- Point Three
-- Point Four
+- [**Node.js**](https://nodejs.org/en/) is a JavaScript runtime build on Chrome's V8 engine. Being an interface to the V8 JavaScript runtime, it enables super fast JavaScript interpreter that runs in the Chrome browser. Its non-blocking I/O model is ideal for real-time applications, like chats, even tho it is single threaded. Event loop takes care of all the asynchronous I/O operations without blocking synchronous tasks. That means actions like reading or writing to the database, or network requests can be performed very quickly and not block the process.
 
-## 2️⃣ Endpoints
+- [**Express.js**](https://expressjs.com/) is a flexible Node.js framework that provides robust set of features for web and mobile applications. The pleathora of HTTP utility methods and middleware available allows us to quickly create robust API.
 
-🚫This is a placeholder, replace the endpoints, access controll, and descriptioin to match your project
+- [**Socket.IO**](https://socket.io/docs/) is a library, that enables real-time bidirectional communication between the server and the browser. This means that the server can push messages to clients. Whenever you write a chat message, the idea is that the server will get it and push it to all other connected clients. The benefits of using Socket.IO instead of vanilla WebSockets are:
+  - It supports fallback options
+  - It supports broadcasting
+  - Connection can be established in presence of proxies and load balancers
 
-#### Organization Routes
+## Database
 
-| Method | Endpoint                | Access Control | Description                                  |
-| ------ | ----------------------- | -------------- | -------------------------------------------- |
-| GET    | `/organizations/:orgId` | all users      | Returns the information for an organization. |
-| PUT    | `/organizatoins/:orgId` | owners         | Modify an existing organization.             |
-| DELETE | `/organizations/:orgId` | owners         | Delete an organization.                      |
+### **PostgreSQL**
 
-#### User Routes
+PostgreSQL is one of the largest open-source RBMS that comes with many features aimed to help developers build applications, administrators to protect data integrity and build fault-tolerant environments, and help you manage your data no matter how big or small the database is.
 
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/users/current`        | all users           | Returns info for the logged in user.               |
-| GET    | `/users/org/:userId`    | owners, supervisors | Returns all users for an organization.             |
-| GET    | `/users/:userId`        | owners, supervisors | Returns info for a single user.                    |
-| POST   | `/users/register/owner` | none                | Creates a new user as owner of a new organization. |
-| PUT    | `/users/:userId`        | owners, supervisors |                                                    |
-| DELETE | `/users/:userId`        | owners, supervisors |                                                    |
+We started with comparing SQL vs NoSQL. Our first tech choices were PostgreSQL and MongoDB. We choose PostgreSQL for our project because our application would contain and operate with a lot of relationships, therefore, using a relational database system with a large community that protects data integrity and tolerant environment.
 
-# Data Model
+### **Sequelize**
 
-🚫This is just an example. Replace this with your data model
+Sequelize is perhaps the most popular and used promised base Javascript SQL ORM that is compatible with PostgreSQL and helps us handle relationships and their query.
 
-#### 2️⃣ ORGANIZATIONS
+Having both our client and server code with the same language is helpful to our team's communication and integration.
 
----
+We also considered which language all of our team was comfortable to work with, and that's why we settled on Node + Express.
+
+Sequelize is an ORM which can help us handle associations and their queries, and knex is only a query builder. This will make it the setup easier with sequelize.
+
+## APIs query type
+
+### **Rest API**
+
+REST API is a simple and popular architecture type both for client and server-side that helps us perform all CRUD operations. Since REST was covered in the curriculum and also effectively solves our problem in the early circle we would be starting with it.
+
+## Testing
+
+### **Jest Framework**
+
+Jest is a testing framework that focuses on simplicity. It was covered in the curriculum, have awesome documentation and practically covers every aspect of testing; from unit-test to snap-shot test, etc.
+
+Jest have both units test, snap-shot test and react test. It's also simple and simply delightful.
+
+## **Continous Integration**
+
+Using continuous integration for our test helps us deploy our application dynamically, supports our development process by automatically building and testing code changes, providing immediate feedback on the success of the change.
+
+### **Circle CI**
+
+Circle CI is a fast automated triggered continuous integration service.
+
+Circle CI has a hub and automate all process of automated integration, from base to end. Automatically deploy to heroku, etc.
+
+## Hosting & Environments
+
+### **AWS - Production**
+
+AWS is one of the 3 main (and the most used), by using AWS in production as opposed to a platform (such as Heroku) it allows us to have full control of the deployment. It also reduces costs as we are using the underlying platform instead of paying for an additional platform on top of AWS.
+
+# Environment Variables
+
+In order for the app to function correctly, the user must set up their own environment variables. There should be a .env file containing the following:
 
 ```
-{
-  id: UUID
-  name: STRING
-  industry: STRING
-  paid: BOOLEAN
-  customer_id: STRING
-  subscription_id: STRING
-}
+DEV_DATABASE_URL=
+DATABASE_URL_TEST=
+DATABASE_URL=
+NODE_ENV=
+
+FACEBOOK_APP_ID=
+FACEBOOK_APP_SECRET=
+FACEBOOK_CALLBACK =
+
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GITHUB_CALLBACK =
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_CALLBACK=
+
+CLOUDINARY_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+PLACE_API_KEY=
+
+JWT_SECRET=
+FRONT_END_URL=
+FRONTEND_BASE_URL=
+PORT=
 ```
 
-#### USERS
+## Endpoints
 
----
-
-```
-{
-  id: UUID
-  organization_id: UUID foreign key in ORGANIZATIONS table
-  first_name: STRING
-  last_name: STRING
-  role: STRING [ 'owner', 'supervisor', 'employee' ]
-  email: STRING
-  phone: STRING
-  cal_visit: BOOLEAN
-  emp_visit: BOOLEAN
-  emailpref: BOOLEAN
-  phonepref: BOOLEAN
-}
-```
-
-## 2️⃣ Actions
-
-🚫 This is an example, replace this with the actions that pertain to your backend
-
-`getOrgs()` -> Returns all organizations
-
-`getOrg(orgId)` -> Returns a single organization by ID
-
-`addOrg(org)` -> Returns the created org
-
-`updateOrg(orgId)` -> Update an organization by ID
-
-`deleteOrg(orgId)` -> Delete an organization by ID
-<br>
-<br>
-<br>
-`getUsers(orgId)` -> if no param all users
-
-`getUser(userId)` -> Returns a single user by user ID
-
-`addUser(user object)` --> Creates a new user and returns that user. Also creates 7 availabilities defaulted to hours of operation for their organization.
-
-`updateUser(userId, changes object)` -> Updates a single user by ID.
-
-`deleteUser(userId)` -> deletes everything dependent on the user
-
-## 3️⃣ Environment Variables
-
-In order for the app to function correctly, the user must set up their own environment variables.
-
-create a .env file that includes the following:
-
-🚫 These are just examples, replace them with the specifics for your app
-
-_ STAGING_DB - optional development db for using functionality not available in SQLite
-_ NODE\*ENV - set to "development" until ready for "production"
-
-- JWT*SECRET - you can generate this by using a python shell and running import random''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&amp;*(-_=+)') for i in range(50)])
-  _ SENDGRID_API_KEY - this is generated in your Sendgrid account \* stripe_secret - this is generated in the Stripe dashboard
+Overview of endpoints
+https://documenter.getpostman.com/view/7809999/SVfWKQPW?version=latest
 
 ## Contributing
 
@@ -172,7 +176,3 @@ Remember that this project is licensed under the MIT license, and by submitting 
 
 These contribution guidelines have been adapted from [this good-Contributing.md-template](https://gist.github.com/PurpleBooth/b24679402957c63ec426).
 
-## Documentation
-
-See [Frontend Documentation](🚫link to your frontend readme here) for details on the fronend of our project.
-🚫 Add DS iOS and/or Andriod links here if applicable.
