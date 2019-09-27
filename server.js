@@ -4,14 +4,21 @@ const cors = require('cors');
 const helmet = require('helmet');
 const logger = require('morgan');
 const apiRouter = require('./api');
-// const keys = require('./config/secret');
+const keys = require('./config/secret');
 // const jwt = require('./api/helpers/jwt');
 const socialStrategies = require('./api/middleware/authStrategies');
 
 const server = express();
 
 server.use(helmet());
-server.use(cors());
+
+server.use(
+  cors({
+    origin: keys.API_CONSUME_URL,
+    credentials: true
+  })
+);
+
 server.use(logger('dev'));
 server.use(express.json());
 
@@ -34,9 +41,13 @@ server.all('*', (req, res) => {
 // eslint-disable-next-line no-unused-vars
 server.use(function errors(err, req, res, next) {
   if (err.message === 'An unknown file format not allowed') {
-    return res.status(400).json({ message: 'File type must be jpg or png' });
+    return res.status(400).json({
+      message: 'File type must be jpg or png'
+    });
   }
-  return res.status(500).json({ err });
+  return res.status(500).json({
+    err
+  });
 });
 
 module.exports = server;
