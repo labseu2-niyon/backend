@@ -69,7 +69,6 @@ module.exports = {
         where: { user_id: user.id },
         attributes: ['facebook', 'linkedin', 'twitter', 'github']
       });
-      console.log(user);
       if (socialMedia) {
         const newUser = {
           ...user.dataValues,
