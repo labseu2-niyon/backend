@@ -77,7 +77,6 @@ module.exports = {
         return response.success(res, 200, newUser);
       }
       return response.success(res, 200, user);
-
     } catch (error) {
       return response.error(res, 500, error.message);
     }
