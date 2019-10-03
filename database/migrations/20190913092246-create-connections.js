@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
+      sender_user_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
@@ -30,11 +30,11 @@ module.exports = {
       },
       accepted: {
         type: Sequelize.BOOLEAN,
-        defaultValue: true
+        defaultValue: false
       },
       rejected: {
         type: Sequelize.BOOLEAN,
-        defaultValue: true
+        defaultValue: false
       },
       created_at: {
         allowNull: false,

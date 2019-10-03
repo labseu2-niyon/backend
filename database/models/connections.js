@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: false
       },
-      user_id: {
+      sender_user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -50,21 +50,21 @@ module.exports = (sequelize, DataTypes) => {
       indexes: [
         {
           unique: true,
-          fields: ['user_id', 'request_user_id']
+          fields: ['sender_user_id', 'request_user_id']
         }
       ]
     }
   );
   Connections.associate = models => {
-    // associations can be defined here
     Connections.belongsTo(models.Users, {
-      foriegnKey: 'user_id',
+      foriegnKey: 'sender_user_id',
+      as: 'sender_user',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
     Connections.belongsTo(models.Users, {
       foriegnKey: 'request_user_id',
-      as: 'request',
+      as: 'request_user',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
